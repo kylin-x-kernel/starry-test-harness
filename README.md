@@ -1,12 +1,12 @@
 # Starry Test Harness
 
-Rust 原型仓库，用于为 Kylin-X / Starry OS 构建分层自动化测试体系。目标是给研发、测试同学提供一个统一入口，可以在 PR、nightly、灰度阶段按层次执行不同类型的用例（ci/stress/daily/manual），并输出可追踪的日志与报告。
+Rust 原型仓库，用于为 Kylin-X / Starry OS 构建分层自动化测试体系。目标是给研发、测试同学提供一个统一入口，可以在 PR、nightly、灰度阶段按层次执行不同类型的用例（ci/stress/daily），并输出可追踪的日志与报告。
 
 ## 关键特性
 
 - **Rust 驱动**：`starry-test-harness` CLI 负责解析测试清单、执行脚本/二进制用例、生成 JSON 报告。
 - **Make 统一入口**：遵循“`make <suite> <action>`”约定，例如 `make ci-test run`、`make daily-test publish`。
-- **分层目录**：`tests/ci|stress|daily|manual` 保存 manifest（`suite.toml`）和脚本，开发/测试可直接追加用例。
+- **分层目录**：`tests/ci|stress|daily` 保存 manifest（`suite.toml`）和脚本，开发/测试可直接追加用例。
 - **日志可追踪**：所有执行输出落在 `logs/<suite>/`，失败时还会写入 `error.log` 方便 CI 收集。
 - **StarryOS 集成**：`ci-test` 复用了 upstream `scripts/ci-test.py` 的启动流程，可切换到真实构建/QEMU 启动。
 - **AArch64 关注**：默认面向 AArch64，后续再考虑别的架构。
@@ -18,7 +18,7 @@ Rust 原型仓库，用于为 Kylin-X / Starry OS 构建分层自动化测试体
 ├── Cargo.toml               # Rust harness 配置
 ├── Makefile                 # make ci-test run / daily-test publish 等
 ├── scripts/
-│   ├── build_stub.sh        # stress/daily/manual 仍使用的占位 build
+│   ├── build_stub.sh        # stress/daily 仍使用的占位 build
 │   └── ci_build_starry.sh   # 借鉴 StarryOS 构建流程
 ├── src/
 │   └── main.rs              # harness 主逻辑（clap + toml + 日志）
@@ -31,11 +31,9 @@ Rust 原型仓库，用于为 Kylin-X / Starry OS 构建分层自动化测试体
 │   ├── stress/
 │   │   ├── suite.toml
 │   │   └── cases/
-│   ├── daily/
-│   │   ├── suite.toml
-│   │   └── cases/
-│   └── manual/
-│       └── suite.toml
+│   └── daily/
+│       ├── suite.toml
+│       └── cases/
 ├── logs/                    # 运行日志（含 .gitkeep）
 ├── reports/daily/           # publish 结果
 └── .github/workflows/ci-test.yml

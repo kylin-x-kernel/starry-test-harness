@@ -1,6 +1,6 @@
 CARGO ?= cargo
 RUNNER := $(CARGO) run --quiet --bin starry-test-harness --
-SUPPORTED_SUITES := ci-test stress-test daily-test manual-test
+SUPPORTED_SUITES := ci-test stress-test daily-test
 
 SUITE := $(firstword $(MAKECMDGOALS))
 ACTION := $(word 2,$(MAKECMDGOALS))

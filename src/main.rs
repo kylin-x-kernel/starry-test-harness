@@ -45,8 +45,6 @@ enum Suite {
     StressTest,
     #[value(name = "daily-test")]
     DailyTest,
-    #[value(name = "manual-test")]
-    ManualTest,
 }
 
 impl Suite {
@@ -55,7 +53,6 @@ impl Suite {
             Suite::CiTest => "ci",
             Suite::StressTest => "stress",
             Suite::DailyTest => "daily",
-            Suite::ManualTest => "manual",
         }
     }
 
@@ -64,7 +61,6 @@ impl Suite {
             Suite::CiTest => "CI Test",
             Suite::StressTest => "Stress Test",
             Suite::DailyTest => "Daily Test",
-            Suite::ManualTest => "Manual Test",
         }
     }
 }
