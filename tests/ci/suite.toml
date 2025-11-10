@@ -1,40 +1,11 @@
 name = "ci-test"
-description = "基础功能用例：StarryOS 启动 + 基础库验证"
+description = "Rust 用例聚合执行"
 build_script = "scripts/ci_build_starry.sh"
 arch = "aarch64"
 default_timeout_secs = 300
 
 [[cases]]
-name = "starry-boot"
-description = "借鉴 StarryOS scripts/ci-test.py，验证 BusyBox Shell 启动"
-path = "tests/ci/cases/starry_boot.sh"
-args = []
-
-[[cases]]
-name = "boot-smoke"
-description = "启动镜像并加载守护"
-path = "tests/ci/cases/run.sh"
-args = []
-
-[[cases]]
-name = "musl-a"
-description = "验证 musl 接口 a"
-path = "tests/ci/cases/a.sh"
-args = ["run", "a", "1", "2", "4"]
-
-[[cases]]
-name = "syscall-b"
-description = "验证调度/信号"
-path = "tests/ci/cases/b.sh"
-args = ["scheduler", "signals"]
-
-[[cases]]
-name = "sqlite"
-description = "用户态 sqlite 功能"
-path = "tests/ci/cases/sqlite.sh"
-
-[[cases]]
-name = "file-io-basic"
-description = "Rust 文件基础读写冒烟"
-path = "tests/ci/run_file_io_basic.sh"
+name = "rust-host-suite"
+description = "构建并执行 tests/ci 下的全部 Rust 测试用例"
+path = "tests/ci/run_rust_cases.sh"
 args = []

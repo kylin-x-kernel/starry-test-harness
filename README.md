@@ -10,6 +10,7 @@ Rust 原型仓库，用于为 Kylin-X / Starry OS 构建分层自动化测试体
 - **日志可追踪**：所有执行输出落在 `logs/<suite>/`，失败时还会写入 `error.log` 方便 CI 收集。
 - **StarryOS 集成**：`ci-test` 复用了 upstream `scripts/ci-test.py` 的启动流程，可切换到真实构建/QEMU 启动。
 - **AArch64 关注**：默认面向 AArch64，后续再考虑别的架构。
+- **用例模板**：`templates/rust-ci-case` 可配合 cargo-generate 快速生成标准化测试工程。
 
 ## 仓库结构
 
@@ -27,9 +28,11 @@ Rust 原型仓库，用于为 Kylin-X / Starry OS 构建分层自动化测试体
 ├── tests/
 │   ├── ci/
 │   │   ├── suite.toml       # CI 用例清单
-│   │   ├── run_file_io_basic.sh
-│   │   ├── cases/
-│   │   └── test-utils/
+│   │   ├── run_rust_cases.sh
+│   │   ├── file-io-basic/
+│   │   ├── test-utils/
+│   │   └── templates/
+│   │       └── rust-ci-case/
 │   ├── stress/
 │   │   ├── suite.toml
 │   │   └── cases/
@@ -72,9 +75,21 @@ make build                # 仅编译 Rust harness
 
 ## 添加/维护用例
 
-1. **新增 Rust 用例**：在 `tests/ci/cases/src/bin/` 下创建 `foo.rs`，通过 `test-utils` 提供的辅助函数编写测试逻辑，并输出 `PASS/FAIL`。
-2. **登记 manifest**：在 `tests/ci/suite.toml` 中追加 `[[cases]]`，指定新的运行脚本（可复制 `tests/ci/run_file_io_basic.sh` 并调整）。
-3. **验证执行**：在仓库根目录运行 `SKIP_DISK_IMAGE=1 tests/ci/<run_script>.sh`，确认日志写入 `logs/ci/` 并返回 0。
+1. **生成项目骨架**：在仓库根目录执行 `cd tests/ci && cargo generate --git <模板仓库地址> --name foo_case`，或使用本地模板 `cargo generate --path ../templates/rust-ci-case --name foo_case`。
+2. **实现测试逻辑**：进入 `tests/ci/foo_case/`，在 `src/main.rs` 中填写测试代码，复用 `test-utils` 提供的能力并保证输出 `PASS/FAIL`。
+3. **编译用例**：返回仓库根目录运行 `tests/ci/run_rust_cases.sh`，脚本会自动编译所有 Rust 用例并将二进制文件收集到 `build/ci-binaries/` 目录。
+
+### cargo-generate 示例
+
+```bash
+cargo install cargo-generate
+cd tests/ci
+cargo generate --path ../templates/rust-ci-case --name test_new_feature
+```
+
+生成的 `tests/ci/test_new_feature/` 会自动包含对 `test-utils` 的依赖及共享 `.cargo/config.toml`，只需在 `src/main.rs` 中补全测试逻辑即可。
+
+编译后的所有测试二进制文件会统一输出到 `build/ci-binaries/` 目录，便于后续通过统一的测试管理程序进行调度和执行。
 
 ## CI 流程
 

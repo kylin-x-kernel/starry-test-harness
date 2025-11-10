@@ -1,14 +1,14 @@
 use test_utils::{append_bytes, cleanup_file, read_bytes, temp_file, write_bytes};
 
 fn main() {
-    if let Err(err) = run_file_io_basic() {
+    if let Err(err) = run() {
         eprintln!("FAIL: file-io-basic -> {err}");
         std::process::exit(1);
     }
     println!("PASS: file-io-basic");
 }
 
-fn run_file_io_basic() -> Result<(), String> {
+fn run() -> Result<(), String> {
     let file_path = temp_file("starry-file-io", true).map_err(to_string)?;
 
     let initial_payload = b"starry file io smoke test";
