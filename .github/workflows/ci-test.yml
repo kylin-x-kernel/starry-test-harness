@@ -45,3 +45,20 @@ jobs:
 
       - name: 执行 ci-test
         run: make ci-test run
+
+      - name: Dump suite logs
+        if: always()
+        run: |
+          if [ -d logs/ci ]; then
+            find logs/ci -name 'suite.log' -print -exec sh -c 'echo "::group::{}"; cat "$1"; echo "::endgroup::"' _ {} \;
+          else
+            echo "logs/ci not found"
+          fi
+
+      - name: Upload suite artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-logs-${{ github.run_id }}
+          path: logs/ci
+          if-no-files-found: warn
