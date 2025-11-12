@@ -23,7 +23,9 @@
 │   │   ├── run_case.sh      # Stress 用例: 统一运行器脚本
 │   │   └── cases/           # Stress 用例: 各测试源码 (每个都是独立 Crate)
 │   └── daily/
-│       └── suite.toml + cases/
+│       ├── suite.toml       # Daily 套件: 用例清单
+│       ├── run_case.sh      # Daily 用例: 统一运行器脚本
+│       └── cases/           # Daily 用例: 各测试源码 (每个都是独立 Crate)
 ├── logs/                    # 本地运行日志
 └── .github/workflows/ci-test.yml
 ```
@@ -39,14 +41,11 @@
     *   编译 StarryOS 内核 (`.bin` 文件)。
     *   下载 `rootfs` 模板镜像 (如果本地没有)。
 3.  **用例迭代执行**: Harness 解析对应 `tests/<suite-name>/suite.toml` 文件，并依次执行其中定义的每个测试用例。
-4.  **动态镜像生成与测试**: 对于每个用例，`run_case.sh` 脚本会：
-    *   编译当前用例的 Rust 代码，生成一个测试二进制文件。
-    *   从 `rootfs` 模板**复制一个全新的、临时的磁盘镜像**。
-    *   使用 `debugfs` 将测试二进制文件**注入**到这个临时镜像中。
-    *   启动 QEMU，并加载这个包含测试程序的镜像来执行测试。
-5.  **结果解析与报告**:
-    *   用例在虚拟机中运行结束后，必须在标准输出打印一个包含 `status: "pass"` 或 `status: "fail"` 的 JSON 对象。
-    *   框架会自动捕获并解析这个 JSON，判断用例是否成功，并记录详细日志。
+4.  **动态镜像生成与测试**:
+    *   **CI 套件**: `run_case.sh` 会交叉编译 Rust 测试二进制，复制一个全新的临时磁盘镜像，使用 `debugfs` 注入测试二进制，然后启动 QEMU 在虚拟机内执行。Rust 测试框架的退出码直接决定 PASS/FAIL。
+    *   **Stress/Daily 套件**: 类似流程，但测试程序必须在标准输出打印包含 `status: "pass"` 或 `status: "fail"` 的 JSON 对象，框架会捕获并解析该 JSON 来判断成功或失败。
+5.  **结果汇总与日志**:
+    *   所有用例执行完毕后，框架会生成汇总报告和详细日志，存放在 `logs/<suite-name>/<timestamp>/` 目录中。
 
 这个流程确保了每次测试都在一个**干净、隔离**的环境中进行，避免了用例间的相互干扰。
 

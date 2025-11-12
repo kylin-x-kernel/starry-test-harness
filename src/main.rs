@@ -178,8 +178,7 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         .clone()
         .unwrap_or_else(|| suite.display_name().to_string());
 
-    writeln!(
-        run_log,
+    let suite_header = format!(
         "[suite] {} ({}) - {}",
         suite_label,
         manifest.arch.as_deref().unwrap_or("unknown arch"),
@@ -187,7 +186,9 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
             .description
             .as_deref()
             .unwrap_or("no description provided")
-    )?;
+    );
+    writeln!(run_log, "{}", suite_header)?;
+    println!("{}", suite_header);
 
     maybe_run_build(&manifest, suite, workspace, &mut run_log)?;
 
@@ -201,14 +202,17 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         let case_log_path = case_logs_root.join(format!("{case_slug}.log"));
         let case_artifact_dir = artifacts_root.join(&case_slug);
         fs::create_dir_all(&case_artifact_dir)?;
-        writeln!(
-            run_log,
+        let case_start_msg = format!(
             "[case] starting {} -> {}",
             case.name,
             rel_path(&case_log_path, workspace).display()
-        )?;
+        );
+        writeln!(run_log, "{}", case_start_msg)?;
+        println!("{}", case_start_msg);
         if let Some(desc) = &case.description {
-            writeln!(run_log, "        {}", desc)?;
+            let desc_msg = format!("        {}", desc);
+            writeln!(run_log, "{}", desc_msg)?;
+            println!("{}", desc_msg);
         }
         let outcome = run_case(
             case,
@@ -222,11 +226,12 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         )?;
 
         let status_str = outcome.status.as_str();
-        writeln!(
-            run_log,
+        let case_finish_msg = format!(
             "[case] {} finished in {} ms (exit {:?})",
             case.name, outcome.duration_ms, outcome.exit_code
-        )?;
+        );
+        writeln!(run_log, "{}", case_finish_msg)?;
+        println!("{}", case_finish_msg);
 
         match outcome.status {
             CaseStatus::Passed => passed += 1,
@@ -398,20 +403,22 @@ fn maybe_run_build(
         .unwrap_or("scripts/build_stub.sh");
     let script_path = workspace.join(script);
     if !script_path.exists() {
-        writeln!(
-            log,
+        let skip_msg = format!(
             "[build] skipped build step because {} does not exist",
             script_path.display()
-        )?;
+        );
+        writeln!(log, "{}", skip_msg)?;
+        println!("{}", skip_msg);
         return Ok(());
     }
 
-    writeln!(
-        log,
+    let build_start_msg = format!(
         "[build] executing {} for {}",
         script_path.display(),
         suite.display_name()
-    )?;
+    );
+    writeln!(log, "{}", build_start_msg)?;
+    println!("{}", build_start_msg);
     let output = Command::new(&script_path)
         .arg(suite.dir_name())
         .current_dir(workspace)
@@ -419,6 +426,8 @@ fn maybe_run_build(
         .with_context(|| format!("failed to run build script {}", script_path.display()))?;
     log.write_all(&output.stdout)?;
     log.write_all(&output.stderr)?;
+    print!("{}", String::from_utf8_lossy(&output.stdout));
+    eprint!("{}", String::from_utf8_lossy(&output.stderr));
     Ok(())
 }
 
