@@ -138,3 +138,4 @@
 - `STARRYOS_ROOT`: StarryOS 本地克隆路径。
 
 这些环境变量可以在 workflow 文件中修改，以适配不同的测试目标。
+下一步
