@@ -1,6 +1,6 @@
 use std::{
     fs::{self, File},
-    io::Write,
+    io::{Write, IsTerminal},
     path::{Path, PathBuf},
     process::Command,
     time::Instant,
@@ -259,20 +259,28 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
             CaseStatus::SoftFailed => (format!("⚠ SOFT FAIL").bright_yellow(), |s| s.bright_yellow()),
         };
 
-        // Move cursor up to the start of the test case box and redraw with result color
-        // Number of lines to move up: 1 (└─ line) + 1 (Log line) + desc_line_count + 1 (header)
-        let lines_to_move = 3 + desc_line_count;
-        for _ in 0..lines_to_move {
-            print!("\x1b[1A\x1b[2K");  // Move up and clear line
-        }
+        // Check if stdout is a TTY (interactive terminal)
+        let is_tty = std::io::stdout().is_terminal();
 
-        // Redraw the entire box with the result color
-        println!("{}", box_color(case_header.into()));
-        if let Some(desc) = &case.description {
-            println!("{} {}", box_color("│ ".into()), desc.bright_white());
+        if is_tty {
+            // Move cursor up to the start of the test case box and redraw with result color
+            // Number of lines to move up: 1 (└─ line) + 1 (Log line) + desc_line_count + 1 (header)
+            let lines_to_move = 3 + desc_line_count;
+            for _ in 0..lines_to_move {
+                print!("\x1b[1A\x1b[2K");  // Move up and clear line
+            }
+
+            // Redraw the entire box with the result color
+            println!("{}", box_color(case_header.into()));
+            if let Some(desc) = &case.description {
+                println!("{} {}", box_color("│ ".into()), desc.bright_white());
+            }
+            println!("{} {}: {}", box_color("│ ".into()), "Log".bright_cyan(), rel_path(&case_log_path, workspace).display().to_string().dimmed());
+            println!("{} {} {}", box_color("└─".into()), status_colored, format!("(completed in {:.2}s)", duration_sec).dimmed());
+        } else {
+            // Non-TTY (like GitHub Actions): just print the result line
+            println!("{} {}", status_colored, format!("(completed in {:.2}s)", duration_sec).dimmed());
         }
-        println!("{} {}: {}", box_color("│ ".into()), "Log".bright_cyan(), rel_path(&case_log_path, workspace).display().to_string().dimmed());
-        println!("{} {} {}", box_color("└─".into()), status_colored, format!("(completed in {:.2}s)", duration_sec).dimmed());
 
         match outcome.status {
             CaseStatus::Passed => passed += 1,
