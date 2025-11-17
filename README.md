@@ -30,7 +30,7 @@
 └── .github/workflows/ci-test.yml
 ```
 
-## 运行流程
+## 运行流程 / 快速开始
 
 当执行 `make <suite-name> run` (例如 `make stress-test run`) 时，框架会自动执行以下步骤：
 
@@ -48,6 +48,13 @@
     *   所有用例执行完毕后，框架会生成汇总报告和详细日志，存放在 `logs/<suite-name>/<timestamp>/` 目录中。
 
 这个流程确保了每次测试都在一个**干净、隔离**的环境中进行，避免了用例间的相互干扰。
+
+### 只跑指定用例（CASES 过滤）
+- 环境变量 `CASES` 支持用例过滤，值用逗号或空格分隔，匹配的是 `suite.toml` 里的 `[[cases]].name`，**不是**二进制或目录名。
+  - 示例：` make stress-test run CASES=cpu-saturator-demo`
+  - 多个：` make stress-test run CASES="ptrace-smoke cpu-saturator-demo" `
+- 名称会经过 slug 化（大小写忽略，非字母数字转 `-`），`ptrace-smoke` 与 `ptrace smoke` 等价。
+- 不设 `CASES` 时默认运行 suite 中定义的全部用例。
 
 ## 如何添加测试用例
 
