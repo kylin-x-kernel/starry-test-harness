@@ -1,0 +1,7 @@
+[target.aarch64-unknown-linux-musl]
+linker = "aarch64-linux-musl-gcc"
+ar = "aarch64-linux-musl-ar"
+rustflags = [
+  "-C", "link-arg=-static",
+  "-C", "link-arg=-static-libgcc",
+]
