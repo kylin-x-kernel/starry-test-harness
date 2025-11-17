@@ -7,23 +7,17 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
-  cancel-in-progress: true
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     env:
       ARCH: aarch64
-      STARRYOS_REMOTE: https://github.com/yeanwang666/StarryOS.git
+      STARRYOS_REMOTE: https://github.com/Starry-OS/StarryOS.git
       STARRYOS_REF: main
       STARRYOS_ROOT: ${{ github.workspace }}/.cache/StarryOS
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Rust nightly
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: rustfmt
 
       - uses: Swatinem/rust-cache@v2
         with:

@@ -1,6 +1,6 @@
 use std::{
     fs::{self, File},
-    io::Write,
+    io::{Write, IsTerminal},
     path::{Path, PathBuf},
     process::Command,
     time::Instant,
@@ -10,6 +10,7 @@ use anyhow::{Context, Result, bail};
 use chrono::{DateTime, Local};
 use clap::{Parser, ValueEnum};
 use serde::{Deserialize, Serialize};
+use colored::Colorize;
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
@@ -178,8 +179,7 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         .clone()
         .unwrap_or_else(|| suite.display_name().to_string());
 
-    writeln!(
-        run_log,
+    let suite_header = format!(
         "[suite] {} ({}) - {}",
         suite_label,
         manifest.arch.as_deref().unwrap_or("unknown arch"),
@@ -187,7 +187,18 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
             .description
             .as_deref()
             .unwrap_or("no description provided")
-    )?;
+    );
+    writeln!(run_log, "{}", suite_header)?;
+
+    println!();
+    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!("{}", format!("  {} Test Suite", suite_label).bright_white().bold());
+    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!("  {}: {}", "Architecture".bright_cyan(), manifest.arch.as_deref().unwrap_or("unknown"));
+    println!("  {}: {}", "Description".bright_cyan(), manifest.description.as_deref().unwrap_or("no description"));
+    println!("  {}: {}", "Test Cases".bright_cyan(), manifest.cases.len());
+    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!();
 
     maybe_run_build(&manifest, suite, workspace, &mut run_log)?;
 
@@ -196,20 +207,33 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
     let mut failed = 0usize;
     let mut soft_failed = 0usize;
 
-    for case in &manifest.cases {
+    for (idx, case) in manifest.cases.iter().enumerate() {
         let case_slug = sanitize_case_name(&case.name);
         let case_log_path = case_logs_root.join(format!("{case_slug}.log"));
         let case_artifact_dir = artifacts_root.join(&case_slug);
         fs::create_dir_all(&case_artifact_dir)?;
-        writeln!(
-            run_log,
+
+        println!();
+        let case_header = format!("┌─ Test Case [{}/{}]: {}", idx + 1, manifest.cases.len(), case.name);
+        println!("{}", case_header.bright_yellow());
+
+        let desc_line_count = if case.description.is_some() { 1 } else { 0 };
+        if let Some(desc) = &case.description {
+            println!("{} {}", "│ ".bright_yellow(), desc.bright_white());
+        }
+        println!("{} {}: {}", "│ ".bright_yellow(), "Log".bright_cyan(), rel_path(&case_log_path, workspace).display().to_string().dimmed());
+        println!("{} {}", "└─".bright_yellow(), "Running...".bright_yellow());
+
+        let case_start_msg = format!(
             "[case] starting {} -> {}",
             case.name,
             rel_path(&case_log_path, workspace).display()
-        )?;
+        );
+        writeln!(run_log, "{}", case_start_msg)?;
         if let Some(desc) = &case.description {
             writeln!(run_log, "        {}", desc)?;
         }
+
         let outcome = run_case(
             case,
             workspace,
@@ -222,11 +246,41 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         )?;
 
         let status_str = outcome.status.as_str();
-        writeln!(
-            run_log,
+        let case_finish_msg = format!(
             "[case] {} finished in {} ms (exit {:?})",
             case.name, outcome.duration_ms, outcome.exit_code
-        )?;
+        );
+        writeln!(run_log, "{}", case_finish_msg)?;
+
+        let duration_sec = outcome.duration_ms as f64 / 1000.0;
+        let (status_colored, box_color): (colored::ColoredString, fn(colored::ColoredString) -> colored::ColoredString) = match outcome.status {
+            CaseStatus::Passed => (format!("✓ PASSED").bright_green(), |s| s.bright_green()),
+            CaseStatus::Failed => (format!("✗ FAILED").bright_red(), |s| s.bright_red()),
+            CaseStatus::SoftFailed => (format!("⚠ SOFT FAIL").bright_yellow(), |s| s.bright_yellow()),
+        };
+
+        // Check if stdout is a TTY (interactive terminal)
+        let is_tty = std::io::stdout().is_terminal();
+
+        if is_tty {
+            // Move cursor up to the start of the test case box and redraw with result color
+            // Number of lines to move up: 1 (└─ line) + 1 (Log line) + desc_line_count + 1 (header)
+            let lines_to_move = 3 + desc_line_count;
+            for _ in 0..lines_to_move {
+                print!("\x1b[1A\x1b[2K");  // Move up and clear line
+            }
+
+            // Redraw the entire box with the result color
+            println!("{}", box_color(case_header.into()));
+            if let Some(desc) = &case.description {
+                println!("{} {}", box_color("│ ".into()), desc.bright_white());
+            }
+            println!("{} {}: {}", box_color("│ ".into()), "Log".bright_cyan(), rel_path(&case_log_path, workspace).display().to_string().dimmed());
+            println!("{} {} {}", box_color("└─".into()), status_colored, format!("(completed in {:.2}s)", duration_sec).dimmed());
+        } else {
+            // Non-TTY (like GitHub Actions): just print the result line
+            println!("{} {}", status_colored, format!("(completed in {:.2}s)", duration_sec).dimmed());
+        }
 
         match outcome.status {
             CaseStatus::Passed => passed += 1,
@@ -280,14 +334,25 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
     let summary_path = logs_root.join("last_run.json");
     fs::write(&summary_path, serde_json::to_string_pretty(&summary)?)?;
 
-    println!(
-        "{} completed: {}/{} passed ({} soft failures). Log: {}",
-        suite.display_name(),
-        passed,
-        summary.total,
-        soft_failed,
-        summary.log_file.display()
-    );
+    let total_duration = end.signed_duration_since(start);
+    let duration_secs = total_duration.num_milliseconds() as f64 / 1000.0;
+
+    println!();
+    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!("{}", "  Test Suite Summary".bright_white().bold());
+    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!("  {}: {} tests", "Total".bright_cyan(), summary.total);
+    println!("  {}: {}", "Passed".bright_green(), passed.to_string().bright_green().bold());
+    if failed > 0 {
+        println!("  {}: {}", "Failed".bright_red(), failed.to_string().bright_red().bold());
+    }
+    if soft_failed > 0 {
+        println!("  {}: {}", "Soft Fail".bright_yellow(), soft_failed.to_string().bright_yellow().bold());
+    }
+    println!("  {}: {:.2}s", "Duration".bright_cyan(), duration_secs);
+    println!("  {}: {}", "Log".bright_cyan(), summary.log_file.display().to_string().dimmed());
+    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!();
 
     if failed > 0 {
         bail!(
@@ -398,20 +463,22 @@ fn maybe_run_build(
         .unwrap_or("scripts/build_stub.sh");
     let script_path = workspace.join(script);
     if !script_path.exists() {
-        writeln!(
-            log,
+        let skip_msg = format!(
             "[build] skipped build step because {} does not exist",
             script_path.display()
-        )?;
+        );
+        writeln!(log, "{}", skip_msg)?;
+        println!("{}", skip_msg);
         return Ok(());
     }
 
-    writeln!(
-        log,
+    let build_start_msg = format!(
         "[build] executing {} for {}",
         script_path.display(),
         suite.display_name()
-    )?;
+    );
+    writeln!(log, "{}", build_start_msg)?;
+    println!("{}", build_start_msg);
     let output = Command::new(&script_path)
         .arg(suite.dir_name())
         .current_dir(workspace)
@@ -419,6 +486,8 @@ fn maybe_run_build(
         .with_context(|| format!("failed to run build script {}", script_path.display()))?;
     log.write_all(&output.stdout)?;
     log.write_all(&output.stderr)?;
+    print!("{}", String::from_utf8_lossy(&output.stdout));
+    eprint!("{}", String::from_utf8_lossy(&output.stderr));
     Ok(())
 }
 

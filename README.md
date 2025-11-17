@@ -23,7 +23,9 @@
 │   │   ├── run_case.sh      # Stress 用例: 统一运行器脚本
 │   │   └── cases/           # Stress 用例: 各测试源码 (每个都是独立 Crate)
 │   └── daily/
-│       └── suite.toml + cases/
+│       ├── suite.toml       # Daily 套件: 用例清单
+│       ├── run_case.sh      # Daily 用例: 统一运行器脚本
+│       └── cases/           # Daily 用例: 各测试源码 (每个都是独立 Crate)
 ├── logs/                    # 本地运行日志
 └── .github/workflows/ci-test.yml
 ```
@@ -39,14 +41,11 @@
     *   编译 StarryOS 内核 (`.bin` 文件)。
     *   下载 `rootfs` 模板镜像 (如果本地没有)。
 3.  **用例迭代执行**: Harness 解析对应 `tests/<suite-name>/suite.toml` 文件，并依次执行其中定义的每个测试用例。
-4.  **动态镜像生成与测试**: 对于每个用例，`run_case.sh` 脚本会：
-    *   编译当前用例的 Rust 代码，生成一个测试二进制文件。
-    *   从 `rootfs` 模板**复制一个全新的、临时的磁盘镜像**。
-    *   使用 `debugfs` 将测试二进制文件**注入**到这个临时镜像中。
-    *   启动 QEMU，并加载这个包含测试程序的镜像来执行测试。
-5.  **结果解析与报告**:
-    *   用例在虚拟机中运行结束后，必须在标准输出打印一个包含 `status: "pass"` 或 `status: "fail"` 的 JSON 对象。
-    *   框架会自动捕获并解析这个 JSON，判断用例是否成功，并记录详细日志。
+4.  **动态镜像生成与测试**:
+    *   **CI 套件**: `run_case.sh` 会交叉编译 Rust 测试二进制，复制一个全新的临时磁盘镜像，使用 `debugfs` 注入测试二进制，然后启动 QEMU 在虚拟机内执行。Rust 测试框架的退出码直接决定 PASS/FAIL。
+    *   **Stress/Daily 套件**: 类似流程，但测试程序必须在标准输出打印包含 `status: "pass"` 或 `status: "fail"` 的 JSON 对象，框架会捕获并解析该 JSON 来判断成功或失败。
+5.  **结果汇总与日志**:
+    *   所有用例执行完毕后，框架会生成汇总报告和详细日志，存放在 `logs/<suite-name>/<timestamp>/` 目录中。
 
 这个流程确保了每次测试都在一个**干净、隔离**的环境中进行，避免了用例间的相互干扰。
 
@@ -102,14 +101,14 @@
     执行 `templates/add_ci_case.sh` 脚本可以快速生成一个测试用例模板。
 
     ```bash
-    # 用法: ./templates/add_ci_case.sh <binary_name>
+    # 用法: ./templates/add_ci_case.sh <case_name>
     ./templates/add_ci_case.sh my_ci_test
     ```
-    该命令会在 `tests/ci/cases/src/bin/` 目录下创建一个 `my_ci_test.rs` 文件，并提示下一步需要做的修改。
+    该命令会在 `tests/ci/cases/tests/` 目录下创建一个 `my_ci_test.rs` 文件，并提示下一步需要做的修改。
 
 2.  **实现测试逻辑**:
-    打开新生成的 `my_ci_test.rs` 文件，在 `run()` 函数中编写你的测试代码。
-    > **注意**: CI 用例的模板与 stress/daily 不同，它不要求输出 JSON。成功时返回 `Ok(())`，失败时返回 `Err("原因".into())` 即可。框架会自动处理日志和状态。
+    打开新生成的 `my_ci_test.rs` 文件，使用 `#[test]` 函数编写断言。
+    > **注意**: CI 用例完全依赖 Rust 原生测试框架，断言失败会自动标记为失败，无需手动打印 `PASS/FAIL`。
 
 3.  **在 `suite.toml` 中注册**:
     根据上一步脚本的提示，打开 `tests/ci/suite.toml` 并添加对应的 `[[cases]]` 条目。
@@ -118,8 +117,28 @@
     [[cases]]
     name = "my-ci-test"
     path = "tests/ci/run_case.sh" # 固定指向 CI 的运行器
-    args = ["my_ci_test"]               # args[0] 是你的文件名 (不含 .rs)
+    args = ["my_ci_test"]               # args[0] 是你的测试文件名 (不含 .rs)
     ```
+
+    harness 会自动把交叉编译好的测试二进制写入 StarryOS 镜像，并在虚拟机内执行该程序；Rust 测试框架返回的退出码会直接作为 PASS/FAIL。
+
+## 超时配置
+
+测试用例在虚拟机内的执行时间受 `suite.toml` 中的 `timeout_secs` 控制：
+
+- **全局默认超时**：`default_timeout_secs`（CI 套件当前为 300 秒）。
+- **单个用例超时**：在 `[[cases]]` 中设置 `timeout_secs = <秒数>` 可覆盖默认值。
+
+示例：
+```toml
+[[cases]]
+name = "long-running-test"
+path = "tests/ci/run_case.sh"
+args = ["my_test"]
+timeout_secs = 1200  # 单独为这个用例设置 20 分钟超时
+```
+
+如果测试用例运行时间较长被提前终止，请根据实际需要调整对应的 `timeout_secs` 或 `default_timeout_secs`。
 
 ## 依赖与环境
 
@@ -133,7 +152,7 @@
 
 `.github/workflows/ci-test.yml` 已经配置好所有依赖的安装和缓存，并会自动执行 `make ci-test run`。
 
-- `STARRYOS_REMOTE`: StarryOS 仓库地址。
+- `STARRYOS_REMOTE`: StarryOS 仓库地址（默认：https://github.com/kylin-x-kernel/StarryOS.git）。
 - `STARRYOS_REF`: StarryOS 分支/标签。
 - `STARRYOS_ROOT`: StarryOS 本地克隆路径。
 
