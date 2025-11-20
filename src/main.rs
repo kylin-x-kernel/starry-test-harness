@@ -606,17 +606,33 @@ fn extract_failed_subtests(stdout: &[u8]) -> Option<Vec<FailedSubCaseDetail>> {
 
     let mut sections: HashMap<String, Vec<String>> = HashMap::new();
     let mut current_name: Option<String> = None;
+    let mut failed_names = HashSet::new();
+    let mut in_failures_block = false;
+
     for line in content.lines() {
+        // Parse failure details sections
         if let Some(caps) = section_pattern.captures(line) {
             let name = caps[1].to_string();
             current_name = Some(name.clone());
             sections.entry(name).or_default();
             continue;
         }
-        if line.starts_with("failures:") {
+        
+        // Parse "failures:" block
+        if line.trim() == "failures:" {
+            in_failures_block = true;
             current_name = None;
             continue;
         }
+        if in_failures_block {
+            if line.trim().is_empty() || line.starts_with("test result:") {
+                in_failures_block = false;
+            } else {
+                failed_names.insert(line.trim().to_string());
+            }
+            continue;
+        }
+
         if let Some(name) = current_name.as_ref() {
             if let Some(body) = sections.get_mut(name) {
                 body.push(line.to_string());
@@ -624,19 +640,22 @@ fn extract_failed_subtests(stdout: &[u8]) -> Option<Vec<FailedSubCaseDetail>> {
         }
     }
 
-    let mut failures = Vec::new();
-    let mut seen = HashSet::new();
+    // Also capture "test ... FAILED" lines as a backup
     for caps in fail_pattern.captures_iter(&content) {
-        let name = caps[1].to_string();
-        if !seen.insert(name.clone()) {
-            continue;
-        }
+        failed_names.insert(caps[1].to_string());
+    }
+
+    let mut failures = Vec::new();
+    for name in failed_names {
         let summary = sections
             .get(&name)
             .map(|body| summarize_failure_body(body))
             .unwrap_or_else(|| "see log for details".to_string());
         failures.push(FailedSubCaseDetail { name, summary });
     }
+
+    // Sort for consistent output
+    failures.sort_by(|a, b| a.name.cmp(&b.name));
 
     if failures.is_empty() {
         None
@@ -663,26 +682,38 @@ fn format_failed_subtest_lines(details: &[FailedSubCaseDetail]) -> Vec<String> {
 }
 
 fn summarize_failure_body(lines: &[String]) -> String {
-    let mut fallback = String::new();
+    let mut location = String::new();
+    let mut message = String::new();
+
     for raw in lines {
         let trimmed = raw.trim();
         if trimmed.is_empty() {
             continue;
         }
-        if fallback.is_empty() {
-            fallback = trimmed.to_string();
+
+        if trimmed.starts_with("thread '") && trimmed.contains("panicked at") {
+            if let Some(idx) = trimmed.find("panicked at ") {
+                location = trimmed[idx + 12..].trim_end_matches(':').to_string();
+            }
         }
+
         let is_meta = trimmed.starts_with("thread '")
             || trimmed.starts_with("note:")
             || trimmed.starts_with("stack backtrace:")
             || trimmed.starts_with("Backtrace:");
-        if !is_meta {
-            return trimmed.to_string();
+
+        if !is_meta && message.is_empty() {
+            message = trimmed.to_string();
         }
     }
-    if fallback.is_empty() {
-        "see log for details".into()
+
+    if message.is_empty() {
+        message = "see log for details".to_string();
+    }
+
+    if !location.is_empty() {
+        format!("{} ({})", message, location)
     } else {
-        fallback
+        message
     }
 }

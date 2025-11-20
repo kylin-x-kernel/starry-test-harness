@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import codecs
 import json
 import os
 import re
@@ -126,6 +127,7 @@ def run(args):
                 prompt_seen = False
                 command_sent = False
                 command_start = None
+                decoder = codecs.getincrementaldecoder("utf-8")(errors="replace")
 
                 while True:
                     try:
@@ -141,7 +143,7 @@ def run(args):
                     if not data:
                         break
 
-                    chunk = data.decode("utf-8", errors="ignore")
+                    chunk = decoder.decode(data, final=False)
                     if command:
                         sys.stderr.write(chunk)
                     else:
