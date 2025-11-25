@@ -23,6 +23,9 @@
 │   │   ├── run_starry_boot.sh # 用例: 启动验证脚本
 │   │   ├── run_case.sh        # 迭代用例运行器
 │   │   └── cases/             # 迭代用例源码/脚本
+│   ├── board/               # 【新增】板级测试套件
+│   │   ├── suite.toml       # 板级测试: 用例清单
+│   │   └── run_board_test.sh # 板级测试运行器
 │   ├── stress/
 │   │   ├── suite.toml       # Stress 套件: 用例清单
 │   │   ├── run_case.sh      # Stress 用例: 统一运行器脚本
@@ -168,6 +171,77 @@ timeout_secs = 1200  # 单独为这个用例设置 20 分钟超时
 - `debugfs` (通常包含在 `e2fsprogs` 包中)
 - `python3`
 
+## 板级测试 (Board Test) 【新增】
+
+为了支持真实硬件板的基本功能测试，新增了 **board-test** 套件，可以在 QEMU 和真实硬件板上运行标准化的板级测试。
+
+### 板级测试特性
+
+- **多平台支持**: 统一测试框架支持 QEMU 虚拟机和真实硬件板
+- **参数化配置**: 支持 ARCH / BOARD / PROFILE 三维参数
+- **自动化测试**: 镜像内置 `starry-board-test` 脚本自动执行测试
+- **可扩展**: 易于添加新硬件板和测试用例
+
+### 运行板级测试
+
+```bash
+# QEMU 测试（自动化）
+./scripts/run_board_tests.sh \
+  --board qemu_virt \
+  --arch aarch64 \
+  --rootfs path/to/rootfs.img
+
+# 真实硬件板测试（需要串口）
+./scripts/run_board_tests.sh \
+  --board my_board \
+  --arch aarch64 \
+  --serial /dev/ttyUSB0 \
+  --rootfs path/to/rootfs.img
+```
+
+### RootFS 镜像构建
+
+板级测试需要专门的 rootfs 镜像，使用 `starry-rootfs-buildroot` 仓库构建：
+
+```bash
+cd ../starry-rootfs-buildroot
+
+# 构建 QEMU 测试镜像
+./scripts/build_rootfs.sh \
+  --arch aarch64 \
+  --board qemu_virt \
+  --profile test \
+  --version v0.1.0
+
+# 输出: output/images/rootfs-test-aarch64-qemu_virt-v0.1.0.img
+```
+
+### 测试内容
+
+板级测试包括：
+
+**通用测试**（所有平台）：
+- ✓ Kernel Boot Check - 内核启动检查
+- ✓ Memory Check - 内存基本功能
+- ✓ Filesystem Check - 文件系统读写
+- ✓ Basic Commands - 基本命令可用性
+
+**QEMU 特定测试**：
+- ✓ Serial Console - 串口设备
+- ✓ Block Device - 块设备
+
+**板级特定测试**（真实硬件）：
+- GPIO 测试
+- 网络连接测试
+- 存储设备测试
+- 板级外设测试
+
+### 添加新硬件板支持
+
+详见 `starry-rootfs-buildroot` 仓库的文档：
+- [添加新硬件板](../starry-rootfs-buildroot/docs/add-new-board.md)
+- [板级测试集成指南](../starry-rootfs-buildroot/docs/integration-guide.md)
+
 ## CI/CD
 
 `.github/workflows/ci-test.yml` 已经配置好所有依赖的安装和缓存，并会自动执行 `make ci-test run`。
@@ -177,3 +251,8 @@ timeout_secs = 1200  # 单独为这个用例设置 20 分钟超时
 - `STARRYOS_ROOT`: StarryOS 本地克隆路径。
 
 这些环境变量可以在 workflow 文件中修改，以适配不同的测试目标。
+
+## 相关项目
+
+- [starry-rootfs-buildroot](../starry-rootfs-buildroot/): RootFS 镜像构建系统
+- [StarryOS](../StarryOS/): Starry 操作系统内核

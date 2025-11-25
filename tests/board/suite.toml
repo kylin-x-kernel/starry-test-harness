@@ -1,0 +1,16 @@
+name = "board-basic"
+description = "板级基本功能测试套件 - 适用于所有平台（QEMU/真实硬件）"
+arch = "aarch64"
+default_timeout_secs = 300
+
+[[cases]]
+name = "board-boot-test"
+description = "板级启动和基本功能测试"
+path = "tests/board/run_board_test.sh"
+args = ["basic"]
+
+[[cases]]
+name = "board-hardware-check"
+description = "硬件资源检查"
+path = "tests/board/run_board_test.sh"
+args = ["hardware"]
