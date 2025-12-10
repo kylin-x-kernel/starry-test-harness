@@ -35,6 +35,20 @@ clone_or_update_repo() {
   log "  ref    : ${STARRYOS_COMMIT}"
   log "  path   : ${STARRYOS_ROOT}"
   log "----------------------------------------"
+  
+  # Skip git operations if STARRYOS_SKIP_GIT_OPS is set (e.g., in GitHub Actions)
+  if [[ "${STARRYOS_SKIP_GIT_OPS:-0}" == "1" ]]; then
+    log "Skipping git operations (STARRYOS_SKIP_GIT_OPS=1)"
+    if [[ ! -d "${STARRYOS_ROOT}/.git" ]]; then
+      log "ERROR: STARRYOS_ROOT does not exist but STARRYOS_SKIP_GIT_OPS is set"
+      exit 1
+    fi
+    REAL_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
+    log "  commit : ${REAL_COMMIT}"
+    log "----------------------------------------"
+    return 0
+  fi
+  
   if [[ ! -d "${STARRYOS_ROOT}/.git" ]]; then
     log "Cloning StarryOS from ${STARRYOS_REMOTE}"
     git clone --recursive "${STARRYOS_REMOTE}" "${STARRYOS_ROOT}"
