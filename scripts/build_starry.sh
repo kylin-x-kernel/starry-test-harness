@@ -7,8 +7,9 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SUITE=${1:-ci-test}
 ARCH=${ARCH:-aarch64}
 
-STARRYOS_REMOTE="${STARRYOS_REMOTE:-https://github.com/kylin-x-kernel/StarryOS.git}"
+STARRYOS_REMOTE="${STARRYOS_REMOTE:-https://github.com/yeanwang666/StarryOS.git}"
 STARRYOS_COMMIT="${STARRYOS_REF:-${STARRYOS_COMMIT:-main}}"
+STARRYOS_BRANCH="${STARRYOS_BRANCH:-local}"
 STARRYOS_ROOT=${STARRYOS_ROOT:-${REPO_ROOT}/.cache/StarryOS}
 STARRYOS_DEPTH=${STARRYOS_DEPTH:-0}
 ARTIFACT_DIR="${REPO_ROOT}/artifacts/${SUITE}"
@@ -27,6 +28,13 @@ log() {
 }
 
 clone_or_update_repo() {
+  log "----------------------------------------"
+  log "StarryOS Source Info"
+  log "  remote : ${STARRYOS_REMOTE}"
+  log "  branch : ${STARRYOS_BRANCH}"
+  log "  ref    : ${STARRYOS_COMMIT}"
+  log "  path   : ${STARRYOS_ROOT}"
+  log "----------------------------------------"
   if [[ ! -d "${STARRYOS_ROOT}/.git" ]]; then
     log "Cloning StarryOS from ${STARRYOS_REMOTE}"
     git clone --recursive "${STARRYOS_REMOTE}" "${STARRYOS_ROOT}"
@@ -34,9 +42,18 @@ clone_or_update_repo() {
     log "Updating existing StarryOS repo at ${STARRYOS_ROOT}"
     git -C "${STARRYOS_ROOT}" fetch origin --tags --prune
   fi
+  log "Checking out ref ${STARRYOS_COMMIT}"
   git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
   git -C "${STARRYOS_ROOT}" submodule sync --recursive
   git -C "${STARRYOS_ROOT}" submodule update --init --recursive
+
+  REAL_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
+  log "  commit : ${REAL_COMMIT}"
+  log "----------------------------------------"
+
+  local HEAD
+  HEAD=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
+  log "Resolved HEAD: ${HEAD}"
 }
 
 clone_or_update_repo
