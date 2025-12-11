@@ -30,30 +30,25 @@ log() {
 clone_or_update_repo() {
   log "----------------------------------------"
   log "StarryOS Source Info"
-  log "  remote : ${STARRYOS_REMOTE}"
-  log "  branch : ${STARRYOS_BRANCH}"
-  log "  ref    : ${STARRYOS_COMMIT}"
   log "  path   : ${STARRYOS_ROOT}"
-  log "----------------------------------------"
+  
   if [[ ! -d "${STARRYOS_ROOT}/.git" ]]; then
+    log "  remote : ${STARRYOS_REMOTE}"
+    log "  branch : ${STARRYOS_BRANCH}"
+    log "  ref    : ${STARRYOS_COMMIT}"
     log "Cloning StarryOS from ${STARRYOS_REMOTE}"
     git clone --recursive "${STARRYOS_REMOTE}" "${STARRYOS_ROOT}"
+    log "Checking out ref ${STARRYOS_COMMIT}"
+    git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
   else
-    log "Updating existing StarryOS repo at ${STARRYOS_ROOT}"
-    git -C "${STARRYOS_ROOT}" fetch origin --tags --prune
+    log "Using existing StarryOS repo (pre-checked out by CI or previous run)"
+    # 在 CI 环境中，代码已经被 actions/checkout 完整检出，无需 fetch/checkout
+    # 在本地环境中，如果目录已存在，也直接使用（避免切换可能导致的冲突）
   fi
-  log "Checking out ref ${STARRYOS_COMMIT}"
-  git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
-  git -C "${STARRYOS_ROOT}" submodule sync --recursive
-  git -C "${STARRYOS_ROOT}" submodule update --init --recursive
-
+  
   REAL_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
   log "  commit : ${REAL_COMMIT}"
   log "----------------------------------------"
-
-  local HEAD
-  HEAD=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
-  log "Resolved HEAD: ${HEAD}"
 }
 
 clone_or_update_repo
