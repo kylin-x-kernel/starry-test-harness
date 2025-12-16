@@ -43,7 +43,21 @@ clone_or_update_repo() {
   else
     log "Using existing StarryOS repo (pre-checked out by CI or previous run)"
     # 在 CI 环境中，代码已经被 actions/checkout 完整检出，无需 fetch/checkout
-    # 在本地环境中，如果目录已存在，也直接使用（避免切换可能导致的冲突）
+    # 在本地环境中，检查并更新到指定版本
+    if [[ -z "${CI:-}" && -z "${GITHUB_ACTIONS:-}" ]]; then
+      log "Local environment detected, syncing to ref ${STARRYOS_COMMIT}"
+      git -C "${STARRYOS_ROOT}" fetch --tags --prune origin
+      # 检查远程分支是否存在
+      if git -C "${STARRYOS_ROOT}" show-ref --verify "refs/remotes/origin/${STARRYOS_COMMIT}" >/dev/null 2>&1; then
+        git -C "${STARRYOS_ROOT}" checkout -B "${STARRYOS_COMMIT}" "origin/${STARRYOS_COMMIT}"
+      else
+        log "Error: remote branch origin/${STARRYOS_COMMIT} not found"
+        exit 1
+      fi
+      git -C "${STARRYOS_ROOT}" submodule update --init --recursive
+    else
+      log "CI environment detected, skipping fetch (using pre-checked out code)"
+    fi
   fi
   
   REAL_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
