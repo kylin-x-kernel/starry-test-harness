@@ -8,7 +8,7 @@ SUITE=${1:-ci-test}
 ARCH=${ARCH:-aarch64}
 
 STARRYOS_REMOTE="${STARRYOS_REMOTE:-https://github.com/kylin-x-kernel/StarryOS.git}"
-STARRYOS_COMMIT="${STARRYOS_REF:-${STARRYOS_COMMIT:-main}}"
+STARRYOS_COMMIT="${STARRYOS_REF:-${STARRYOS_COMMIT:-update_local}}"
 STARRYOS_BRANCH="${STARRYOS_BRANCH:-local}"
 STARRYOS_ROOT=${STARRYOS_ROOT:-${REPO_ROOT}/.cache/StarryOS}
 STARRYOS_DEPTH=${STARRYOS_DEPTH:-0}
@@ -42,17 +42,38 @@ clone_or_update_repo() {
     git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
   else
     log "Using existing StarryOS repo (pre-checked out by CI or previous run)"
+    
+    # 检查并修正 remote URL（防止本地缓存指向错误仓库）
+    CURRENT_REMOTE=$(git -C "${STARRYOS_ROOT}" remote get-url origin 2>/dev/null || echo "")
+    if [[ "${CURRENT_REMOTE}" != "${STARRYOS_REMOTE}" ]]; then
+      log "Warning: local remote is ${CURRENT_REMOTE}, expected ${STARRYOS_REMOTE}"
+      log "Updating remote URL to ${STARRYOS_REMOTE}"
+      git -C "${STARRYOS_ROOT}" remote set-url origin "${STARRYOS_REMOTE}"
+    fi
+    
     # 在 CI 环境中，代码已经被 actions/checkout 完整检出，无需 fetch/checkout
     # 在本地环境中，检查并更新到指定版本
     if [[ -z "${CI:-}" && -z "${GITHUB_ACTIONS:-}" ]]; then
       log "Local environment detected, syncing to ref ${STARRYOS_COMMIT}"
-      git -C "${STARRYOS_ROOT}" fetch --tags --prune origin
-      # 检查远程分支是否存在
-      if git -C "${STARRYOS_ROOT}" show-ref --verify "refs/remotes/origin/${STARRYOS_COMMIT}" >/dev/null 2>&1; then
+      
+      # 验证远程是否存在该分支
+      if git -C "${STARRYOS_ROOT}" ls-remote --heads origin "${STARRYOS_COMMIT}" | grep -q "${STARRYOS_COMMIT}"; then
+        log "Remote branch ${STARRYOS_COMMIT} found, fetching..."
+        git -C "${STARRYOS_ROOT}" fetch origin "${STARRYOS_COMMIT}"
         git -C "${STARRYOS_ROOT}" checkout -B "${STARRYOS_COMMIT}" "origin/${STARRYOS_COMMIT}"
+      elif git -C "${STARRYOS_ROOT}" ls-remote --tags origin "${STARRYOS_COMMIT}" | grep -q "${STARRYOS_COMMIT}"; then
+        log "Remote tag ${STARRYOS_COMMIT} found, fetching..."
+        git -C "${STARRYOS_ROOT}" fetch --tags origin
+        git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
       else
-        log "Error: remote branch origin/${STARRYOS_COMMIT} not found"
-        exit 1
+        log "Trying to checkout ${STARRYOS_COMMIT} as commit SHA..."
+        git -C "${STARRYOS_ROOT}" fetch origin
+        if ! git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"; then
+          log "Error: cannot find or checkout ${STARRYOS_COMMIT}"
+          log "Available remote branches:"
+          git -C "${STARRYOS_ROOT}" ls-remote --heads origin | head -10
+          exit 1
+        fi
       fi
       git -C "${STARRYOS_ROOT}" submodule update --init --recursive
     else
