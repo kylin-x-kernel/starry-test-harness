@@ -4,9 +4,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE="${STARRY_WORKSPACE_ROOT:-$(cd "${SCRIPT_DIR}/../../../.." && pwd)}"
 
-UNIXBENCH_RELEASE_URL="${UNIXBENCH_RELEASE_URL:-https://github.com/sunhaosheng/rootfs-unixbench/releases/download/20251120/rootfs-unixbench.img.xz}"
+UNIXBENCH_RELEASE_URL="${UNIXBENCH_RELEASE_URL:-https://github.com/sunhaosheng/rootfs-unixbench/releases/download/20251216/disk.img.xz}"
 UNIXBENCH_CACHE_DIR="${WORKSPACE}/.cache/unixbench"
-UNIXBENCH_CACHE_IMG="${UNIXBENCH_CACHE_DIR}/rootfs-unixbench.img"
+UNIXBENCH_CACHE_IMG="${UNIXBENCH_CACHE_DIR}/disk.img"
+
+# 从命令行参数接收要运行的测试用例
+UNIXBENCH_TESTS="$*"
 
 abspath() {
   local input=$1
@@ -30,8 +33,8 @@ download_unixbench_image() {
 
   local tmp_dir
   tmp_dir="$(mktemp -d)"
-  local archive="${tmp_dir}/rootfs-unixbench.img.xz"
-  local decompressed="${tmp_dir}/rootfs-unixbench.img"
+  local archive="${tmp_dir}/disk.img.xz"
+  local decompressed="${tmp_dir}/disk.img"
 
   if command -v curl >/dev/null 2>&1; then
     log "下载 UnixBench 镜像: ${url}"
@@ -177,43 +180,33 @@ fi
 # === 阶段 4.5: 注入运行脚本到镜像 ===
 
 log "注入 UnixBench 运行脚本到镜像"
-INJECT_SCRIPT=$(cat <<'INJECT_EOF'
+log "测试用例: ${UNIXBENCH_TESTS}"
+INJECT_SCRIPT=$(cat <<INJECT_EOF
 #!/bin/sh
 set -eu
 
 log() {
-  printf '%s\n' "[UB] $*"
+  printf '%s\n' "[UB] \$*"
 }
 
 log "switching to UnixBench directory"
 cd /root/UnixBench
 
 export UB_BINDIR=/root/UnixBench/pgms
-log "UB_BINDIR set to ${UB_BINDIR}"
+log "UB_BINDIR set to \${UB_BINDIR}"
 
 chmod +x Run
 chmod -R +x pgms
 
-log "launching UnixBench run"
-max_attempts=3
-attempt=1
-while :; do
-  log "launching UnixBench attempt ${attempt}/${max_attempts}"
-  if ./Run dhry2reg whetstone-double syscall pipe context1 spawn \
-        fstime-w fstime-r fstime fsbuffer-w fsbuffer-r fsbuffer \
-        fsdisk-w fsdisk-r fsdisk; then
-    log "Run completed successfully"
-    exit 0
-  fi
-  status=$?
-  if [ "${attempt}" -ge "${max_attempts}" ]; then
-    log "Run exited with status ${status} after ${attempt} attempts"
-    exit "${status}"
-  fi
-  attempt=$((attempt + 1))
-  log "retry ${attempt}/${max_attempts} in 5s (exit ${status})"
-  sleep 5
-done
+log "launching UnixBench run with tests: ${UNIXBENCH_TESTS}"
+if ./Run ${UNIXBENCH_TESTS}; then
+  log "Run completed successfully"
+  exit 0
+else
+  status=\$?
+  log "Run exited with status \${status}"
+  exit "\${status}"
+fi
 INJECT_EOF
 )
 
