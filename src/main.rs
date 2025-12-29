@@ -877,6 +877,24 @@ fn format_metrics_lines(metrics: &TestMetrics) -> Vec<String> {
 }
 
 fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> Option<String> {
+    let is_error_line = |line: &str| {
+        line.contains("Error:")
+            || line.contains("error:")
+            || line.contains("ERROR")
+            || line.contains("Can't")
+            || line.contains("failed")
+            || line.contains("FAILED")
+            || line.contains("Segmentation fault")
+            || line.contains("core dumped")
+            || line.contains("panic")
+            || line.contains("SIG")
+            || line.contains("exit code")
+            || line.contains("exited with status")
+            || line.contains("exit status")
+            || line.contains("terminated")
+            || line.starts_with("Run:")
+    };
+
     // Try to find error in stderr first
     let stderr_content = String::from_utf8_lossy(stderr);
     
@@ -885,22 +903,18 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
         let trimmed = line.trim();
         
         // Skip empty lines and debug/info messages
-        if trimmed.is_empty() 
-            || trimmed.starts_with('[')
-            || trimmed.starts_with("make[")
-            || trimmed.starts_with("qemu-system")
-            || trimmed.contains("terminating on signal") {
+        let is_error = is_error_line(trimmed);
+        if trimmed.is_empty()
+            || (!is_error
+                && (trimmed.starts_with('[')
+                    || trimmed.starts_with("make[")
+                    || trimmed.starts_with("qemu-system")
+                    || trimmed.contains("terminating on signal"))) {
             continue;
         }
         
         // Look for error indicators
-        if trimmed.contains("Error:") 
-            || trimmed.contains("error:")
-            || trimmed.contains("ERROR")
-            || trimmed.contains("Can't")
-            || trimmed.contains("failed")
-            || trimmed.contains("FAILED")
-            || trimmed.starts_with("Run:") {
+        if is_error {
             // Clean up ANSI codes
             let cleaned = regex::Regex::new(r"\x1b\[[0-9;]*[A-Za-z]")
                 .ok()?
@@ -921,19 +935,17 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
                 for line in content.lines().rev().take(30) {
                     let trimmed = line.trim();
                     
-                    if trimmed.is_empty() 
-                        || trimmed.starts_with('[')
-                        || trimmed.starts_with("make[")
-                        || trimmed.starts_with("qemu-system")
-                        || trimmed.contains("terminating on signal") {
+                    let is_error = is_error_line(trimmed);
+                    if trimmed.is_empty()
+                        || (!is_error
+                            && (trimmed.starts_with('[')
+                                || trimmed.starts_with("make[")
+                                || trimmed.starts_with("qemu-system")
+                                || trimmed.contains("terminating on signal"))) {
                         continue;
                     }
                     
-                    if trimmed.contains("Can't")
-                        || trimmed.contains("Error")
-                        || trimmed.contains("error")
-                        || trimmed.contains("failed")
-                        || trimmed.starts_with("Run:") {
+                    if is_error {
                         let cleaned = regex::Regex::new(r"\x1b\[[0-9;]*[A-Za-z]")
                             .ok()?
                             .replace_all(trimmed, "");
@@ -951,7 +963,7 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
     let stdout_content = String::from_utf8_lossy(stdout);
     for line in stdout_content.lines().rev().take(50) {
         let trimmed = line.trim();
-        if trimmed.contains("Error") || trimmed.contains("FAIL") {
+        if is_error_line(trimmed) || trimmed.contains("FAIL") {
             let cleaned = regex::Regex::new(r"\x1b\[[0-9;]*[A-Za-z]")
                 .ok()?
                 .replace_all(trimmed, "");

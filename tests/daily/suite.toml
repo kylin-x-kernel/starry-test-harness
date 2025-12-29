@@ -10,19 +10,96 @@ description = "Rust-based concurrency harness executed via orchestrator"
 path = "tests/daily/run_case.sh"
 args = ["concurrency_load", "8", "2000"]
 
+[[cases]]
+name = "unixbench-dhry2reg-test"
+description = "在 StarryOS 中运行 UnixBench dhry2reg 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["dhry2reg"]
+timeout_secs = 300
+
+[[cases]]
+name = "unixbench-whetstone-double-test"
+description = "在 StarryOS 中运行 UnixBench whetstone-double 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["whetstone-double"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-syscall-test"
+description = "在 StarryOS 中运行 UnixBench syscall 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["syscall"]
+timeout_secs = 300
+
+[[cases]]
+name = "unixbench-pipe-test"
+description = "在 StarryOS 中运行 UnixBench pipe 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["pipe"]
+timeout_secs = 300
+
+[[cases]]
+name = "unixbench-context1-test"
+description = "在 StarryOS 中运行 UnixBench context1 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["context1"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-spawn-test"
+description = "在 StarryOS 中运行 UnixBench spawn 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["spawn"]
+timeout_secs = 
+
+[[cases]]
+name = "unixbench-fstime-test"
+description = "在 StarryOS 中运行 UnixBench fstime 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["fstime", "fstime-r", "fstime-w"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-fsbuffer-test"
+description = "在 StarryOS 中运行 UnixBench fsbuffer 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["fsbuffer", "fsbuffer-r", "fsbuffer-w"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-fsdisk-test"
+description = "在 StarryOS 中运行 UnixBench fsdisk 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["fsdisk", "fsdisk-r", "fsdisk-w"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-execl-test"
+description = "在 StarryOS 中运行 UnixBench execl 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["execl"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-shell1-test"
+description = "在 StarryOS 中运行 UnixBench shell1 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["shell1"]
+timeout_secs = 1000
+
+[[cases]]
+name = "unixbench-shell8-test"
+description = "在 StarryOS 中运行 UnixBench shell8 测试"
+path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
+args = ["shell8"]
+timeout_secs = 1000
+
 # [[cases]]
 # name = "byte-unixbench"
 # description = "在 StarryOS 中运行 Byte UnixBench 6.0.0（所有测试用例）"
 # path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
 #args = ["dhry2reg", "whetstone-double", "syscall", "pipe", "context1", "spawn", "fstime-w", "fstime-r", "fstime", "fsbuffer-w", "fsbuffer-r", "fsbuffer", "fsdisk-w", "fsdisk-r", "fsdisk"]
 # timeout_secs = 3600
-
-[[cases]]
-name = "byte-unixbench-test"
-description = "在 StarryOS 中运行 Byte UnixBench 测试"
-path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
-args = ["dhry2reg"]
-timeout_secs = 1000
 
 # 示例：运行单个测试用例
 # [[cases]]

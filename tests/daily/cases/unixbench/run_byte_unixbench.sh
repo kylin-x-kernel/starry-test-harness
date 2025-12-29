@@ -148,6 +148,28 @@ fi
 
 log "使用预配置镜像: ${UNIXBENCH_TEMPLATE}"
 
+SUDO=""
+if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
+  if sudo -n true >/dev/null 2>&1; then
+    SUDO="sudo"
+  else
+    log "需要 sudo 权限以挂载镜像，正在请求一次授权"
+    if ! sudo -v; then
+      log "无法获取 sudo 权限"
+      exit 1
+    fi
+    SUDO="sudo"
+  fi
+fi
+
+run_sudo() {
+  if [[ -n "${SUDO}" ]]; then
+    sudo "$@"
+  else
+    "$@"
+  fi
+}
+
 # === 阶段 4: 准备可写磁盘镜像 ===
 
 CLEANUP_DISK=0
@@ -164,14 +186,14 @@ export DISK_IMG="${DISK_IMAGE}"
 log "复制预配置镜像 -> ${DISK_IMAGE}"
 mkdir -p "$(dirname "${DISK_IMAGE}")"
 if ! cp "${UNIXBENCH_TEMPLATE}" "${DISK_IMAGE}"; then
-  if ! sudo cp "${UNIXBENCH_TEMPLATE}" "${DISK_IMAGE}"; then
+  if ! run_sudo cp "${UNIXBENCH_TEMPLATE}" "${DISK_IMAGE}"; then
     log "无法复制预配置镜像"
     exit 1
   fi
 fi
 
 if ! chmod 666 "${DISK_IMAGE}"; then
-  if ! sudo chmod 666 "${DISK_IMAGE}"; then
+  if ! run_sudo chmod 666 "${DISK_IMAGE}"; then
     log "无法调整磁盘权限: ${DISK_IMAGE}"
     exit 1
   fi
@@ -215,7 +237,7 @@ CLEANUP_MOUNT=0
 trap_cleanup() {
   if (( CLEANUP_MOUNT )); then
     if mountpoint -q "${MOUNT_POINT}"; then
-      sudo umount "${MOUNT_POINT}" || true
+      run_sudo umount "${MOUNT_POINT}" || true
     fi
     rm -rf "${MOUNT_POINT}" || true
   fi
@@ -225,23 +247,23 @@ trap_cleanup() {
 }
 trap trap_cleanup EXIT
 
-if ! sudo mount -o loop "${DISK_IMAGE}" "${MOUNT_POINT}"; then
+if ! run_sudo mount -o loop "${DISK_IMAGE}" "${MOUNT_POINT}"; then
   log "无法挂载磁盘镜像"
   exit 1
 fi
 CLEANUP_MOUNT=1
 
-if ! sudo tee "${MOUNT_POINT}/root/run_unixbench.sh" >/dev/null <<<"${INJECT_SCRIPT}"; then
+if ! run_sudo tee "${MOUNT_POINT}/root/run_unixbench.sh" >/dev/null <<<"${INJECT_SCRIPT}"; then
   log "无法写入运行脚本"
   exit 1
 fi
 
-if ! sudo chmod +x "${MOUNT_POINT}/root/run_unixbench.sh"; then
+if ! run_sudo chmod +x "${MOUNT_POINT}/root/run_unixbench.sh"; then
   log "无法设置脚本可执行权限"
   exit 1
 fi
 
-sudo umount "${MOUNT_POINT}"
+run_sudo umount "${MOUNT_POINT}"
 CLEANUP_MOUNT=0
 rm -rf "${MOUNT_POINT}"
 
@@ -279,29 +301,31 @@ else
 fi
 : >"${VM_STDOUT}"
 : >"${VM_STDERR}"
+run_status=0
 if [[ -t 1 ]]; then
   if ! "${RUN_CMD[@]}" \
     2> >(tee "${VM_STDERR}" | tee /dev/tty >&2) | tee "${VM_STDOUT}" | tee /dev/tty
   then
-    status=$?
-    if [[ "${status}" -eq 124 && -n "${HOST_VM_TIMEOUT_SECS}" ]]; then
-      log "虚拟机执行超过 ${HOST_VM_TIMEOUT_SECS}s，被 timeout 终止"
-    else
-      log "虚拟机执行失败，详见 ${VM_STDERR}"
-    fi
-    tail -n 40 "${VM_STDERR}" >&2 2>/dev/null || true
-    exit 1
+    run_status=$?
   fi
 else
   if ! "${RUN_CMD[@]}" \
     2> >(tee "${VM_STDERR}" >&2) | tee "${VM_STDOUT}"
   then
-    status=$?
-    if [[ "${status}" -eq 124 && -n "${HOST_VM_TIMEOUT_SECS}" ]]; then
-      log "虚拟机执行超过 ${HOST_VM_TIMEOUT_SECS}s，被 timeout 终止"
-    else
-      log "虚拟机执行失败，详见 ${VM_STDERR}"
-    fi
+    run_status=$?
+  fi
+fi
+
+if [[ "${run_status}" -ne 0 ]]; then
+  if [[ "${run_status}" -eq 124 && -n "${HOST_VM_TIMEOUT_SECS}" ]]; then
+    log "虚拟机执行超过 ${HOST_VM_TIMEOUT_SECS}s，被 timeout 终止"
+    tail -n 40 "${VM_STDERR}" >&2 2>/dev/null || true
+    exit 1
+  fi
+  if grep -q "__EXIT:0__" "${VM_STDOUT}" "${VM_STDERR}" 2>/dev/null || grep -q "Run completed successfully" "${VM_STDOUT}" "${VM_STDERR}" 2>/dev/null; then
+    log "检测到 guest 正常退出，忽略 VM runner 非零退出码(${run_status})"
+  else
+    log "虚拟机执行失败，详见 ${VM_STDERR}"
     tail -n 40 "${VM_STDERR}" >&2 2>/dev/null || true
     exit 1
   fi
@@ -408,4 +432,3 @@ fi
 log "byte-unixbench 用例完成"
 log "guest stdout -> ${VM_STDOUT}"
 log "summary -> ${SUMMARY_FILE}"
-
