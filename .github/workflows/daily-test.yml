@@ -11,6 +11,10 @@ on:
         description: 'Git ref to test (branch/tag/SHA). Leave empty to use dev-daily.'
         required: false
         type: string
+      output_branch:
+        description: '输出结果的分支名称（默认：daily-test-results）'
+        required: false
+        default: 'daily-test-results'
 
 concurrency:
   # Avoid overlapping runs on the same ref/event.
@@ -19,6 +23,8 @@ concurrency:
 jobs:
   daily:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 需要写权限以推送到结果分支
     env:
       # Default test target for scheduled runs.
       TEST_REF: ${{ github.event.inputs.ref || 'dev-daily' }}
@@ -59,8 +65,9 @@ jobs:
         run: make daily-test run
 
       # Pick the most recent run directory for artifact naming.
-      - name: Prepare artifact name
+      - name: Prepare artifact name and timestamp
         if: always()
+        id: prepare
         run: |
           if [ -d logs/daily ]; then
             RUN_DIR="$(ls -1 logs/daily | grep -E '^[0-9]{8}-[0-9]{6}$' | sort | tail -n1)"
@@ -68,28 +75,57 @@ jobs:
             RUN_DIR=""
           fi
           echo "RUN_DIR=${RUN_DIR:-unknown}" >> "$GITHUB_ENV"
+          echo "run_dir=${RUN_DIR:-unknown}" >> "$GITHUB_OUTPUT"
+          echo "timestamp=$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
 
-      # Build a short summary table in the GitHub Actions job summary.
-      - name: Generate summary table
+      # Generate detailed test report in Markdown format
+      - name: Generate test report
         if: always()
         run: |
+          mkdir -p test-report
           python3 - <<'PY'
           import json
           import os
           from pathlib import Path
+          from datetime import datetime
 
+          # 读取测试结果
           path = Path("logs/daily/last_run.json")
           if not path.exists():
-            print("No last_run.json found.")
+            print("⚠️  No last_run.json found.")
+            Path("test-report/report.md").write_text("# 测试报告\n\n⚠️ 未找到测试结果文件\n")
             raise SystemExit(0)
 
           data = json.loads(path.read_text())
           cases = data.get("cases", [])
           started_at = data.get("started_at", "")
           finished_at = data.get("finished_at", "")
-          title = f"## Daily Test Summary ({started_at} -> {finished_at})"
-
-          lines = [title, "", "| Case | Status | Duration(s) | Score | Error |", "| --- | --- | --- | --- | --- |"]
+          duration_ms = data.get("duration_ms", 0)
+          
+          # 统计信息
+          total = len(cases)
+          passed = sum(1 for c in cases if c.get("status") == "pass")
+          failed = sum(1 for c in cases if c.get("status") == "fail")
+          skipped = sum(1 for c in cases if c.get("status") == "skip")
+          
+          # 生成详细报告
+          lines = [
+            "# StarryOS Daily Test Report",
+            "",
+            f"**运行时间**: {started_at} → {finished_at}",
+            f"**总耗时**: {duration_ms/1000:.2f}s",
+            "",
+            "## 📊 测试概览",
+            "",
+            f"- ✅ **通过**: {passed}/{total}",
+            f"- ❌ **失败**: {failed}/{total}",
+            f"- ⏭️  **跳过**: {skipped}/{total}",
+            f"- 📈 **通过率**: {(passed/total*100 if total > 0 else 0):.1f}%",
+            "",
+            "## 📋 测试用例详情",
+            "",
+          ]
+          
           for case in cases:
             name = case.get("name", "")
             status = case.get("status", "")
@@ -97,26 +133,233 @@ jobs:
             duration_s = f"{duration_ms/1000:.2f}"
             metrics = case.get("test_metrics") or {}
             score = metrics.get("score")
-            score_str = "" if score is None else f"{score:.2f}"
             err = case.get("error_summary") or ""
-            err = " ".join(str(err).split())
-            if len(err) > 120:
-              err = err[:117] + "..."
-            lines.append(f"| {name} | {status} | {duration_s} | {score_str} | {err} |")
-
-          summary_path = Path(os.environ.get("GITHUB_STEP_SUMMARY", ""))
-          if summary_path:
-            summary_path.write_text("\n".join(lines) + "\n")
-          print("\n".join(lines))
+            
+            # 状态图标
+            status_icon = {
+              "pass": "✅",
+              "fail": "❌",
+              "skip": "⏭️"
+            }.get(status, "❓")
+            
+            lines.append(f"### {status_icon} {name}")
+            lines.append("")
+            lines.append(f"- **状态**: `{status}`")
+            lines.append(f"- **耗时**: {duration_s}s")
+            
+            if score is not None:
+              score_type = metrics.get("score_type", "")
+              lines.append(f"- **得分**: {score:.2f} ({score_type})")
+            
+            # 显示详细指标
+            if "metrics" in metrics and metrics["metrics"]:
+              lines.append("- **详细指标**:")
+              lines.append("")
+              lines.append("  | 指标名称 | Baseline | Result | Index |")
+              lines.append("  | --- | --- | --- | --- |")
+              for m in metrics["metrics"]:
+                m_name = m.get("name", "")
+                m_baseline = m.get("baseline", "")
+                m_result = m.get("result", "")
+                m_index = m.get("index", "")
+                baseline_str = f"{m_baseline:.2f}" if m_baseline not in ["", None] else "---"
+                result_str = f"{m_result:.2f}" if m_result not in ["", None] else "---"
+                index_str = f"{m_index:.2f}" if m_index not in ["", None] else "---"
+                lines.append(f"  | {m_name} | {baseline_str} | {result_str} | {index_str} |")
+              lines.append("")
+            
+            if err:
+              lines.append(f"- **错误信息**: {err}")
+            
+            lines.append("")
+          
+          # 保存报告
+          report_md = "\n".join(lines)
+          Path("test-report/report.md").write_text(report_md)
+          
+          # 也保存 JSON 副本
+          Path("test-report/report.json").write_text(path.read_text())
+          
+          print("✅ 测试报告生成成功")
           PY
 
-      # Upload raw logs for debugging and history.
-      - name: Upload daily logs
+      # Build a short summary table for GitHub Actions job summary.
+      - name: Generate GitHub Actions summary
+        if: always()
+        run: |
+          if [ -f test-report/report.md ]; then
+            cat test-report/report.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ 未生成测试报告" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # Upload raw logs as artifact (backup)
+      - name: Upload daily logs as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: daily-logs-${{ env.RUN_DIR }}
+          name: daily-logs-${{ steps.prepare.outputs.run_dir }}
           path: |
-            logs/daily/${{ env.RUN_DIR }}
+            logs/daily/${{ steps.prepare.outputs.run_dir }}
             logs/daily/last_run.json
+            test-report/
+          retention-days: 90
           if-no-files-found: warn
+
+      # Commit and push to results branch (persistent history)
+      - name: Push results to branch
+        if: always()
+        env:
+          OUTPUT_BRANCH: ${{ github.event.inputs.output_branch || 'daily-test-results' }}
+          TIMESTAMP: ${{ steps.prepare.outputs.timestamp }}
+          RUN_DIR: ${{ steps.prepare.outputs.run_dir }}
+        run: |
+          # 配置 git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 备份测试结果到临时目录
+          mkdir -p /tmp/test-backup
+          if [ -d "logs/daily/${RUN_DIR}" ]; then
+            cp -r "logs/daily/${RUN_DIR}" /tmp/test-backup/
+          fi
+          if [ -f "logs/daily/last_run.json" ]; then
+            cp "logs/daily/last_run.json" /tmp/test-backup/
+          fi
+          if [ -d "test-report" ]; then
+            cp -r test-report /tmp/test-backup/
+          fi
+          
+          # 创建或切换到结果分支
+          git fetch origin ${OUTPUT_BRANCH} || true
+          
+          # 检查分支是否存在
+          if git show-ref --verify --quiet refs/remotes/origin/${OUTPUT_BRANCH}; then
+            # 分支存在，切换
+            git checkout ${OUTPUT_BRANCH}
+            
+            # 检查是否有非 reports 的文件/目录（说明分支被污染了）
+            shopt -s dotglob nullglob
+            needs_cleanup=false
+            for item in *; do
+              if [ "$item" != ".git" ] && [ "$item" != "reports" ]; then
+                needs_cleanup=true
+                break
+              fi
+            done
+            
+            if [ "$needs_cleanup" = true ]; then
+              echo "分支包含非 report 文件，执行清理..."
+              
+              # 备份旧的 reports 目录（如果存在）
+              if [ -d "reports" ]; then
+                echo "备份旧的报告..."
+                cp -r reports /tmp/old-reports-backup
+              fi
+              
+              # 清理工作区（保留 .git）
+              for item in *; do
+                if [ "$item" != ".git" ]; then
+                  rm -rf "$item"
+                fi
+              done
+              # 清空 git 索引
+              git rm -rf --cached . 2>/dev/null || true
+              
+              # 恢复旧的 reports 目录
+              if [ -d "/tmp/old-reports-backup" ]; then
+                echo "恢复旧的报告..."
+                cp -r /tmp/old-reports-backup reports
+              fi
+            else
+              echo "分支干净，跳过清理"
+            fi
+          else
+            # 分支不存在，创建孤立分支
+            git checkout --orphan ${OUTPUT_BRANCH}
+            # 清空暂存区
+            git rm -rf . 2>/dev/null || true
+          fi
+          
+          # 确保 reports 目录存在
+          mkdir -p reports/${TIMESTAMP}
+          
+          # 从临时目录复制测试结果
+          if [ -f "/tmp/test-backup/last_run.json" ]; then
+            cp /tmp/test-backup/last_run.json reports/${TIMESTAMP}/
+            cp /tmp/test-backup/last_run.json reports/latest.json
+          fi
+          
+          if [ -f "/tmp/test-backup/test-report/report.md" ]; then
+            cp /tmp/test-backup/test-report/report.md reports/${TIMESTAMP}/
+            cp /tmp/test-backup/test-report/report.md reports/latest.md
+          fi
+          
+          if [ -f "/tmp/test-backup/test-report/report.json" ]; then
+            cp /tmp/test-backup/test-report/report.json reports/${TIMESTAMP}/
+          fi
+          
+          # 复制完整日志目录（可选，如果太大可以注释掉）
+          if [ -d "/tmp/test-backup/${RUN_DIR}" ]; then
+            cp -r "/tmp/test-backup/${RUN_DIR}" reports/${TIMESTAMP}/logs
+          fi
+          
+          # 创建索引文件
+          cat > reports/README.md << 'EOF'
+          # StarryOS Daily Test 历史报告
+          
+          ## 📊 最新报告
+          
+          - [最新测试报告 (Markdown)](./latest.md)
+          - [最新测试数据 (JSON)](./latest.json)
+          
+          ## 📚 历史报告
+          
+          EOF
+          
+          # 列出所有历史报告（按时间倒序）
+          for dir in $(ls -1r reports/ | grep -E '^[0-9]{8}-[0-9]{6}$'); do
+            if [ -d "reports/$dir" ]; then
+              # 尝试从 JSON 提取状态信息
+              if [ -f "reports/$dir/last_run.json" ]; then
+                summary=$(python3 -c "
+          import json
+          from pathlib import Path
+          try:
+              data = json.loads(Path('reports/$dir/last_run.json').read_text())
+              cases = data.get('cases', [])
+              total = len(cases)
+              passed = sum(1 for c in cases if c.get('status') == 'pass')
+              failed = sum(1 for c in cases if c.get('status') == 'fail')
+              print(f'{passed}/{total} passed')
+          except:
+              print('N/A')
+          " 2>/dev/null || echo "N/A")
+                echo "- [\`$dir\`](./$dir/report.md) - $summary" >> reports/README.md
+              else
+                echo "- [\`$dir\`](./$dir/report.md)" >> reports/README.md
+              fi
+            fi
+          done
+          
+          # 添加元信息
+          cat > reports/latest-info.json << EOF
+          {
+            "timestamp": "${TIMESTAMP}",
+            "run_dir": "${RUN_DIR}",
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "test_ref": "${{ env.TEST_REF }}",
+            "workflow_run": "${{ github.run_id }}"
+          }
+          EOF
+          
+          # 提交更改
+          git add reports/
+          git commit -m "📊 Daily test 报告 - ${TIMESTAMP}" || echo "No changes to commit"
+          
+          # 推送到远程
+          git push -f origin ${OUTPUT_BRANCH}
+          
+          echo "✅ 测试结果已推送到分支: ${OUTPUT_BRANCH}"
+          echo "📊 查看报告: https://github.com/${{ github.repository }}/tree/${OUTPUT_BRANCH}/reports"

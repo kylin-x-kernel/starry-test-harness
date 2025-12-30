@@ -370,7 +370,8 @@ for line in text.splitlines():
             match = re.search(r"([0-9]+(?:\\.[0-9]+)?)", line)
             if match:
                 score = float(match.group(1))
-            break
+            # 不要 break，继续收集后续的表格
+            collect = False  # 重置状态，等待下一个表格
 
 if block_lines:
     summary_path.write_text("\n".join(block_lines) + "\n", encoding="utf-8")
@@ -388,7 +389,8 @@ for line in text.splitlines():
         if not line.strip():
             continue
         if line.startswith("System Benchmarks Index Score"):
-            break
+            capture = False  # 重置状态，继续处理下一个表格
+            continue
         match = table_pattern.match(line.rstrip())
         if match:
             metrics.append(
