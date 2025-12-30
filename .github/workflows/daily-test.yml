@@ -3,7 +3,7 @@ name: daily-test
 on:
   # Nightly run. Note: schedules are evaluated from the default branch.
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 16 * * *'
   # Allow manual trigger with an optional ref override.
   workflow_dispatch:
     inputs:
@@ -231,12 +231,12 @@ jobs:
           fi
           
           # 创建或切换到结果分支
-          git fetch origin ${OUTPUT_BRANCH} || true
+          git fetch origin ${OUTPUT_BRANCH}:${OUTPUT_BRANCH} || true
           
           # 检查分支是否存在
           if git show-ref --verify --quiet refs/remotes/origin/${OUTPUT_BRANCH}; then
-            # 分支存在，切换
-            git checkout ${OUTPUT_BRANCH}
+            # 分支存在，基于远端分支切换
+            git checkout -B ${OUTPUT_BRANCH} origin/${OUTPUT_BRANCH}
             
             # 检查是否有非 reports 的文件/目录（说明分支被污染了）
             shopt -s dotglob nullglob
