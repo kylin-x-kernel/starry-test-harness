@@ -357,33 +357,20 @@ result_path = Path(sys.argv[3])
 text = log_path.read_text(encoding="utf-8", errors="ignore")
 text = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
 
-block_lines = []
-collect = False
-score = None
-for line in text.splitlines():
-    if line.startswith("System Benchmarks Partial Index"):
-        collect = True
-    if collect:
-        if line.strip():
-            block_lines.append(line.rstrip())
-        if line.startswith("System Benchmarks Index Score"):
-            match = re.search(r"([0-9]+(?:\\.[0-9]+)?)", line)
-            if match:
-                score = float(match.group(1))
-            # 不要 break，继续收集后续的表格
-            collect = False  # 重置状态，等待下一个表格
-
-if block_lines:
-    summary_path.write_text("\n".join(block_lines) + "\n", encoding="utf-8")
-else:
-    summary_path.write_text("", encoding="utf-8")
-
 metrics = []
+current_parallel = None
+table_parallel = None
+parallel_pattern = re.compile(r"running\s+(\d+)\s+parallel cop(?:y|ies) of tests")
 table_pattern = re.compile(r"^(?P<name>[A-Za-z0-9 /\-]+?)\s{2,}(?P<baseline>(?:[0-9]+(?:\.[0-9]+)?)|---)\s+(?P<result>[0-9]+(?:\.[0-9]+)?)\s+(?P<index>(?:[0-9]+(?:\.[0-9]+)?)|---)$")
 capture = False
 for line in text.splitlines():
+    match_parallel = parallel_pattern.search(line)
+    if match_parallel:
+        current_parallel = int(match_parallel.group(1))
+        continue
     if line.startswith("System Benchmarks Partial Index"):
         capture = True
+        table_parallel = current_parallel
         continue
     if capture:
         if not line.strip():
@@ -396,26 +383,44 @@ for line in text.splitlines():
             metrics.append(
                 {
                     "name": match.group("name").strip(),
+                    "parallel": table_parallel,
                     "baseline": None if match.group("baseline") == "---" else float(match.group("baseline")),
                     "result": float(match.group("result")),
                     "index": None if match.group("index") == "---" else float(match.group("index")),
                 }
             )
 
+summary_lines = []
+for idx, metric in enumerate(metrics):
+    name = metric["name"]
+    parallel = metric.get("parallel")
+    index = metric.get("index")
+    value = index if index is not None else metric["result"]
+    if parallel is not None:
+        label = f"{name} {parallel} parallel"
+    else:
+        label = name
+    line = f"{label}: {value:.2f}"
+    if idx == 0:
+        summary_lines.append(line)
+    else:
+        prefix = "└─ " if idx == len(metrics) - 1 else "├─ "
+        summary_lines.append(prefix + line)
+
+summary_path.write_text("\n".join(summary_lines) + ("\n" if summary_lines else ""), encoding="utf-8")
+
 payload = {
     "status": "pass",
-    "score_type": "partial_index",
-    "score": score,
     "metrics": metrics,
 }
 result_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 PY
 then
   if [[ -s "${SUMMARY_FILE}" ]]; then
-    log "解析得分："
+    log "解析指标："
     cat "${SUMMARY_FILE}"
   else
-    log "未在输出中找到 System Benchmarks 得分"
+    log "未在输出中找到 System Benchmarks 指标"
     exit 1
   fi
   if [[ -s "${RESULT_JSON}" ]]; then

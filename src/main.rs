@@ -830,7 +830,7 @@ fn load_test_metrics(artifact_dir: &Path) -> Option<TestMetrics> {
     let content = fs::read_to_string(&results_path).ok()?;
     let raw_json: JsonValue = serde_json::from_str(&content).ok()?;
 
-    let score = raw_json.get("score")?.as_f64();
+    let score = raw_json.get("score").and_then(|v| v.as_f64());
     let score_type = raw_json.get("score_type")
         .and_then(|v| v.as_str())
         .map(|s| s.to_string());
@@ -848,12 +848,6 @@ fn load_test_metrics(artifact_dir: &Path) -> Option<TestMetrics> {
 
 fn format_metrics_lines(metrics: &TestMetrics) -> Vec<String> {
     let mut lines = Vec::new();
-
-    // Display score if available
-    if let Some(score) = metrics.score {
-        let score_label = metrics.score_type.as_deref().unwrap_or("Score");
-        lines.push(format!("  {}: {:.2}", score_label, score));
-    }
 
     // Display individual metrics if available
     if let Some(metric_list) = &metrics.metrics {
