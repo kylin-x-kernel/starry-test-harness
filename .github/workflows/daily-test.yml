@@ -1,0 +1,122 @@
+name: daily-test
+
+on:
+  # Nightly run. Note: schedules are evaluated from the default branch.
+  schedule:
+    - cron: '0 0 * * *'
+  # Allow manual trigger with an optional ref override.
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref to test (branch/tag/SHA). Leave empty to use dev-daily.'
+        required: false
+        type: string
+
+concurrency:
+  # Avoid overlapping runs on the same ref/event.
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    env:
+      # Default test target for scheduled runs.
+      TEST_REF: ${{ github.event.inputs.ref || 'dev-daily' }}
+      ARCH: aarch64
+      STARRYOS_REMOTE: https://github.com/kylin-x-kernel/StarryOS.git
+      STARRYOS_REF: main
+      STARRYOS_ROOT: ${{ github.workspace }}/.cache/StarryOS
+    steps:
+      # Check out the repo at the target ref (dev-daily by default).
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TEST_REF }}
+
+      # Cache Rust artifacts across runs to speed up CI.
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: starry-daily-harness
+
+      # Toolchain setup for musl-based build target.
+      - name: Install musl toolchain
+        uses: arceos-org/setup-musl@v1
+        with:
+          arch: ${{ env.ARCH }}
+
+      # QEMU is required to run the tests under emulation.
+      - name: Install QEMU
+        uses: arceos-org/setup-qemu@v1
+        with:
+          version: 10.1.0
+          arch_list: ${{ env.ARCH }}
+
+      # Filesystem tools used by the test harness.
+      - name: Install filesystem tools
+        run: sudo apt-get update && sudo apt-get install -y e2fsprogs xz-utils
+
+      # Run the daily test target.
+      - name: 执行 daily-test
+        run: make daily-test run
+
+      # Pick the most recent run directory for artifact naming.
+      - name: Prepare artifact name
+        if: always()
+        run: |
+          if [ -d logs/daily ]; then
+            RUN_DIR="$(ls -1 logs/daily | grep -E '^[0-9]{8}-[0-9]{6}$' | sort | tail -n1)"
+          else
+            RUN_DIR=""
+          fi
+          echo "RUN_DIR=${RUN_DIR:-unknown}" >> "$GITHUB_ENV"
+
+      # Build a short summary table in the GitHub Actions job summary.
+      - name: Generate summary table
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path("logs/daily/last_run.json")
+          if not path.exists():
+            print("No last_run.json found.")
+            raise SystemExit(0)
+
+          data = json.loads(path.read_text())
+          cases = data.get("cases", [])
+          started_at = data.get("started_at", "")
+          finished_at = data.get("finished_at", "")
+          title = f"## Daily Test Summary ({started_at} -> {finished_at})"
+
+          lines = [title, "", "| Case | Status | Duration(s) | Score | Error |", "| --- | --- | --- | --- | --- |"]
+          for case in cases:
+            name = case.get("name", "")
+            status = case.get("status", "")
+            duration_ms = case.get("duration_ms") or 0
+            duration_s = f"{duration_ms/1000:.2f}"
+            metrics = case.get("test_metrics") or {}
+            score = metrics.get("score")
+            score_str = "" if score is None else f"{score:.2f}"
+            err = case.get("error_summary") or ""
+            err = " ".join(str(err).split())
+            if len(err) > 120:
+              err = err[:117] + "..."
+            lines.append(f"| {name} | {status} | {duration_s} | {score_str} | {err} |")
+
+          summary_path = Path(os.environ.get("GITHUB_STEP_SUMMARY", ""))
+          if summary_path:
+            summary_path.write_text("\n".join(lines) + "\n")
+          print("\n".join(lines))
+          PY
+
+      # Upload raw logs for debugging and history.
+      - name: Upload daily logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-logs-${{ env.RUN_DIR }}
+          path: |
+            logs/daily/${{ env.RUN_DIR }}
+            logs/daily/last_run.json
+          if-no-files-found: warn
