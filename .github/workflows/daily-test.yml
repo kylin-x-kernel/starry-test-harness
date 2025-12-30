@@ -102,11 +102,18 @@ jobs:
           finished_at = data.get("finished_at", "")
           duration_ms = data.get("duration_ms", 0)
           
+          def normalize_status(raw):
+            return {
+              "passed": "pass",
+              "failed": "fail",
+              "skipped": "skip",
+            }.get(raw, raw)
+
           # 统计信息
           total = len(cases)
-          passed = sum(1 for c in cases if c.get("status") == "pass")
-          failed = sum(1 for c in cases if c.get("status") == "fail")
-          skipped = sum(1 for c in cases if c.get("status") == "skip")
+          passed = sum(1 for c in cases if normalize_status(c.get("status", "")) == "pass")
+          failed = sum(1 for c in cases if normalize_status(c.get("status", "")) == "fail")
+          skipped = sum(1 for c in cases if normalize_status(c.get("status", "")) == "skip")
           
           # 生成详细报告
           lines = [
@@ -128,7 +135,8 @@ jobs:
           
           for case in cases:
             name = case.get("name", "")
-            status = case.get("status", "")
+            status_raw = case.get("status", "")
+            status = normalize_status(status_raw)
             duration_ms = case.get("duration_ms") or 0
             duration_s = f"{duration_ms/1000:.2f}"
             metrics = case.get("test_metrics") or {}
@@ -139,7 +147,7 @@ jobs:
             status_icon = {
               "pass": "✅",
               "fail": "❌",
-              "skip": "⏭️"
+              "skip": "⏭️",
             }.get(status, "❓")
             
             lines.append(f"### {status_icon} {name}")
@@ -155,17 +163,19 @@ jobs:
             if "metrics" in metrics and metrics["metrics"]:
               lines.append("- **详细指标**:")
               lines.append("")
-              lines.append("  | 指标名称 | Baseline | Result | Index |")
-              lines.append("  | --- | --- | --- | --- |")
+              lines.append("  | 指标名称 | Parallel | Baseline | Result | Index |")
+              lines.append("  | --- | --- | --- | --- | --- |")
               for m in metrics["metrics"]:
                 m_name = m.get("name", "")
+                m_parallel = m.get("parallel")
                 m_baseline = m.get("baseline", "")
                 m_result = m.get("result", "")
                 m_index = m.get("index", "")
+                parallel_str = str(m_parallel) if m_parallel is not None else "---"
                 baseline_str = f"{m_baseline:.2f}" if m_baseline not in ["", None] else "---"
                 result_str = f"{m_result:.2f}" if m_result not in ["", None] else "---"
                 index_str = f"{m_index:.2f}" if m_index not in ["", None] else "---"
-                lines.append(f"  | {m_name} | {baseline_str} | {result_str} | {index_str} |")
+                lines.append(f"  | {m_name} | {parallel_str} | {baseline_str} | {result_str} | {index_str} |")
               lines.append("")
             
             if err:
