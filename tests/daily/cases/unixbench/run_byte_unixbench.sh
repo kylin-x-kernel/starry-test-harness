@@ -361,7 +361,7 @@ metrics = []
 current_parallel = None
 table_parallel = None
 parallel_pattern = re.compile(r"running\s+(\d+)\s+parallel cop(?:y|ies) of tests")
-table_pattern = re.compile(r"^(?P<name>[A-Za-z0-9 /\-]+?)\s{2,}(?P<baseline>(?:[0-9]+(?:\.[0-9]+)?)|---)\s+(?P<result>[0-9]+(?:\.[0-9]+)?)\s+(?P<index>(?:[0-9]+(?:\.[0-9]+)?)|---)$")
+table_pattern = re.compile(r"^(?P<name>[A-Za-z0-9 /\-().,_]+?)\s{2,}(?P<baseline>(?:[0-9]+(?:\.[0-9]+)?)|---)\s+(?P<result>[0-9]+(?:\.[0-9]+)?)\s+(?P<index>(?:[0-9]+(?:\.[0-9]+)?)|---)$")
 capture = False
 for line in text.splitlines():
     match_parallel = parallel_pattern.search(line)
