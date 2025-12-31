@@ -13,6 +13,7 @@ STARRYOS_ROOT=${STARRYOS_ROOT:-${REPO_ROOT}/.cache/StarryOS}
 STARRYOS_DEPTH=${STARRYOS_DEPTH:-0}
 ARTIFACT_DIR="${REPO_ROOT}/artifacts/${SUITE}"
 LOG_FILE="${ARTIFACT_DIR}/build.log"
+STARRYOS_CARGO_UPDATE="${STARRYOS_CARGO_UPDATE:-1}"
 
 if [[ "${STARRYOS_ROOT}" != /* ]]; then
   STARRYOS_ROOT="${REPO_ROOT}/${STARRYOS_ROOT}"
@@ -59,6 +60,15 @@ if [[ -n "${ACTIVE_TOOLCHAIN}" ]]; then
 fi
 
 pushd "${STARRYOS_ROOT}" >/dev/null
+if [[ "${STARRYOS_CARGO_UPDATE}" == "1" ]]; then
+  log "Running cargo update in ${STARRYOS_ROOT}"
+  cargo update
+fi
+# TEMP: replace arceos cow backend for unixbench (remove when upstream is fixed)
+log "Replacing arceos cow backend for unixbench"
+cp "${REPO_ROOT}/tests/daily/cases/unixbench/cow.rs" \
+  "${STARRYOS_ROOT}/arceos/modules/axmm/src/backend/cow.rs"
+
 log "Building StarryOS (ARCH=${ARCH})"
 make ARCH="${ARCH}" build
 
