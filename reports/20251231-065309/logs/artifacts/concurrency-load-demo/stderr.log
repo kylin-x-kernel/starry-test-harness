@@ -1,0 +1,35 @@
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2025-12-31 05:22:38.003115952 UTC
+
+[37m[  1.037460 axnet:131] [33m  No vsock device found![m
+[m[37m[  1.038682 axdisplay:26] [33m  No display device found![m
+[mWelcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/usr/tests/concurrency_load 8 2000; echo __EXIT:$?__
+{"status":"pass","workers":8,"iterations":2000,"duration_ms":39,"total_sum":16048000,"max_worker_latency_ms":1}
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 8783 (make)
+make[1]: *** [Makefile:44: justrun] Terminated

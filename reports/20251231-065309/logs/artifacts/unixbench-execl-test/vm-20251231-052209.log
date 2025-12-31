@@ -1,0 +1,99 @@
+[starry-ci] spawning make ARCH=aarch64 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml NET=n VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1G -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-K6AnJR.img -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+tarry:~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: execl
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Execl Throughput [37m[ 10.483262 3:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 11.773919 2:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 44.221334 1:75 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 45.510186 0:77 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 78.278927 3:82 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 79.558144 2:84 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Execl Throughput [37m[112.276563 1:89 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[113.574973 0:91 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[146.567459 0:102 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[147.865392 3:104 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[181.287885 0:115 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[182.574135 3:117 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   06:34:16 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Dec 31 2025 06:34:17 - 06:35:59
+4 CPUs in system; running 1 parallel copy of tests
+
+Execl Throughput                                 18.9 lps   (30.1 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         18.9      4.4
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            4.4
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Dec 31 2025 06:35:59 - 06:37:42
+4 CPUs in system; running 4 parallel copies of tests
+
+Execl Throughput                                 24.0 lps   (30.0 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         24.0      5.6
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            5.6
+
+[UB] Run completed successfully
