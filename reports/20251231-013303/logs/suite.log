@@ -1,0 +1,546 @@
+[suite] daily-test (aarch64) - 长稳测试: 并发、资源抢占
+[build] executing /home/runner/work/starry-test-harness/starry-test-harness/scripts/build_starry.sh for Daily Test
+[build:starry] Cloning StarryOS from https://github.com/kylin-x-kernel/StarryOS.git
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'...
+Submodule 'arceos' (https://github.com/kylin-x-kernel/arceos.git) registered for path 'arceos'
+Submodule 'local_crates/arm-gic' (https://github.com/kylin-x-kernel/arm-gic.git) registered for path 'local_crates/arm-gic'
+Submodule 'local_crates/axdriver_crates' (https://github.com/kylin-x-kernel/axdriver_crates.git) registered for path 'local_crates/axdriver_crates'
+Submodule 'local_crates/axplat-aarch64-crosvm-virt' (https://github.com/kylin-x-kernel/axplat-aarch64-crosvm-virt.git) registered for path 'local_crates/axplat-aarch64-crosvm-virt'
+Submodule 'local_crates/axplat_crates' (https://github.com/kylin-x-kernel/axplat_crates.git) registered for path 'local_crates/axplat_crates'
+Submodule 'local_crates/fdtree-rs' (https://github.com/kylin-x-kernel/fdtree-rs.git) registered for path 'local_crates/fdtree-rs'
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'...
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/arm-gic'...
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axdriver_crates'...
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt'...
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat_crates'...
+Cloning into '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/fdtree-rs'...
+Submodule path 'arceos': checked out '1b5f563e7aaa39c8a6f4d2840edf710cc708d97d'
+Submodule path 'local_crates/arm-gic': checked out '35bfb52d71f8e73344178c0537b918b8660b2305'
+Submodule path 'local_crates/axdriver_crates': checked out 'cab57c73f145350a209d9b1315cb9a805b49f751'
+Submodule path 'local_crates/axplat-aarch64-crosvm-virt': checked out '3b9ef2651d840ab2ea4e57d16881c16d6aa8e3a8'
+Submodule path 'local_crates/axplat_crates': checked out '3000f4d52024a303261ccd1adef379684e2a9535'
+Submodule path 'local_crates/fdtree-rs': checked out 'd69bcb0e04176a1c9863cb0f8951b755e45f4a4a'
+Already on 'main'
+Your branch is up to date with 'origin/main'.
+Synchronizing submodule url for 'arceos'
+Synchronizing submodule url for 'local_crates/arm-gic'
+Synchronizing submodule url for 'local_crates/axdriver_crates'
+Synchronizing submodule url for 'local_crates/axplat-aarch64-crosvm-virt'
+Synchronizing submodule url for 'local_crates/axplat_crates'
+Synchronizing submodule url for 'local_crates/fdtree-rs'
+[build:starry] StarryOS commit: 1362c43a01e2348bfca701ba8d50a3d7951f0500
+[build:starry] Rust toolchain will follow /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/rust-toolchain.toml (auto-managed by rustup)
+[build:starry] Active toolchain: nightly-2025-12-12-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)
+[build:starry] Building StarryOS (ARCH=aarch64)
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+    Updating git repository `https://github.com/kylin-x-kernel/arm-gic.git`
+    Updating git repository `https://github.com/kylin-x-kernel/axplat_crates.git`
+    Updating git repository `https://github.com/arceos-org/percpu`
+    Updating crates.io index
+    Updating git repository `https://github.com/Starry-OS/starry-signal.git`
+    Updating git repository `https://github.com/Starry-OS/syscalls.git`
+    Updating git repository `https://github.com/arceos-org/axcpu.git`
+    Updating git repository `https://github.com/Starry-OS/kernel_elf_parser.git`
+    Updating git repository `https://github.com/Starry-OS/axplat-riscv64-visionfive2.git`
+    Updating git repository `https://github.com/arceos-org/allocator.git`
+    Updating git repository `https://github.com/kylin-x-kernel/axdriver_crates.git`
+    Updating git repository `https://github.com/Starry-OS/smoltcp.git`
+    Updating git repository `https://github.com/arceos-org/page_table_multiarch.git`
+    Updating git repository `https://github.com/arceos-org/axplat_crates.git`
+    Updating git repository `https://github.com/arceos-org/riscv_plic.git`
+    Updating git repository `https://github.com/Starry-OS/lwext4_rust.git`
+    Updating git submodule `https://github.com/Starry-OS/lwext4.git`
+    Updating git repository `https://github.com/arceos-org/slab_allocator.git`
+    Updating git repository `https://github.com/Starry-OS/simple-sdmmc.git`
+ Downloading crates ...
+  Downloaded axconfig-gen v0.2.0
+  Downloaded axconfig-macros v0.2.0
+  Downloaded inherit-methods-macro v0.1.0
+  Downloaded aarch64-cpu v10.0.0
+  Downloaded kspin v0.1.1
+  Downloaded futures-task v0.3.31
+  Downloaded dw_apb_uart v0.1.0
+  Downloaded clap v4.5.53
+  Downloaded byteorder v1.5.0
+  Downloaded bit v0.1.1
+  Downloaded slab v0.4.11
+  Downloaded thiserror-impl v2.0.17
+  Downloaded strum_macros v0.27.2
+  Downloaded prettyplease v0.2.37
+  Downloaded cpumask v0.1.0
+  Downloaded bindgen v0.72.1
+  Downloaded darling v0.13.4
+  Downloaded defmt v0.3.100
+  Downloaded darling_core v0.13.4
+  Downloaded linked_list_r4l v0.3.0
+  Downloaded embedded-hal v1.0.0
+  Downloaded defmt v1.0.1
+  Downloaded lazyinit v0.2.2
+  Downloaded either v1.15.0
+  Downloaded indexmap v2.12.1
+  Downloaded pin-utils v0.1.0
+  Downloaded rand_chacha v0.3.1
+  Downloaded rustversion v1.0.22
+  Downloaded loongArch64 v0.2.5
+  Downloaded strum v0.27.2
+  Downloaded convert_case v0.10.0
+  Downloaded strsim v0.10.0
+  Downloaded volatile v0.4.6
+  Downloaded bytemuck v1.24.0
+  Downloaded uluru v3.1.0
+  Downloaded lru v0.16.2
+  Downloaded gimli v0.32.3
+  Downloaded zerocopy-derive v0.8.31
+  Downloaded zerocopy v0.7.35
+  Downloaded zerocopy v0.8.31
+  Downloaded xmas-elf v0.9.1
+  Downloaded zero v0.1.3
+  Downloaded riscv-pac v0.2.0
+  Downloaded zerocopy-derive v0.7.35
+  Downloaded virtio-drivers v0.7.5
+  Downloaded tock-registers v0.10.1
+  Downloaded log v0.4.29
+  Downloaded libc v0.2.178
+  Downloaded bitmap-allocator v0.2.1
+  Downloaded x86_rtc v0.1.1
+  Downloaded x2apic v0.5.0
+  Downloaded windows-link v0.2.1
+  Downloaded unicode-xid v0.2.6
+  Downloaded static_assertions v1.1.0
+  Downloaded yansi v1.0.1
+  Downloaded riscv_plic v0.2.0
+  Downloaded riscv-macros v0.2.0
+  Downloaded nom v7.1.3
+  Downloaded ringbuf v0.4.8
+  Downloaded rand_core v0.6.4
+  Downloaded pin-project-lite v0.2.16
+  Downloaded volatile-macro v0.6.0
+  Downloaded unicode-width v0.1.14
+  Downloaded syn v2.0.111
+  Downloaded volatile v0.6.1
+  Downloaded thiserror v2.0.17
+  Downloaded svgbobdoc v0.3.0
+  Downloaded stable_deref_trait v1.2.1
+  Downloaded semver v1.0.27
+  Downloaded fdt-parser v0.4.18
+  Downloaded axsched v0.3.1
+  Downloaded sbi-rt v0.0.3
+  Downloaded rustc_version v0.4.1
+  Downloaded riscv_goldfish v0.1.1
+  Downloaded portable-atomic-util v0.2.4
+  Downloaded page_table_multiarch v0.5.7
+  Downloaded num_enum v0.7.5
+  Downloaded extern-trait v0.2.0
+  Downloaded axpoll v0.1.0
+  Downloaded winnow v0.7.14
+  Downloaded version_check v0.9.5
+  Downloaded unicode-segmentation v1.12.0
+  Downloaded linux-raw-sys v0.11.0
+  Downloaded tock-registers v0.8.1
+  Downloaded syn v1.0.109
+  Downloaded spin v0.9.8
+  Downloaded smallvec v1.15.1
+  Downloaded scope-local v0.1.1
+  Downloaded riscv v0.14.0
+  Downloaded raw-cpuid v11.6.0
+  Downloaded raw-cpuid v10.7.0
+  Downloaded proc-macro-error2 v2.0.1
+  Downloaded paste v1.0.15
+  Downloaded once_cell_polyfill v1.70.2
+  Downloaded memory_set v0.4.1
+  Downloaded memoffset v0.9.1
+  Downloaded linkme-impl v0.3.35
+  Downloaded x86_64 v0.15.4
+  Downloaded scopeguard v1.2.0
+  Downloaded sbi-spec v0.0.7
+  Downloaded rustc-hash v2.1.1
+  Downloaded proc-macro2-diagnostics v0.10.1
+  Downloaded windows-sys v0.61.2
+  Downloaded ppv-lite86 v0.2.21
+  Downloaded portable-atomic v1.12.0
+  Downloaded memory_addr v0.4.1
+  Downloaded clap_builder v4.5.53
+  Downloaded uart_16550 v0.4.0
+  Downloaded tock-registers v0.9.0
+  Downloaded x86 v0.52.0
+  Downloaded weak-map v0.1.2
+  Downloaded page_table_entry v0.5.7
+  Downloaded shlex v1.3.0
+  Downloaded rlsf v0.2.1
+  Downloaded rand_core v0.9.3
+  Downloaded futures-util v0.3.31
+  Downloaded linkme v0.3.35
+  Downloaded itertools v0.13.0
+  Downloaded derive_more-impl v2.1.1
+  Downloaded const-str v0.6.4
+  Downloaded bitflags v2.10.0
+  Downloaded base64 v0.13.1
+  Downloaded arm-gic-driver v0.15.9
+  Downloaded libloading v0.8.9
+  Downloaded concurrent-queue v2.5.0
+  Downloaded bytemuck_derive v1.10.2
+  Downloaded bitflags v1.3.2
+  Downloaded axfs-ng-vfs v0.1.0
+  Downloaded axbacktrace v0.1.1
+  Downloaded rand v0.9.2
+  Downloaded hashbrown v0.15.5
+  Downloaded const_fn v0.4.11
+  Downloaded clang-sys v1.8.1
+  Downloaded cexpr v0.6.0
+  Downloaded buddy_system_allocator v0.10.0
+  Downloaded bitmaps v3.2.1
+  Downloaded bitfield-struct v0.11.0
+  Downloaded axerrno v0.1.2
+  Downloaded starry-vm v0.2.0
+  Downloaded rustc-demangle v0.1.26
+  Downloaded proc-macro-error-attr2 v2.0.0
+  Downloaded num_enum_derive v0.7.5
+  Downloaded bit_field v0.10.3
+  Downloaded axerrno v0.2.2
+  Downloaded starry-process v0.2.0
+  Downloaded spin v0.10.0
+  Downloaded ouroboros v0.18.5
+  Downloaded multiboot v0.8.0
+  Downloaded hashbrown v0.16.1
+  Downloaded foldhash v0.1.5
+  Downloaded const-default v1.0.0
+  Downloaded anstyle-query v1.1.5
+  Downloaded addr2line v0.25.1
+  Downloaded indoc v2.0.7
+  Downloaded cfg-if v1.0.4
+  Downloaded minimal-lexical v0.2.1
+  Downloaded lock_api v0.4.14
+  Downloaded enum_dispatch v0.3.13
+  Downloaded arm_pl011 v0.1.0
+  Downloaded managed v0.8.0
+  Downloaded futures-core v0.3.31
+  Downloaded foldhash v0.2.0
+  Downloaded ouroboros_macro v0.18.5
+  Downloaded kernel_guard v0.1.3
+  Downloaded intrusive-collections v0.9.7
+  Downloaded int_ratio v0.1.2
+  Downloaded handler_table v0.1.2
+  Downloaded futures-macro v0.3.31
+  Downloaded fnv v1.0.7
+  Downloaded event-listener v5.4.1
+  Downloaded derive_more v2.1.1
+  Downloaded defmt-parser v1.0.0
+  Downloaded darling_macro v0.13.4
+  Downloaded arm_pl031 v0.2.1
+  Downloaded anstyle-wincon v3.0.11
+  Downloaded ident_case v1.0.1
+  Downloaded heapless v0.9.2
+  Downloaded heapless v0.8.0
+  Downloaded glob v0.3.3
+  Downloaded crate_interface v0.1.4
+  Downloaded arrayvec v0.7.6
+  Downloaded allocator-api2 v0.2.21
+  Downloaded enumn v0.1.14
+  Downloaded async-trait v0.1.89
+  Downloaded flatten_objects v0.2.4
+  Downloaded event-listener-strategy v0.5.4
+  Downloaded downcast-rs v2.0.2
+  Downloaded defmt-macros v1.0.1
+  Downloaded ctor_bare v0.2.1
+  Downloaded critical-section v1.2.0
+  Downloaded crossbeam-utils v0.8.21
+  Downloaded ctor_bare_macros v0.2.1
+  Downloaded cpp_demangle v0.4.5
+  Downloaded once_cell v1.21.3
+  Downloaded axio v0.3.0-pre.1
+  Downloaded aliasable v0.1.3
+  Downloaded heck v0.4.1
+  Downloaded hash32 v0.3.1
+  Downloaded async-channel v2.5.0
+[37maxconfig-gen[0m [90mconfigs/defconfig.toml /home/runner/.cargo/git/checkouts/axplat_crates-17ca098f05719b9f/3000f4d/platforms/axplat-aarch64-qemu-virt/axconfig.toml  -w arch=aarch64 -w platform=aarch64-qemu-virt -o "/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml" -w plat.phys-memory-size=1073741824[0m
+make[2]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+[37maxconfig-gen[0m [90mconfigs/defconfig.toml /home/runner/.cargo/git/checkouts/axplat_crates-17ca098f05719b9f/3000f4d/platforms/axplat-aarch64-qemu-virt/axconfig.toml  -w arch=aarch64 -w platform=aarch64-qemu-virt -o "/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml" -w plat.phys-memory-size=1073741824 -c "/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml"[0m
+    [92;1mBuilding[0m App: StarryOS, Arch: aarch64, Platform: aarch64-qemu-virt, App type: rust
+[37mcargo -C /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS build[0m [90m-Z unstable-options --target aarch64-unknown-none-softfloat --target-dir /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/target --release  --features "axfeat/defplat axfeat/dwarf axfeat/smp qemu"[0m
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+   Compiling proc-macro2 v1.0.103
+   Compiling quote v1.0.42
+   Compiling unicode-ident v1.0.22
+   Compiling log v0.4.29
+   Compiling heck v0.5.0
+   Compiling cfg-if v1.0.4
+   Compiling scopeguard v1.2.0
+   Compiling autocfg v1.5.0
+   Compiling bitflags v2.10.0
+   Compiling lock_api v0.4.14
+   Compiling stable_deref_trait v1.2.1
+   Compiling axerrno v0.2.2
+   Compiling syn v1.0.109
+   Compiling utf8parse v0.2.2
+   Compiling anstyle-parse v0.2.7
+   Compiling anstyle v1.0.13
+   Compiling syn v2.0.111
+   Compiling anstyle-query v1.1.5
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling colorchoice v1.0.4
+   Compiling memory_addr v0.4.1
+   Compiling anstream v0.6.21
+   Compiling clap_lex v0.7.6
+   Compiling byteorder v1.5.0
+   Compiling strsim v0.11.1
+   Compiling hashbrown v0.16.1
+   Compiling equivalent v1.0.2
+   Compiling clap_builder v4.5.53
+   Compiling indexmap v2.12.1
+   Compiling spin v0.10.0
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.14
+   Compiling tock-registers v0.9.0
+   Compiling cpp_demangle v0.4.5
+   Compiling paste v1.0.15
+   Compiling toml_datetime v0.6.11
+   Compiling aarch64-cpu v10.0.0
+   Compiling toml_edit v0.22.27
+   Compiling linkme-impl v0.3.35
+   Compiling strum_macros v0.27.2
+   Compiling crate_interface v0.1.4
+   Compiling kernel_guard v0.1.3
+   Compiling clap_derive v4.5.49
+   Compiling kspin v0.1.1
+   Compiling strum v0.27.2
+   Compiling gimli v0.32.3
+   Compiling num-traits v0.2.19
+   Compiling axconfig v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axconfig)
+   Compiling rustc-demangle v0.1.26
+   Compiling clap v4.5.53
+   Compiling axconfig-gen v0.2.0
+   Compiling crossbeam-utils v0.8.21
+   Compiling linkme v0.3.35
+   Compiling percpu v0.2.0 (https://github.com/arceos-org/percpu?rev=89c8a54#89c8a54c)
+   Compiling rustversion v1.0.22
+   Compiling axconfig-macros v0.2.0
+   Compiling page_table_entry v0.5.7
+   Compiling percpu_macros v0.2.0 (https://github.com/arceos-org/percpu?rev=89c8a54#89c8a54c)
+   Compiling addr2line v0.25.1
+   Compiling static_assertions v1.1.0
+   Compiling axbacktrace v0.1.1
+   Compiling axerrno v0.1.2
+   Compiling hash32 v0.3.1
+   Compiling once_cell v1.21.3
+   Compiling unicode-width v0.1.14
+   Compiling base64 v0.13.1
+   Compiling enum_dispatch v0.3.13
+   Compiling svgbobdoc v0.3.0
+   Compiling chrono v0.4.42
+   Compiling axcpu v0.3.0 (https://github.com/arceos-org/axcpu.git?tag=dev-v03#72ef3859)
+   Compiling axplat-macros v0.1.0 (https://github.com/kylin-x-kernel/axplat_crates.git?branch=dev#3000f4d5)
+   Compiling lazyinit v0.2.2
+   Compiling buddy_system_allocator v0.10.0
+   Compiling const-str v0.6.4
+   Compiling handler_table v0.1.2
+   Compiling tock-registers v0.8.1
+   Compiling pin-project-lite v0.2.16
+   Compiling axdriver_base v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling heapless v0.9.2
+   Compiling const-default v1.0.0
+   Compiling bit_field v0.10.3
+   Compiling bitmap-allocator v0.2.1
+   Compiling rlsf v0.2.1
+   Compiling axplat v0.3.0 (https://github.com/kylin-x-kernel/axplat_crates.git?branch=dev#3000f4d5)
+   Compiling arm_pl011 v0.1.0
+   Compiling arm_pl031 v0.2.1
+   Compiling slab_allocator v0.3.1 (https://github.com/arceos-org/slab_allocator.git?tag=v0.3.1#3c13499d)
+   Compiling arm-gic-driver v0.15.9
+   Compiling uart_16550 v0.4.0
+   Compiling concurrent-queue v2.5.0
+   Compiling arrayvec v0.7.6
+   Compiling glob v0.3.3
+   Compiling int_ratio v0.1.2
+   Compiling axplat-aarch64-qemu-virt v0.3.0 (https://github.com/kylin-x-kernel/axplat_crates.git?branch=dev#3000f4d5)
+   Compiling event-listener v5.4.1
+   Compiling clang-sys v1.8.1
+   Compiling axhal v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axhal)
+   Compiling allocator v0.1.2 (https://github.com/arceos-org/allocator.git?tag=v0.1.2#922e72a7)
+   Compiling axplat-aarch64-peripherals v0.3.0 (https://github.com/kylin-x-kernel/axplat_crates.git?branch=dev#3000f4d5)
+   Compiling zerocopy-derive v0.7.35
+   Compiling libc v0.2.178
+   Compiling prettyplease v0.2.37
+   Compiling linux-raw-sys v0.11.0
+   Compiling axalloc v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axalloc)
+   Compiling zerocopy v0.7.35
+   Compiling page_table_multiarch v0.5.7 (https://github.com/arceos-org/page_table_multiarch.git?tag=dev-v05#4594a765)
+   Compiling enumn v0.1.14
+   Compiling extern-trait v0.2.0
+   Compiling spin v0.9.8
+   Compiling bitmaps v3.2.1
+   Compiling memchr v2.7.6
+   Compiling fdt-parser v0.4.18
+   Compiling futures-core v0.3.31
+   Compiling regex-syntax v0.8.8
+   Compiling minimal-lexical v0.2.1
+   Compiling nom v7.1.3
+   Compiling regex-automata v0.4.13
+   Compiling virtio-drivers v0.7.5
+   Compiling libloading v0.8.9
+   Compiling axpoll v0.1.0
+   Compiling futures-macro v0.3.31
+   Compiling linked_list_r4l v0.3.0
+   Compiling pin-utils v0.1.0
+   Compiling fnv v1.0.7
+   Compiling strsim v0.10.0
+   Compiling ident_case v1.0.1
+   Compiling either v1.15.0
+   Compiling futures-task v0.3.31
+   Compiling bindgen v0.72.1
+   Compiling futures-util v0.3.31
+   Compiling itertools v0.13.0
+   Compiling darling_core v0.13.4
+   Compiling axsched v0.3.1
+   Compiling regex v1.12.2
+   Compiling cexpr v0.6.0
+   Compiling cpumask v0.1.0
+   Compiling axdriver_net v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling axdriver_vsock v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling axdriver_block v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling axdriver_input v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling axdriver_display v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling axdriver v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axdriver)
+   Compiling allocator-api2 v0.2.21
+   Compiling rustc-hash v2.1.1
+   Compiling shlex v1.3.0
+   Compiling smallvec v1.15.1
+   Compiling axdriver_virtio v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling darling_macro v0.13.4
+   Compiling axtask v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axtask)
+   Compiling axdriver_pci v0.1.2 (https://github.com/kylin-x-kernel/axdriver_crates.git?branch=dev#43feffe8)
+   Compiling memoffset v0.9.1
+   Compiling axsync v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axsync)
+   Compiling darling v0.13.4
+   Compiling axio v0.3.0-pre.1
+   Compiling scope-local v0.1.1
+   Compiling foldhash v0.2.0
+   Compiling foldhash v0.1.5
+   Compiling hashbrown v0.15.5
+   Compiling inherit-methods-macro v0.1.0
+   Compiling heapless v0.8.0
+   Compiling intrusive-collections v0.9.7
+   Compiling axfs-ng-vfs v0.1.0
+   Compiling lru v0.16.2
+   Compiling slab v0.4.11
+   Compiling version_check v0.9.5
+   Compiling smoltcp v0.12.0 (https://github.com/Starry-OS/smoltcp.git?rev=7401a54#7401a54b)
+   Compiling proc-macro2-diagnostics v0.10.1
+   Compiling event-listener-strategy v0.5.4
+   Compiling managed v0.8.0
+   Compiling bitflags v1.3.2
+   Compiling unicode-segmentation v1.12.0
+   Compiling convert_case v0.10.0
+   Compiling async-channel v2.5.0
+   Compiling lazy_static v1.5.0
+   Compiling memory_set v0.4.1
+   Compiling ringbuf v0.4.8
+   Compiling bytemuck_derive v1.10.2
+   Compiling lwext4_rust v0.2.0 (https://github.com/Starry-OS/lwext4_rust.git?rev=033fa2c#033fa2cc)
+   Compiling ctor_bare_macros v0.2.1
+   Compiling async-trait v0.1.89
+   Compiling unicode-xid v0.2.6
+   Compiling yansi v1.0.1
+   Compiling zerocopy v0.8.31
+   Compiling derive_more-impl v2.1.1
+   Compiling bytemuck v1.24.0
+   Compiling ctor_bare v0.2.1
+   Compiling axdisplay v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axdisplay)
+   Compiling axinput v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axinput)
+   Compiling axlog v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axlog)
+   Compiling zerocopy-derive v0.8.31
+   Compiling indoc v2.0.7
+   Compiling starry-signal v0.2.3 (https://github.com/Starry-OS/starry-signal.git?tag=dev-v02#0597c169)
+   Compiling heck v0.4.1
+   Compiling zero v0.1.3
+   Compiling xmas-elf v0.9.1
+   Compiling derive_more v2.1.1
+   Compiling ouroboros_macro v0.18.5
+   Compiling starry-vm v0.2.0
+   Compiling weak-map v0.1.2
+   Compiling aliasable v0.1.3
+   Compiling syscalls v0.7.0 (https://github.com/Starry-OS/syscalls.git?rev=efac241#efac241a)
+   Compiling starry-process v0.2.0
+   Compiling ouroboros v0.18.5
+   Compiling kernel-elf-parser v0.3.3 (https://github.com/Starry-OS/kernel_elf_parser.git?rev=fdcce74#fdcce740)
+   Compiling uluru v3.1.0
+   Compiling num_enum_derive v0.7.5
+   Compiling rand_core v0.9.3
+   Compiling rand v0.9.2
+   Compiling num_enum v0.7.5
+   Compiling flatten_objects v0.2.4
+   Compiling downcast-rs v2.0.2
+   Compiling axfs v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axfs)
+   Compiling axnet v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axnet)
+   Compiling axmm v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axmm)
+error[E0061]: this method takes 1 argument but 0 arguments were supplied
+   --> arceos/modules/axnet/src/device/vsock.rs:147:19
+    |
+147 |         match dev.poll_event() {
+    |                   ^^^^^^^^^^-- argument #1 of type `&mut [u8]` is missing
+    |
+note: method defined here
+   --> /home/runner/.cargo/git/checkouts/axdriver_crates-e6de5e1ceb94aeb4/43feffe/axdriver_vsock/src/lib.rs:82:8
+    |
+ 82 |     fn poll_event(&mut self, buf: &mut [u8]) -> DevResult<Option<VsockDriverEvent>>;
+    |        ^^^^^^^^^^
+help: provide the argument
+    |
+147 |         match dev.poll_event(/* &mut [u8] */) {
+    |                              +++++++++++++++
+
+For more information about this error, try `rustc --explain E0061`.
+error: could not compile `axnet` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+make[2]: *** [scripts/make/build.mk:50: _cargo_build] Error 101
+make[2]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+make[1]: *** [Makefile:47: build] Error 2
+make[1]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+[case] starting concurrency-load-demo -> logs/daily/20251231-012955/cases/concurrency-load-demo.log
+        Rust-based concurrency harness executed via orchestrator
+[case] concurrency-load-demo finished in 8920 ms (exit Some(1))
+[case] starting unixbench-dhry2reg-test -> logs/daily/20251231-012955/cases/unixbench-dhry2reg-test.log
+        在 StarryOS 中运行 UnixBench dhry2reg 测试
+[case] unixbench-dhry2reg-test finished in 16453 ms (exit Some(1))
+[case] starting unixbench-whetstone-double-test -> logs/daily/20251231-012955/cases/unixbench-whetstone-double-test.log
+        在 StarryOS 中运行 UnixBench whetstone-double 测试
+[case] unixbench-whetstone-double-test finished in 9292 ms (exit Some(1))
+[case] starting unixbench-syscall-test -> logs/daily/20251231-012955/cases/unixbench-syscall-test.log
+        在 StarryOS 中运行 UnixBench syscall 测试
+[case] unixbench-syscall-test finished in 9287 ms (exit Some(1))
+[case] starting unixbench-pipe-test -> logs/daily/20251231-012955/cases/unixbench-pipe-test.log
+        在 StarryOS 中运行 UnixBench pipe 测试
+[case] unixbench-pipe-test finished in 9245 ms (exit Some(1))
+[case] starting unixbench-context1-test -> logs/daily/20251231-012955/cases/unixbench-context1-test.log
+        在 StarryOS 中运行 UnixBench context1 测试
+[case] unixbench-context1-test finished in 9295 ms (exit Some(1))
+[case] starting unixbench-spawn-test -> logs/daily/20251231-012955/cases/unixbench-spawn-test.log
+        在 StarryOS 中运行 UnixBench spawn 测试
+[case] unixbench-spawn-test finished in 9245 ms (exit Some(1))
+[case] starting unixbench-fstime-test -> logs/daily/20251231-012955/cases/unixbench-fstime-test.log
+        在 StarryOS 中运行 UnixBench fstime 测试
+[case] unixbench-fstime-test finished in 9302 ms (exit Some(1))
+[case] starting unixbench-fsbuffer-test -> logs/daily/20251231-012955/cases/unixbench-fsbuffer-test.log
+        在 StarryOS 中运行 UnixBench fsbuffer 测试
+[case] unixbench-fsbuffer-test finished in 9243 ms (exit Some(1))
+[case] starting unixbench-fsdisk-test -> logs/daily/20251231-012955/cases/unixbench-fsdisk-test.log
+        在 StarryOS 中运行 UnixBench fsdisk 测试
+[case] unixbench-fsdisk-test finished in 9241 ms (exit Some(1))
+[case] starting unixbench-execl-test -> logs/daily/20251231-012955/cases/unixbench-execl-test.log
+        在 StarryOS 中运行 UnixBench execl 测试
+[case] unixbench-execl-test finished in 9246 ms (exit Some(1))
+[case] starting unixbench-shell1-test -> logs/daily/20251231-012955/cases/unixbench-shell1-test.log
+        在 StarryOS 中运行 UnixBench shell1 测试
+[case] unixbench-shell1-test finished in 9245 ms (exit Some(1))
+[case] starting unixbench-shell8-test -> logs/daily/20251231-012955/cases/unixbench-shell8-test.log
+        在 StarryOS 中运行 UnixBench shell8 测试
+[case] unixbench-shell8-test finished in 9297 ms (exit Some(1))
