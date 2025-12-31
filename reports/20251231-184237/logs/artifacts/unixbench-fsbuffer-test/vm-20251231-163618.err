@@ -1,0 +1,110 @@
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2025-12-31 17:50:30.003784656 UTC
+
+[37m[  1.034644 axnet:131] [33m  No vsock device found![m
+[m[37m[  1.035631 axdisplay:26] [33m  No display device found![m
+[mWelcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: fsbuffer fsbuffer-r fsbuffer-w
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x File Copy 256 bufsize 500 maxblocks [37m[ 10.364462 3:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 11.645625 2:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 14.179775 2:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 16.198992 3:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 20.251440 0:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 22.258984 1:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[mpanicked at api/src/syscall/time.rs:110:10:
+RefCell already borrowed
+Backtrace:
+   0: __rustc::rust_begin_unwind
+            at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axruntime/src/lang_items.rs:6:23 with fp=0xffff00004e87fba0, ip=0xffff0000402d84fc
+   1: core::panicking::panic_fmt
+            at /rustc/f5209000832c9d3bc29c91f4daef4ca9f28dc797/library/core/src/panicking.rs:80:14 with fp=0xffff00004e87fbf0, ip=0xffff000040401f54
+   2: core::cell::panic_already_borrowed::do_panic::runtime
+            at /rustc/f5209000832c9d3bc29c91f4daef4ca9f28dc797/library/core/src/panic.rs:173:21 with fp=0xffff00004e87fc20, ip=0xffff000040402f2c
+   3: core::cell::panic_already_borrowed::do_panic
+            at /rustc/f5209000832c9d3bc29c91f4daef4ca9f28dc797/library/core/src/intrinsics/mod.rs:2453:9 with fp=0xffff00004e87fc30, ip=0xffff000040401d58
+   4: core::cell::panic_already_borrowed
+            at /rustc/f5209000832c9d3bc29c91f4daef4ca9f28dc797/library/core/src/panic.rs:178:9 with fp=0xffff00004e87fc30, ip=0xffff000040401d58
+   5: <core::cell::RefCell<starry_core::time::TimeManager>>::borrow_mut
+            at /home/runner/.rustup/toolchains/nightly-2025-12-12-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cell.rs:1202:25 with fp=0xffff00004e87fd00, ip=0xffff00004023d0a0
+   6: starry_api::syscall::time::sys_setitimer
+            at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/api/src/syscall/time.rs:110:10 with fp=0xffff00004e87fd00, ip=0xffff00004023d0a0
+   7: starry_api::syscall::handle_syscall
+            at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/api/src/syscall/mod.rs:520:29 with fp=0xffff00004e87fde0, ip=0xffff00004021c5a8
+   8: starry_api::task::new_user_task::{closure#0}
+            at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/api/src/task.rs:45:46 with fp=0xffff00004e87ff80, ip=0xffff000040248fa0
+   9: <starry_api::task::new_user_task::{closure#0} as core::ops::function::FnOnce<()>>::call_once::{shim:vtable#0}
+            at /home/runner/.rustup/toolchains/nightly-2025-12-12-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/function.rs:250:5 with fp=0xffff00004e87ff80, ip=0xffff000040248fa0
+  10: <alloc::boxed::Box<dyn core::ops::function::FnOnce<(), Output = ()>> as core::ops::function::FnOnce<()>>::call_once
+            at /home/runner/.rustup/toolchains/nightly-2025-12-12-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs:2206:9 with fp=0xffff00004e87ffe0, ip=0xffff000040392d48
+  11: axtask::task::task_entry
+            at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axtask/src/task.rs:560:9 with fp=0xffff00004e87ffe0, ip=0xffff000040392d48
+  12: <core::option::Option<core::ptr::non_null::NonNull<u8>>>::unwrap
+            at /home/runner/.rustup/toolchains/nightly-2025-12-12-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs:1016:21 with fp=0x0, ip=0xffff000040392ce8
+  13: <axtask::task::TaskStack>::alloc
+            at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axtask/src/task.rs:473:71 with fp=0x0, ip=0xffff000040392ce8
+
