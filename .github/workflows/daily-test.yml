@@ -60,6 +60,13 @@ jobs:
       - name: Install filesystem tools
         run: sudo apt-get update && sudo apt-get install -y e2fsprogs xz-utils
 
+      - name: Ensure StarryOS build artifacts
+        run: |
+          if ! ls -1 "${STARRYOS_ROOT}"/StarryOS_"${ARCH}"*-qemu-virt.bin >/dev/null 2>&1; then
+            echo "StarryOS kernel not found, building..."
+            scripts/build_starry.sh daily-test
+          fi
+
       # Run the daily test target.
       - name: 执行 daily-test
         run: make daily-test run
@@ -339,8 +346,13 @@ jobs:
               data = json.loads(Path('reports/$dir/last_run.json').read_text())
               cases = data.get('cases', [])
               total = len(cases)
-              passed = sum(1 for c in cases if c.get('status') == 'pass')
-              failed = sum(1 for c in cases if c.get('status') == 'fail')
+              def normalize_status(raw):
+                  return {
+                      'passed': 'pass',
+                      'failed': 'fail',
+                      'skipped': 'skip',
+                  }.get(raw, raw)
+              passed = sum(1 for c in cases if normalize_status(c.get('status', '')) == 'pass')
               print(f'{passed}/{total} passed')
           except:
               print('N/A')
