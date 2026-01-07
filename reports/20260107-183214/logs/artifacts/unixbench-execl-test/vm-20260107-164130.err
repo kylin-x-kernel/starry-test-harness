@@ -1,0 +1,84 @@
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-07 17:58:39.003950224 UTC
+
+[37m[  1.054896 axnet:131] [33m  No vsock device found![m
+[m[37m[  1.055974 axdisplay:26] [33m  No display device found![m
+[mWelcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: execl
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Execl Throughput [37m[ 10.416401 1:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 11.706911 0:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 44.265133 3:75 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 45.538856 2:77 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 78.262696 1:82 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 79.550876 0:84 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Execl Throughput [37m[112.259817 3:89 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[113.537345 2:91 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1qemu-system-aarch64: terminating on signal 15 from pid 10516 (make)
+make[1]: *** [Makefile:44: justrun] Terminated
