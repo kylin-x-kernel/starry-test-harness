@@ -13,10 +13,15 @@ WORKSPACE="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 BINARY_NAME="$1"
 COMPANION_NAME="$2"
 
+# Ensure vhost-vsock device is accessible for VSOCK tests
+if [[ -e /dev/vhost-vsock ]]; then
+  sudo chmod 666 /dev/vhost-vsock || true
+fi
+
 # Build host companion and verify it exists 
 COMPANION_PATH="${WORKSPACE}/artifacts/host-companions/${COMPANION_NAME}"
 echo "[vsock-test] Building host companion: ${COMPANION_NAME}" >&2
-"${WORKSPACE}/tests/host-companions/build.sh"
+"${WORKSPACE}/tests/ci-test-iter/host-companions/build.sh"
 
 if [[ ! -x "${COMPANION_PATH}" ]]; then
   echo "[vsock-test] Failed to build or find host companion: ${COMPANION_PATH}" >&2
@@ -30,4 +35,3 @@ export STARRY_COMPANION_TIMEOUT="${STARRY_COMPANION_TIMEOUT:-30}"
 
 # Run the actual test case
 exec "${SCRIPT_DIR}/run_case.sh" "${BINARY_NAME}"
-
