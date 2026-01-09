@@ -185,12 +185,45 @@ COMMAND_TIMEOUT="${STARRY_CASE_TIMEOUT_SECS:-600}"
 VM_STDOUT="${CASE_ARTIFACT_DIR}/vm-${RUN_ID}.log"
 VM_STDERR="${CASE_ARTIFACT_DIR}/vm-${RUN_ID}.err"
 
-echo "[${CASE_LABEL}] 启动 StarryOS 执行 ${DEST_PATH}" >&2
-if ! python3 "${VM_RUNNER}" \
+# Build VM runner command with optional host companion
+VM_RUNNER_ARGS=(
   --root "${STARRYOS_ROOT}" \
   --arch "${ARCH}" \
   --command "${DEST_PATH}" \
   --command-timeout "${COMMAND_TIMEOUT}" \
+)
+
+# Add host companion if specified
+if [[ -n "${STARRY_HOST_COMPANION:-}" ]]; then
+  HOST_COMPANION_PATH="${STARRY_HOST_COMPANION}"
+  if [[ "${HOST_COMPANION_PATH}" != /* ]]; then
+    HOST_COMPANION_PATH="${WORKSPACE}/${HOST_COMPANION_PATH}"
+  fi
+  
+  if [[ ! -f "${HOST_COMPANION_PATH}" ]]; then
+    echo "[${CASE_LABEL}] host companion not found: ${HOST_COMPANION_PATH}" >&2
+    exit 1
+  fi
+  
+  if [[ ! -x "${HOST_COMPANION_PATH}" ]]; then
+    echo "[${CASE_LABEL}] host companion not executable: ${HOST_COMPANION_PATH}" >&2
+    exit 1
+  fi
+  
+  echo "[${CASE_LABEL}] using host companion: ${HOST_COMPANION_PATH}" >&2
+  VM_RUNNER_ARGS+=(--host-companion "${HOST_COMPANION_PATH}")
+  
+  if [[ -n "${STARRY_COMPANION_DELAY:-}" ]]; then
+    VM_RUNNER_ARGS+=(--companion-delay "${STARRY_COMPANION_DELAY}")
+  fi
+  
+  if [[ -n "${STARRY_COMPANION_TIMEOUT:-}" ]]; then
+    VM_RUNNER_ARGS+=(--companion-timeout "${STARRY_COMPANION_TIMEOUT}")
+  fi
+fi
+
+echo "[${CASE_LABEL}] 启动 StarryOS 执行 ${DEST_PATH}" >&2
+if ! python3 "${VM_RUNNER}" "${VM_RUNNER_ARGS[@]}" \
   2> >(tee "${VM_STDERR}" >&2) | tee "${VM_STDOUT}"; then
   echo "[${CASE_LABEL}] 虚拟机执行失败，详见 ${VM_STDERR}" >&2
   # Your change: find the exact error case
