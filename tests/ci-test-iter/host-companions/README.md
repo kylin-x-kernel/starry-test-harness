@@ -27,7 +27,7 @@ Suite.toml → 包装脚本 → run_case.sh → VM Runner → Host + Guest
 ## 目录结构
 
 ```
-tests/host-companions/
+tests/ci-test-iter/host-companions/
 ├── README.md              # 本文档
 ├── build.sh               # 构建所有 companion 程序
 └── <your-companion>/      # 你的 companion 程序
@@ -41,8 +41,8 @@ tests/host-companions/
 ### 步骤 1: 创建 Rust 项目
 
 ```bash
-mkdir -p tests/host-companions/<your-companion>
-cd tests/host-companions/<your-companion>
+mkdir -p tests/ci-test-iter/host-companions/<your-companion>
+cd tests/ci-test-iter/host-companions/<your-companion>
 ```
 
 创建 `Cargo.toml`（**必须包含 `[workspace]`**）:
@@ -78,7 +78,7 @@ fn main() -> anyhow::Result<()> {
 
 ```bash
 cd /path/to/starry-test-harness
-./tests/host-companions/build.sh
+./tests/ci-test-iter/host-companions/build.sh
 # 产物: artifacts/host-companions/<your-companion>
 ```
 
@@ -98,7 +98,7 @@ COMPANION_NAME="${2:-your-companion}"
 # 构建 companion（如需要）
 COMPANION_PATH="${WORKSPACE}/artifacts/host-companions/${COMPANION_NAME}"
 if [[ ! -x "${COMPANION_PATH}" ]]; then
-  "${WORKSPACE}/tests/host-companions/build.sh"
+  "${WORKSPACE}/tests/ci-test-iter/host-companions/build.sh"
 fi
 
 # 设置环境变量
@@ -169,7 +169,6 @@ CASES=your-test make ci-test-iter run
 1. **Workspace 冲突**：确保 `Cargo.toml` 中有 `[workspace]` 表
 2. **依赖问题**：检查依赖版本兼容性
    ```bash
-   cargo tree --manifest-path tests/host-companions/<your-companion>/Cargo.toml
+   cargo tree --manifest-path tests/ci-test-iter/host-companions/<your-companion>/Cargo.toml
    ```
-
 
