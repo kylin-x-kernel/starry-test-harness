@@ -4,6 +4,7 @@ import codecs
 import json
 import os
 import re
+import signal
 import socket
 import subprocess
 import sys
@@ -64,6 +65,40 @@ def sanitize_output(raw: str, command: str, full_command: str) -> str:
     return text
 
 
+def run_host_companion(companion_path: str, timeout: int) -> int:
+    """Run a host-side companion program (e.g., VSOCK client)"""
+    log(f"launching host companion: {companion_path}")
+    
+    if not os.path.isfile(companion_path):
+        raise RuntimeError(f"host companion not found: {companion_path}")
+    if not os.access(companion_path, os.X_OK):
+        raise RuntimeError(f"host companion not executable: {companion_path}")
+    
+    try:
+        proc = subprocess.Popen(
+            [companion_path],
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+        )
+        
+        try:
+            exit_code = proc.wait(timeout=timeout)
+            log(f"host companion exited with code {exit_code}")
+            return exit_code
+        except subprocess.TimeoutExpired:
+            log(f"host companion timed out after {timeout}s, terminating...")
+            proc.terminate()
+            try:
+                proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait()
+            raise RuntimeError(f"host companion timed out after {timeout}s")
+    except Exception as e:
+        log(f"host companion failed: {e}")
+        raise
+
+
 def run(args):
     root = Path(args.root).resolve()
     if not root.is_dir():
@@ -77,8 +112,8 @@ def run(args):
         "make",
         f"ARCH={args.arch}",
         f"PLAT_CONFIG={plat_config}",
-        "NET=n",
-        "VSOCK=n",
+        "NET=y",
+        "VSOCK=y",
         "ACCEL=n",
         "justrun",
         f"QEMU_ARGS=-monitor none -serial tcp::{args.port},server=on",
@@ -107,6 +142,26 @@ def run(args):
             raise RuntimeError("QEMU did not signal readiness")
         if proc.poll() is not None:
             raise RuntimeError("QEMU exited prematurely")
+
+        # Prepare host companion if specified (launch later, after guest command starts)
+        companion_thread = None
+        companion_thread_result = None
+        if args.host_companion:
+            companion_thread_result = {'exit_code': None, 'error': None}
+            
+            def run_companion_delayed():
+                # Wait for guest to start up and begin listening
+                log(f"waiting {args.companion_delay}s for guest to start listening...")
+                time.sleep(args.companion_delay)
+                try:
+                    companion_thread_result['exit_code'] = run_host_companion(
+                        args.host_companion,
+                        args.companion_timeout
+                    )
+                except Exception as e:
+                    companion_thread_result['error'] = e
+            
+            companion_thread = threading.Thread(target=run_companion_delayed, daemon=False)
 
         attempt = 0
         completed = False
@@ -160,6 +215,10 @@ def run(args):
                             command_start = time.monotonic()
                             command_buffer = ""
                             buffer = ""
+                            
+                            # Start host companion thread after sending guest command
+                            if companion_thread and not companion_thread.is_alive():
+                                companion_thread.start()
                         else:
                             log("shell prompt detected, sending exit")
                             sock.sendall(b"exit\n")
@@ -193,6 +252,20 @@ def run(args):
         elif not completed:
             raise last_err or RuntimeError("shell prompt not observed")
 
+        # Wait for host companion to finish if it was started
+        if companion_thread and companion_thread.is_alive():
+            log("waiting for host companion to complete...")
+            companion_thread.join(timeout=args.companion_timeout + 5)
+            if companion_thread.is_alive():
+                raise RuntimeError("host companion thread did not complete in time")
+            
+            if companion_thread_result['error']:
+                raise companion_thread_result['error']
+            
+            companion_exit = companion_thread_result['exit_code']
+            if companion_exit is not None and companion_exit != 0:
+                raise RuntimeError(f"host companion failed with exit code {companion_exit}")
+
         log("BusyBox shell exited cleanly")
         return exit_code, payload
     finally:
@@ -216,6 +289,9 @@ if __name__ == "__main__":
     parser.add_argument("--retries", type=int, default=5)
     parser.add_argument("--command", help="Shell command to execute once the prompt is ready")
     parser.add_argument("--command-timeout", type=int, default=600)
+    parser.add_argument("--host-companion", help="Path to host-side companion program (e.g., VSOCK client)")
+    parser.add_argument("--companion-delay", type=int, default=2, help="Seconds to wait before starting companion")
+    parser.add_argument("--companion-timeout", type=int, default=30, help="Timeout for companion program")
     args = parser.parse_args()
 
     try:
