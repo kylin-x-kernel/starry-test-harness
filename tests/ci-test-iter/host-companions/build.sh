@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSPACE="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+WORKSPACE="$(cd "${SCRIPT_DIR}/../../.." && pwd)"
 TARGET_DIR="${WORKSPACE}/target/host-companions"
 
 echo "[host-companions] Building host-side companion programs..."
@@ -50,4 +50,3 @@ for companion_dir in "${SCRIPT_DIR}"/*/ ; do
 done
 
 echo "[host-companions] All companion programs built successfully"
-

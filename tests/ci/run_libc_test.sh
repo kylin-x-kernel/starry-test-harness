@@ -135,7 +135,7 @@ fi
 # Create temporary mount point
 MOUNT_POINT=$(mktemp -d /tmp/starry-mount-XXXXXX)
 SCRIPT_EXIT_CODE=0
-trap 'umount "${MOUNT_POINT}" 2>/dev/null || sudo umount "${MOUNT_POINT}" 2>/dev/null || true; rmdir "${MOUNT_POINT}" 2>/dev/null || true; if (( CLEANUP_DISK )); then rm -f "${DISK_IMAGE}"; fi; exit ${SCRIPT_EXIT_CODE}' EXIT
+trap 'code=$?; umount "${MOUNT_POINT}" 2>/dev/null || sudo umount "${MOUNT_POINT}" 2>/dev/null || true; rmdir "${MOUNT_POINT}" 2>/dev/null || true; if (( CLEANUP_DISK )); then rm -f "${DISK_IMAGE}"; fi; exit ${code}' EXIT
 
 # Mount the disk image
 if ! mount -o loop "${DISK_IMAGE}" "${MOUNT_POINT}" 2>/dev/null; then

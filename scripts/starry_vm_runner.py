@@ -11,10 +11,12 @@ import sys
 import threading
 import time
 from pathlib import Path
+from typing import Optional
 
 READY_MSG = "QEMU waiting for connection"
 PROMPT = "starry:~# "  # 注意末尾有空格
 EXIT_PATTERN = re.compile(r"__EXIT:(-?\d+)__")
+VHOST_VSOCK_PATH = "/dev/vhost-vsock"
 
 
 def log(msg: str) -> None:
@@ -99,6 +101,19 @@ def run_host_companion(companion_path: str, timeout: int) -> int:
         raise
 
 
+def resolve_vsock_setting(raw: Optional[str]) -> str:
+    if not raw:
+        return "auto"
+    value = raw.strip().lower()
+    if value in ("1", "true", "yes", "on"):
+        return "on"
+    if value in ("0", "false", "no", "off"):
+        return "off"
+    if value == "auto":
+        return "auto"
+    return "auto"
+
+
 def run(args):
     root = Path(args.root).resolve()
     if not root.is_dir():
@@ -108,12 +123,34 @@ def run(args):
     if not plat_config.exists():
         raise SystemExit(f"missing {plat_config}, run make ARCH={args.arch} build first")
 
+    vsock_setting = resolve_vsock_setting(os.environ.get("STARRY_VSOCK", args.vsock))
+    vsock_enabled = True
+    if vsock_setting == "off":
+        vsock_enabled = False
+    elif vsock_setting == "auto":
+        if not os.path.exists(VHOST_VSOCK_PATH):
+            vsock_enabled = False
+            log(f"vsock disabled (missing {VHOST_VSOCK_PATH})")
+        elif not os.access(VHOST_VSOCK_PATH, os.R_OK | os.W_OK):
+            vsock_enabled = False
+            log(f"vsock disabled (insufficient permissions for {VHOST_VSOCK_PATH})")
+    elif vsock_setting == "on":
+        if not os.path.exists(VHOST_VSOCK_PATH):
+            raise SystemExit(
+                f"vsock requested but {VHOST_VSOCK_PATH} is missing; load vhost_vsock module"
+            )
+        if not os.access(VHOST_VSOCK_PATH, os.R_OK | os.W_OK):
+            raise SystemExit(
+                f"vsock requested but permission denied on {VHOST_VSOCK_PATH}; "
+                "fix device permissions or run with elevated privileges"
+            )
+
     cmd = [
         "make",
         f"ARCH={args.arch}",
         f"PLAT_CONFIG={plat_config}",
         "NET=y",
-        "VSOCK=y",
+        f"VSOCK={'y' if vsock_enabled else 'n'}",
         "ACCEL=n",
         "justrun",
         f"QEMU_ARGS=-monitor none -serial tcp::{args.port},server=on",
@@ -289,6 +326,7 @@ if __name__ == "__main__":
     parser.add_argument("--retries", type=int, default=5)
     parser.add_argument("--command", help="Shell command to execute once the prompt is ready")
     parser.add_argument("--command-timeout", type=int, default=600)
+    parser.add_argument("--vsock", default="auto", help="Enable vsock: auto/on/off (env STARRY_VSOCK overrides)")
     parser.add_argument("--host-companion", help="Path to host-side companion program (e.g., VSOCK client)")
     parser.add_argument("--companion-delay", type=int, default=2, help="Seconds to wait before starting companion")
     parser.add_argument("--companion-timeout", type=int, default=30, help="Timeout for companion program")
