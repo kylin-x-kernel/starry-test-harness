@@ -11,14 +11,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 BINARY_NAME="$1"
-COMPANION_NAME="${2:-vsock-client}"
+COMPANION_NAME="$2"
 
-# Build host companion if not already built
+# Build host companion and verify it exists 
 COMPANION_PATH="${WORKSPACE}/artifacts/host-companions/${COMPANION_NAME}"
-if [[ ! -x "${COMPANION_PATH}" ]]; then
-  echo "[vsock-test] Building host companion: ${COMPANION_NAME}" >&2
-  "${WORKSPACE}/tests/host-companions/build.sh"
-fi
+echo "[vsock-test] Building host companion: ${COMPANION_NAME}" >&2
+"${WORKSPACE}/tests/host-companions/build.sh"
 
 if [[ ! -x "${COMPANION_PATH}" ]]; then
   echo "[vsock-test] Failed to build or find host companion: ${COMPANION_PATH}" >&2
