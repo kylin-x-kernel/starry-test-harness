@@ -1,0 +1,121 @@
+[suite] daily-test (aarch64) - 长稳测试: 并发、资源抢占
+[build] executing /home/runner/work/starry-test-harness/starry-test-harness/scripts/build_starry.sh for Daily Test
+[build:starry] Updating existing StarryOS repo at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+Already on 'main'
+M	Cargo.lock
+M	arceos
+Your branch is up to date with 'origin/main'.
+Synchronizing submodule url for 'arceos'
+Synchronizing submodule url for 'local_crates/arm-gic'
+Synchronizing submodule url for 'local_crates/axcpu'
+Synchronizing submodule url for 'local_crates/axdriver_crates'
+Synchronizing submodule url for 'local_crates/axplat-aarch64-crosvm-virt'
+Synchronizing submodule url for 'local_crates/axplat_crates'
+Synchronizing submodule url for 'local_crates/fdtree-rs'
+Synchronizing submodule url for 'local_crates/kernel_guard'
+[build:starry] StarryOS commit: 54cc31ecf85ef553b28966c1e318f39051e4a63c
+[build:starry] Rust toolchain will follow /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/rust-toolchain.toml (auto-managed by rustup)
+[build:starry] Active toolchain: nightly-2025-12-12-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)
+[build:starry] Running cargo update in /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+    Updating git repository `https://github.com/kylin-x-kernel/arm-gic.git`
+    Updating git repository `https://github.com/kylin-x-kernel/axplat_crates.git`
+    Updating git repository `https://github.com/kylin-x-kernel/kernel_guard`
+    Updating git repository `https://github.com/arceos-org/percpu`
+    Updating git repository `https://github.com/kylin-x-kernel/axcpu`
+    Updating crates.io index
+    Updating git repository `https://github.com/Starry-OS/starry-signal.git`
+    Updating git repository `https://github.com/Starry-OS/syscalls.git`
+    Updating git repository `https://github.com/arceos-org/axcpu.git`
+    Updating git repository `https://github.com/Starry-OS/kernel_elf_parser.git`
+    Updating git repository `https://github.com/Starry-OS/axplat-riscv64-visionfive2.git`
+    Updating git repository `https://github.com/arceos-org/allocator.git`
+    Updating git repository `https://github.com/kylin-x-kernel/axdriver_crates.git`
+    Updating git repository `https://github.com/Starry-OS/smoltcp.git`
+    Updating git repository `https://github.com/arceos-org/page_table_multiarch.git`
+    Updating git repository `https://github.com/arceos-org/axplat_crates.git`
+    Updating git repository `https://github.com/arceos-org/riscv_plic.git`
+    Updating git repository `https://github.com/Starry-OS/lwext4_rust.git`
+    Updating git repository `https://github.com/arceos-org/slab_allocator.git`
+    Updating git repository `https://github.com/Starry-OS/simple-sdmmc.git`
+     Locking 0 packages to latest compatible versions
+note: pass `--verbose` to see 6 unchanged dependencies behind latest
+[build:starry] Replacing arceos cow backend for unixbench
+[build:starry] Building StarryOS (ARCH=aarch64)
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+[37maxconfig-gen[0m [90mconfigs/defconfig.toml /home/runner/.cargo/git/checkouts/axplat_crates-17ca098f05719b9f/28d9b73/platforms/axplat-aarch64-qemu-virt/axconfig.toml  -w arch=aarch64 -w platform=aarch64-qemu-virt -o "/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml" -w plat.phys-memory-size=1073741824[0m
+make[2]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+[37maxconfig-gen[0m [90mconfigs/defconfig.toml /home/runner/.cargo/git/checkouts/axplat_crates-17ca098f05719b9f/28d9b73/platforms/axplat-aarch64-qemu-virt/axconfig.toml  -w arch=aarch64 -w platform=aarch64-qemu-virt -o "/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml" -w plat.phys-memory-size=1073741824 -c "/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml"[0m
+    [92;1mBuilding[0m App: StarryOS, Arch: aarch64, Platform: aarch64-qemu-virt, App type: rust
+[37mcargo -C /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS build[0m [90m-Z unstable-options --target aarch64-unknown-none-softfloat --target-dir /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/target --release  --features "axfeat/defplat axfeat/dwarf axfeat/smp qemu"[0m
+warning: patch for the non root package will be ignored, specify patch at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/local_crates/axplat-aarch64-crosvm-virt/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/Cargo.toml
+   Compiling axmm v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axmm)
+   Compiling axruntime v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/modules/axruntime)
+   Compiling axfeat v0.2.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos/api/axfeat)
+   Compiling starry-core v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/core)
+   Compiling starry-api v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/api)
+   Compiling starry v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS)
+    Finished `release` profile [optimized] target(s) in 12.09s
+warning: the following packages contain code that will be rejected by a future version of Rust: memchr v2.7.6
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+[37m./scripts/make/dwarf.sh[0m [90m/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.elf rust-objcopy --binary-architecture=aarch64[0m
+[37mrust-objcopy --binary-architecture=aarch64[0m [90m/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.elf --strip-all -O binary /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.bin[0m
+make[2]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+make[1]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+[build:starry] Ensuring rootfs template is available in /home/runner/work/starry-test-harness/starry-test-harness/.cache/rootfs
+[build:starry] Rootfs template ready: /home/runner/work/starry-test-harness/starry-test-harness/.cache/rootfs/rootfs-aarch64.img
+[build:starry] Copying build artifacts
+[build:starry]   -> StarryOS_aarch64-qemu-virt.bin
+[build:starry]   -> StarryOS_aarch64-qemu-virt.elf
+[build:starry] StarryOS 构建完成，产物位于 /home/runner/work/starry-test-harness/starry-test-harness/artifacts/daily
+[case] starting concurrency-load-demo -> logs/daily/20260110-163504/cases/concurrency-load-demo.log
+        Rust-based concurrency harness executed via orchestrator
+[case] concurrency-load-demo finished in 14542 ms (exit Some(0))
+[case] starting unixbench-dhry2reg-test -> logs/daily/20260110-163504/cases/unixbench-dhry2reg-test.log
+        在 StarryOS 中运行 UnixBench dhry2reg 测试
+[case] unixbench-dhry2reg-test finished in 312751 ms (exit Some(0))
+[case] starting unixbench-whetstone-double-test -> logs/daily/20260110-163504/cases/unixbench-whetstone-double-test.log
+        在 StarryOS 中运行 UnixBench whetstone-double 测试
+[case] unixbench-whetstone-double-test finished in 365388 ms (exit Some(0))
+[case] starting unixbench-syscall-test -> logs/daily/20260110-163504/cases/unixbench-syscall-test.log
+        在 StarryOS 中运行 UnixBench syscall 测试
+[case] unixbench-syscall-test finished in 303243 ms (exit Some(0))
+[case] starting unixbench-pipe-test -> logs/daily/20260110-163504/cases/unixbench-pipe-test.log
+        在 StarryOS 中运行 UnixBench pipe 测试
+[case] unixbench-pipe-test finished in 303323 ms (exit Some(0))
+[case] starting unixbench-context1-test -> logs/daily/20260110-163504/cases/unixbench-context1-test.log
+        在 StarryOS 中运行 UnixBench context1 测试
+[case] unixbench-context1-test finished in 609587 ms (exit Some(1))
+[case] starting unixbench-spawn-test -> logs/daily/20260110-163504/cases/unixbench-spawn-test.log
+        在 StarryOS 中运行 UnixBench spawn 测试
+[case] unixbench-spawn-test finished in 222873 ms (exit Some(0))
+[case] starting unixbench-fstime-test -> logs/daily/20260110-163504/cases/unixbench-fstime-test.log
+        在 StarryOS 中运行 UnixBench fstime 测试
+[case] unixbench-fstime-test finished in 817578 ms (exit Some(0))
+[case] starting unixbench-fsbuffer-test -> logs/daily/20260110-163504/cases/unixbench-fsbuffer-test.log
+        在 StarryOS 中运行 UnixBench fsbuffer 测试
+[case] unixbench-fsbuffer-test finished in 811948 ms (exit Some(0))
+[case] starting unixbench-fsdisk-test -> logs/daily/20260110-163504/cases/unixbench-fsdisk-test.log
+        在 StarryOS 中运行 UnixBench fsdisk 测试
+[case] unixbench-fsdisk-test finished in 857931 ms (exit Some(0))
+[case] starting unixbench-execl-test -> logs/daily/20260110-163504/cases/unixbench-execl-test.log
+        在 StarryOS 中运行 UnixBench execl 测试
+[case] unixbench-execl-test finished in 508599 ms (exit Some(1))
+[case] starting unixbench-shell1-test -> logs/daily/20260110-163504/cases/unixbench-shell1-test.log
+        在 StarryOS 中运行 UnixBench shell1 测试
+[case] unixbench-shell1-test finished in 411488 ms (exit Some(0))
+[case] starting unixbench-shell8-test -> logs/daily/20260110-163504/cases/unixbench-shell8-test.log
+        在 StarryOS 中运行 UnixBench shell8 测试
+[case] unixbench-shell8-test finished in 1009425 ms (exit Some(1))
