@@ -1,0 +1,241 @@
+[case] unixbench-shell1-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh shell1
+[case] timeout budget: 1000s
+[starry-ci] spawning make ARCH=aarch64 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml NET=n VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1G -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-FWYlWn.img -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+ry:~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: shell1
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Shell Scripts (1 concurrent) [37m[ 10.075813 3:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 11.349464 2:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 75.360504 3:480 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 76.634074 2:482 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[140.111223 1:883 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[141.382829 0:885 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Shell Scripts (1 concurrent) [37m[204.280487 0:1268 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[205.565180 3:1270 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[270.834310 0:1605 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[272.094899 3:1607 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[337.712755 1:1987 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[338.996224 0:1989 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:27:07 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Jan 11 2026 18:27:07 - 18:30:22
+4 CPUs in system; running 1 parallel copy of tests
+
+Shell Scripts (1 concurrent)                     42.7 lpm   (61.1 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Shell Scripts (1 concurrent)                     42.4         42.7     10.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           10.1
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Jan 11 2026 18:30:22 - 18:33:42
+4 CPUs in system; running 4 parallel copies of tests
+
+Shell Scripts (1 concurrent)                     37.3 lpm   (61.9 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Shell Scripts (1 concurrent)                     42.4         37.3      8.8
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            8.8
+
+[UB] Run completed successfully
+Shell Scripts (1 concurrent) 1 parallel: 10.10
+└─ Shell Scripts (1 concurrent) 4 parallel: 8.80
+[unixbench-shell1-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-shell1-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-FWYlWn.img
+[unixbench-shell1-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-shell1-test] 测试用例: shell1
+[unixbench-shell1-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-shell1-test] 启动 StarryOS,执行 UnixBench
+[unixbench-shell1-test] Host 级别超时保护: 1300s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-11 18:26:58.002626064 UTC
+
+[37m[  1.065608 axnet:131] [33m  No vsock device found![m
+[m[37m[  1.066509 axdisplay:26] [33m  No display device found![m
+[mWelcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: shell1
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Shell Scripts (1 concurrent) [37m[ 10.075813 3:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 11.349464 2:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 75.360504 3:480 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 76.634074 2:482 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[140.111223 1:883 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[141.382829 0:885 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Shell Scripts (1 concurrent) [37m[204.280487 0:1268 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[205.565180 3:1270 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[270.834310 0:1605 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[272.094899 3:1607 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[337.712755 1:1987 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[338.996224 0:1989 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:27:07 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Jan 11 2026 18:27:07 - 18:30:22
+4 CPUs in system; running 1 parallel copy of tests
+
+Shell Scripts (1 concurrent)                     42.7 lpm   (61.1 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Shell Scripts (1 concurrent)                     42.4         42.7     10.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           10.1
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Jan 11 2026 18:30:22 - 18:33:42
+4 CPUs in system; running 4 parallel copies of tests
+
+Shell Scripts (1 concurrent)                     37.3 lpm   (61.9 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Shell Scripts (1 concurrent)                     42.4         37.3      8.8
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            8.8
+
+[UB] Run completed successfully
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 11384 (make)
+make[1]: *** [Makefile:44: justrun] Terminated
+[unixbench-shell1-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260111-163541/artifacts/unixbench-shell1-test/vm-20260111-163541.log
+[unixbench-shell1-test] 解析指标：
+[unixbench-shell1-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260111-163541/artifacts/unixbench-shell1-test/results.json
+[unixbench-shell1-test] byte-unixbench 用例完成
+[unixbench-shell1-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260111-163541/artifacts/unixbench-shell1-test/vm-20260111-163541.log
+[unixbench-shell1-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260111-163541/artifacts/unixbench-shell1-test/summary.txt
