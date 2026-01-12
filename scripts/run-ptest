@@ -1,0 +1,118 @@
+#!/bin/bash
+# StarryOS ptest runner
+# 符合 Yocto ptest 规范：https://wiki.yoctoproject.org/wiki/Ptest
+
+set -e
+
+PTEST_DIR="$(cd "$(dirname "$0")" && pwd)"
+TOTAL=0
+PASSED=0
+FAILED=0
+
+# 运行 Rust 测试（exit code 判断）
+run_rust_test() {
+    local suite="$1"
+    local test_path="$2"
+    local test_name="$(basename "$test_path")"
+    
+    TOTAL=$((TOTAL + 1))
+    
+    echo "BEGIN: $suite/$test_name"
+    if timeout 60 "$test_path" >/dev/null 2>&1; then
+        echo "PASS: $suite/$test_name"
+        PASSED=$((PASSED + 1))
+    else
+        echo "FAIL: $suite/$test_name"
+        FAILED=$((FAILED + 1))
+    fi
+    echo "END: $suite/$test_name"
+}
+
+# 运行压力测试（JSON 输出解析）
+run_stress_test() {
+    local test_path="$1"
+    local test_name="$(basename "$test_path")"
+    
+    TOTAL=$((TOTAL + 1))
+    
+    echo "BEGIN: stress/$test_name"
+    local output
+    if output=$(timeout 300 "$test_path" 2>&1); then
+        # 解析 JSON 输出（最后一行）
+        local last_line=$(echo "$output" | tail -n 1)
+        if echo "$last_line" | grep -q '"status":\s*"pass"'; then
+            echo "PASS: stress/$test_name"
+            PASSED=$((PASSED + 1))
+        else
+            echo "FAIL: stress/$test_name (status != pass)"
+            FAILED=$((FAILED + 1))
+        fi
+    else
+        echo "FAIL: stress/$test_name (timeout or crash)"
+        FAILED=$((FAILED + 1))
+    fi
+    echo "END: stress/$test_name"
+}
+
+# 运行 shell 脚本测试
+run_shell_test() {
+    local test_path="$1"
+    local test_name="$(basename "$test_path")"
+    
+    TOTAL=$((TOTAL + 1))
+    
+    echo "BEGIN: daily/$test_name"
+    if timeout 600 bash "$test_path" >/dev/null 2>&1; then
+        echo "PASS: daily/$test_name"
+        PASSED=$((PASSED + 1))
+    else
+        echo "FAIL: daily/$test_name"
+        FAILED=$((FAILED + 1))
+    fi
+    echo "END: daily/$test_name"
+}
+
+# 主测试流程
+main() {
+    echo "======================================"
+    echo "StarryOS Test Suite (ptest)"
+    echo "======================================"
+    
+    # 1. 运行 CI 测试
+    if [ -d "$PTEST_DIR/ci" ]; then
+        echo ""
+        echo ">>> Running CI Tests <<<"
+        for test in "$PTEST_DIR"/ci/*; do
+            [ -x "$test" ] && run_rust_test "ci" "$test"
+        done
+    fi
+    
+    # 2. 运行压力测试
+    if [ -d "$PTEST_DIR/stress" ]; then
+        echo ""
+        echo ">>> Running Stress Tests <<<"
+        for test in "$PTEST_DIR"/stress/*; do
+            [ -x "$test" ] && run_stress_test "$test"
+        done
+    fi
+    
+    # 3. 运行日常测试
+    if [ -d "$PTEST_DIR/daily" ]; then
+        echo ""
+        echo ">>> Running Daily Tests <<<"
+        for test in "$PTEST_DIR"/daily/*.sh; do
+            [ -f "$test" ] && run_shell_test "$test"
+        done
+    fi
+    
+    # 总结
+    echo ""
+    echo "======================================"
+    echo "Summary: Total=$TOTAL, Passed=$PASSED, Failed=$FAILED"
+    echo "======================================"
+    
+    [ $FAILED -eq 0 ] && exit 0 || exit 1
+}
+
+main
+
