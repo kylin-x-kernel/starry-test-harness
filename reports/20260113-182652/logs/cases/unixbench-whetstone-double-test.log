@@ -1,0 +1,129 @@
+[case] unixbench-whetstone-double-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh whetstone-double
+[case] timeout budget: 600s
+[starry-ci] spawning make ARCH=aarch64 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml NET=n VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1G -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-Lr5NTi.img -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] ERROR: command timed out
+[unixbench-whetstone-double-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-whetstone-double-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-Lr5NTi.img
+[unixbench-whetstone-double-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-whetstone-double-test] 测试用例: whetstone-double
+[unixbench-whetstone-double-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-whetstone-double-test] 启动 StarryOS,执行 UnixBench
+[unixbench-whetstone-double-test] Host 级别超时保护: 900s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-13 16:49:06.003809712 UTC
+
+[37m[  1.217846 axnet:131] [33m  No vsock device found![m
+[m[37m[  1.219122 axdisplay:26] [33m  No display device found![m
+[mWelcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: whetstone-double
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Double-Precision Whetstone [37m[ 10.920835 0:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 12.225575 3:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 28.214629 2:75 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 29.520636 1:77 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 45.440754 0:82 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 46.750336 3:84 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 62.801594 2:89 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 64.109953 1:91 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 80.040040 0:96 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 81.351762 3:98 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[ 97.290120 2:103 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 98.599584 1:105 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[114.549520 0:110 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[115.859823 3:112 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[131.788888 2:117 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[133.100636 1:119 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[149.045291 0:124 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[150.350405 3:126 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[166.339807 2:131 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[167.649808 1:133 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x Double-Precision Whetstone [37m[183.685080 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[184.984794 3:140 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[200.101809 0:151 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[201.447995 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[216.828684 1:164 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[218.129723 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[234.890186 2:177 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[236.191316 1:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[251.230272 1:190 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[252.526754 0:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[267.516389 3:203 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[268.807640 2:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[287.533761 0:216 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[288.833148 3:218 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7qemu-system-aarch64: terminating on signal 15 from pid 9131 (make)
+make[1]: *** [Makefile:44: justrun] Terminated
+[unixbench-whetstone-double-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260113-164319/artifacts/unixbench-whetstone-double-test/vm-20260113-164319.log
+[unixbench-whetstone-double-test] 未在输出中找到 System Benchmarks 指标
