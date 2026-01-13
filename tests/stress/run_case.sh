@@ -176,13 +176,46 @@ RUN_STDERR="${ARTIFACT_DIR}/stderr.log"
 RESULT_PATH="${ARTIFACT_DIR}/result.json"
 COMMAND_TIMEOUT="${STARRY_CASE_TIMEOUT_SECS:-600}"
 
+# Build VM runner command with optional host companion
+VM_RUNNER_ARGS=(
+  --root "${STARRYOS_ROOT}"
+  --arch "${ARCH}"
+  --command "${REMOTE_CMD}"
+  --command-timeout "${COMMAND_TIMEOUT}"
+)
+
+# Add host companion if specified
+if [[ -n "${STARRY_HOST_COMPANION:-}" ]]; then
+  HOST_COMPANION_PATH="${STARRY_HOST_COMPANION}"
+  if [[ "${HOST_COMPANION_PATH}" != /* ]]; then
+    HOST_COMPANION_PATH="${WORKSPACE}/${HOST_COMPANION_PATH}"
+  fi
+  
+  if [[ ! -f "${HOST_COMPANION_PATH}" ]]; then
+    echo "[stress] host companion not found: ${HOST_COMPANION_PATH}" >&2
+    exit 1
+  fi
+  
+  if [[ ! -x "${HOST_COMPANION_PATH}" ]]; then
+    echo "[stress] host companion not executable: ${HOST_COMPANION_PATH}" >&2
+    exit 1
+  fi
+
+  echo "[stress] using host companion: ${HOST_COMPANION_PATH}" >&2
+  VM_RUNNER_ARGS+=(--host-companion "${HOST_COMPANION_PATH}")
+  
+  if [[ -n "${STARRY_COMPANION_DELAY:-}" ]]; then
+    VM_RUNNER_ARGS+=(--companion-delay "${STARRY_COMPANION_DELAY}")
+  fi
+  
+  if [[ -n "${STARRY_COMPANION_TIMEOUT:-}" ]]; then
+    VM_RUNNER_ARGS+=(--companion-timeout "${STARRY_COMPANION_TIMEOUT}")
+  fi
+fi
+
 echo "[stress] running inside StarryOS: ${REMOTE_CMD}" >&2
 if ! VM_OUTPUT="$(
-  python3 "${VM_RUNNER}" \
-    --root "${STARRYOS_ROOT}" \
-    --arch "${ARCH}" \
-    --command "${REMOTE_CMD}" \
-    --command-timeout "${COMMAND_TIMEOUT}" \
+  python3 "${VM_RUNNER}" "${VM_RUNNER_ARGS[@]}" \
     2> >(tee "${RUN_STDERR}" >&2)
 )"; then
   echo "[stress] StarryOS command failed" >&2
