@@ -64,10 +64,6 @@ if [[ "${STARRYOS_CARGO_UPDATE}" == "1" ]]; then
   log "Running cargo update in ${STARRYOS_ROOT}"
   cargo update
 fi
-# TEMP: replace arceos cow backend for unixbench (remove when upstream is fixed)
-log "Replacing arceos cow backend for unixbench"
-cp "${REPO_ROOT}/tests/daily/cases/unixbench/cow.rs" \
-  "${STARRYOS_ROOT}/arceos/modules/axmm/src/backend/cow.rs"
 
 log "Building StarryOS (ARCH=${ARCH})"
 make ARCH="${ARCH}" build
