@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2025 Weikang Guo <guoweikang.kernel@gmail.com>
 # Copyright (C) 2025 KylinSoft Co., Ltd. <https://www.kylinos.cn/>
@@ -8,9 +9,6 @@
 # Driver for the Arm Generic Interrupt Controller version 3 (or 4).
 
 # Wrapper script for running VSOCK tests with host companion
-
-#!/usr/bin/env bash
-
 set -euo pipefail
 
 if [[ $# -lt 1 ]]; then
