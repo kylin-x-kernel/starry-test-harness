@@ -4,9 +4,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE="${STARRY_WORKSPACE_ROOT:-$(cd "${SCRIPT_DIR}/../../../.." && pwd)}"
 
-UNIXBENCH_RELEASE_URL="${UNIXBENCH_RELEASE_URL:-https://github.com/sunhaosheng/rootfs-unixbench/releases/download/20251120/rootfs-unixbench.img.xz}"
+UNIXBENCH_RELEASE_URL="${UNIXBENCH_RELEASE_URL:-https://github.com/sunhaosheng/rootfs-unixbench/releases/download/20251216/disk.img.xz}"
 UNIXBENCH_CACHE_DIR="${WORKSPACE}/.cache/unixbench"
-UNIXBENCH_CACHE_IMG="${UNIXBENCH_CACHE_DIR}/rootfs-unixbench.img"
+UNIXBENCH_CACHE_IMG="${UNIXBENCH_CACHE_DIR}/disk.img"
+
+# 从命令行参数接收要运行的测试用例
+UNIXBENCH_TESTS="$*"
 
 abspath() {
   local input=$1
@@ -30,8 +33,8 @@ download_unixbench_image() {
 
   local tmp_dir
   tmp_dir="$(mktemp -d)"
-  local archive="${tmp_dir}/rootfs-unixbench.img.xz"
-  local decompressed="${tmp_dir}/rootfs-unixbench.img"
+  local archive="${tmp_dir}/disk.img.xz"
+  local decompressed="${tmp_dir}/disk.img"
 
   if command -v curl >/dev/null 2>&1; then
     log "下载 UnixBench 镜像: ${url}"
@@ -145,6 +148,28 @@ fi
 
 log "使用预配置镜像: ${UNIXBENCH_TEMPLATE}"
 
+SUDO=""
+if [[ "${EUID:-$(id -u)}" -ne 0 ]]; then
+  if sudo -n true >/dev/null 2>&1; then
+    SUDO="sudo"
+  else
+    log "需要 sudo 权限以挂载镜像，正在请求一次授权"
+    if ! sudo -v; then
+      log "无法获取 sudo 权限"
+      exit 1
+    fi
+    SUDO="sudo"
+  fi
+fi
+
+run_sudo() {
+  if [[ -n "${SUDO}" ]]; then
+    sudo "$@"
+  else
+    "$@"
+  fi
+}
+
 # === 阶段 4: 准备可写磁盘镜像 ===
 
 CLEANUP_DISK=0
@@ -161,14 +186,14 @@ export DISK_IMG="${DISK_IMAGE}"
 log "复制预配置镜像 -> ${DISK_IMAGE}"
 mkdir -p "$(dirname "${DISK_IMAGE}")"
 if ! cp "${UNIXBENCH_TEMPLATE}" "${DISK_IMAGE}"; then
-  if ! sudo cp "${UNIXBENCH_TEMPLATE}" "${DISK_IMAGE}"; then
+  if ! run_sudo cp "${UNIXBENCH_TEMPLATE}" "${DISK_IMAGE}"; then
     log "无法复制预配置镜像"
     exit 1
   fi
 fi
 
 if ! chmod 666 "${DISK_IMAGE}"; then
-  if ! sudo chmod 666 "${DISK_IMAGE}"; then
+  if ! run_sudo chmod 666 "${DISK_IMAGE}"; then
     log "无法调整磁盘权限: ${DISK_IMAGE}"
     exit 1
   fi
@@ -177,43 +202,33 @@ fi
 # === 阶段 4.5: 注入运行脚本到镜像 ===
 
 log "注入 UnixBench 运行脚本到镜像"
-INJECT_SCRIPT=$(cat <<'INJECT_EOF'
+log "测试用例: ${UNIXBENCH_TESTS}"
+INJECT_SCRIPT=$(cat <<INJECT_EOF
 #!/bin/sh
 set -eu
 
 log() {
-  printf '%s\n' "[UB] $*"
+  printf '%s\n' "[UB] \$*"
 }
 
 log "switching to UnixBench directory"
 cd /root/UnixBench
 
 export UB_BINDIR=/root/UnixBench/pgms
-log "UB_BINDIR set to ${UB_BINDIR}"
+log "UB_BINDIR set to \${UB_BINDIR}"
 
 chmod +x Run
 chmod -R +x pgms
 
-log "launching UnixBench run"
-max_attempts=3
-attempt=1
-while :; do
-  log "launching UnixBench attempt ${attempt}/${max_attempts}"
-  if ./Run dhry2reg whetstone-double syscall pipe context1 spawn \
-        fstime-w fstime-r fstime fsbuffer-w fsbuffer-r fsbuffer \
-        fsdisk-w fsdisk-r fsdisk; then
-    log "Run completed successfully"
-    exit 0
-  fi
-  status=$?
-  if [ "${attempt}" -ge "${max_attempts}" ]; then
-    log "Run exited with status ${status} after ${attempt} attempts"
-    exit "${status}"
-  fi
-  attempt=$((attempt + 1))
-  log "retry ${attempt}/${max_attempts} in 5s (exit ${status})"
-  sleep 5
-done
+log "launching UnixBench run with tests: ${UNIXBENCH_TESTS}"
+if ./Run ${UNIXBENCH_TESTS}; then
+  log "Run completed successfully"
+  exit 0
+else
+  status=\$?
+  log "Run exited with status \${status}"
+  exit "\${status}"
+fi
 INJECT_EOF
 )
 
@@ -222,7 +237,7 @@ CLEANUP_MOUNT=0
 trap_cleanup() {
   if (( CLEANUP_MOUNT )); then
     if mountpoint -q "${MOUNT_POINT}"; then
-      sudo umount "${MOUNT_POINT}" || true
+      run_sudo umount "${MOUNT_POINT}" || true
     fi
     rm -rf "${MOUNT_POINT}" || true
   fi
@@ -232,23 +247,23 @@ trap_cleanup() {
 }
 trap trap_cleanup EXIT
 
-if ! sudo mount -o loop "${DISK_IMAGE}" "${MOUNT_POINT}"; then
+if ! run_sudo mount -o loop "${DISK_IMAGE}" "${MOUNT_POINT}"; then
   log "无法挂载磁盘镜像"
   exit 1
 fi
 CLEANUP_MOUNT=1
 
-if ! sudo tee "${MOUNT_POINT}/root/run_unixbench.sh" >/dev/null <<<"${INJECT_SCRIPT}"; then
+if ! run_sudo tee "${MOUNT_POINT}/root/run_unixbench.sh" >/dev/null <<<"${INJECT_SCRIPT}"; then
   log "无法写入运行脚本"
   exit 1
 fi
 
-if ! sudo chmod +x "${MOUNT_POINT}/root/run_unixbench.sh"; then
+if ! run_sudo chmod +x "${MOUNT_POINT}/root/run_unixbench.sh"; then
   log "无法设置脚本可执行权限"
   exit 1
 fi
 
-sudo umount "${MOUNT_POINT}"
+run_sudo umount "${MOUNT_POINT}"
 CLEANUP_MOUNT=0
 rm -rf "${MOUNT_POINT}"
 
@@ -286,29 +301,31 @@ else
 fi
 : >"${VM_STDOUT}"
 : >"${VM_STDERR}"
+run_status=0
 if [[ -t 1 ]]; then
   if ! "${RUN_CMD[@]}" \
     2> >(tee "${VM_STDERR}" | tee /dev/tty >&2) | tee "${VM_STDOUT}" | tee /dev/tty
   then
-    status=$?
-    if [[ "${status}" -eq 124 && -n "${HOST_VM_TIMEOUT_SECS}" ]]; then
-      log "虚拟机执行超过 ${HOST_VM_TIMEOUT_SECS}s，被 timeout 终止"
-    else
-      log "虚拟机执行失败，详见 ${VM_STDERR}"
-    fi
-    tail -n 40 "${VM_STDERR}" >&2 2>/dev/null || true
-    exit 1
+    run_status=$?
   fi
 else
   if ! "${RUN_CMD[@]}" \
     2> >(tee "${VM_STDERR}" >&2) | tee "${VM_STDOUT}"
   then
-    status=$?
-    if [[ "${status}" -eq 124 && -n "${HOST_VM_TIMEOUT_SECS}" ]]; then
-      log "虚拟机执行超过 ${HOST_VM_TIMEOUT_SECS}s，被 timeout 终止"
-    else
-      log "虚拟机执行失败，详见 ${VM_STDERR}"
-    fi
+    run_status=$?
+  fi
+fi
+
+if [[ "${run_status}" -ne 0 ]]; then
+  if [[ "${run_status}" -eq 124 && -n "${HOST_VM_TIMEOUT_SECS}" ]]; then
+    log "虚拟机执行超过 ${HOST_VM_TIMEOUT_SECS}s，被 timeout 终止"
+    tail -n 40 "${VM_STDERR}" >&2 2>/dev/null || true
+    exit 1
+  fi
+  if grep -q "__EXIT:0__" "${VM_STDOUT}" "${VM_STDERR}" 2>/dev/null || grep -q "Run completed successfully" "${VM_STDOUT}" "${VM_STDERR}" 2>/dev/null; then
+    log "检测到 guest 正常退出，忽略 VM runner 非零退出码(${run_status})"
+  else
+    log "虚拟机执行失败，详见 ${VM_STDERR}"
     tail -n 40 "${VM_STDERR}" >&2 2>/dev/null || true
     exit 1
   fi
@@ -340,63 +357,70 @@ result_path = Path(sys.argv[3])
 text = log_path.read_text(encoding="utf-8", errors="ignore")
 text = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
 
-block_lines = []
-collect = False
-score = None
-for line in text.splitlines():
-    if line.startswith("System Benchmarks Partial Index"):
-        collect = True
-    if collect:
-        if line.strip():
-            block_lines.append(line.rstrip())
-        if line.startswith("System Benchmarks Index Score"):
-            match = re.search(r"([0-9]+(?:\\.[0-9]+)?)", line)
-            if match:
-                score = float(match.group(1))
-            break
-
-if block_lines:
-    summary_path.write_text("\n".join(block_lines) + "\n", encoding="utf-8")
-else:
-    summary_path.write_text("", encoding="utf-8")
-
 metrics = []
-table_pattern = re.compile(r"^(?P<name>[A-Za-z0-9 /\-]+?)\s{2,}(?P<baseline>(?:[0-9]+(?:\.[0-9]+)?)|---)\s+(?P<result>[0-9]+(?:\.[0-9]+)?)\s+(?P<index>(?:[0-9]+(?:\.[0-9]+)?)|---)$")
+current_parallel = None
+table_parallel = None
+parallel_pattern = re.compile(r"running\s+(\d+)\s+parallel cop(?:y|ies) of tests")
+table_pattern = re.compile(r"^(?P<name>[A-Za-z0-9 /\-().,_]+?)\s{2,}(?P<baseline>(?:[0-9]+(?:\.[0-9]+)?)|---)\s+(?P<result>[0-9]+(?:\.[0-9]+)?)\s+(?P<index>(?:[0-9]+(?:\.[0-9]+)?)|---)$")
 capture = False
 for line in text.splitlines():
+    match_parallel = parallel_pattern.search(line)
+    if match_parallel:
+        current_parallel = int(match_parallel.group(1))
+        continue
     if line.startswith("System Benchmarks Partial Index"):
         capture = True
+        table_parallel = current_parallel
         continue
     if capture:
         if not line.strip():
             continue
         if line.startswith("System Benchmarks Index Score"):
-            break
+            capture = False  # 重置状态，继续处理下一个表格
+            continue
         match = table_pattern.match(line.rstrip())
         if match:
             metrics.append(
                 {
                     "name": match.group("name").strip(),
+                    "parallel": table_parallel,
                     "baseline": None if match.group("baseline") == "---" else float(match.group("baseline")),
                     "result": float(match.group("result")),
                     "index": None if match.group("index") == "---" else float(match.group("index")),
                 }
             )
 
+summary_lines = []
+for idx, metric in enumerate(metrics):
+    name = metric["name"]
+    parallel = metric.get("parallel")
+    index = metric.get("index")
+    value = index if index is not None else metric["result"]
+    if parallel is not None:
+        label = f"{name} {parallel} parallel"
+    else:
+        label = name
+    line = f"{label}: {value:.2f}"
+    if idx == 0:
+        summary_lines.append(line)
+    else:
+        prefix = "└─ " if idx == len(metrics) - 1 else "├─ "
+        summary_lines.append(prefix + line)
+
+summary_path.write_text("\n".join(summary_lines) + ("\n" if summary_lines else ""), encoding="utf-8")
+
 payload = {
     "status": "pass",
-    "score_type": "partial_index",
-    "score": score,
     "metrics": metrics,
 }
 result_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 PY
 then
   if [[ -s "${SUMMARY_FILE}" ]]; then
-    log "解析得分："
+    log "解析指标："
     cat "${SUMMARY_FILE}"
   else
-    log "未在输出中找到 System Benchmarks 得分"
+    log "未在输出中找到 System Benchmarks 指标"
     exit 1
   fi
   if [[ -s "${RESULT_JSON}" ]]; then
@@ -415,4 +439,3 @@ fi
 log "byte-unixbench 用例完成"
 log "guest stdout -> ${VM_STDOUT}"
 log "summary -> ${SUMMARY_FILE}"
-

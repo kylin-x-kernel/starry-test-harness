@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Git ref to test (branch/tag/SHA). Leave empty to use dev-daily.'
+        description: 'Git ref to test (branch/tag/SHA). Leave empty to use master.'
         required: false
         type: string
       output_branch:
@@ -27,13 +27,13 @@ jobs:
       contents: write  # 需要写权限以推送到结果分支
     env:
       # Default test target for scheduled runs.
-      TEST_REF: ${{ github.event.inputs.ref || 'dev-daily' }}
+      TEST_REF: ${{ github.event.inputs.ref || 'master' }}
       ARCH: aarch64
       STARRYOS_REMOTE: https://github.com/kylin-x-kernel/StarryOS.git
       STARRYOS_REF: main
       STARRYOS_ROOT: ${{ github.workspace }}/.cache/StarryOS
     steps:
-      # Check out the repo at the target ref (dev-daily by default).
+      # Check out the repo at the target ref (master by default).
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.TEST_REF }}
