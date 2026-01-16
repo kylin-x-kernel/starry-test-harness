@@ -6,8 +6,6 @@
 # 
 # This file has been modified by KylinSoft on 2025.
 
-# Driver for the Arm Generic Interrupt Controller version 3 (or 4).
-
 """LOC report generator for StarryOS.
 
 - Outputs loc.json, loc.md，若指定 --comment-output，内容与 loc.md 相同，便于直接贴到评论。

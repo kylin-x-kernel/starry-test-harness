@@ -6,8 +6,6 @@
 # 
 # This file has been modified by KylinSoft on 2025.
 
-# Driver for the Arm Generic Interrupt Controller version 3 (or 4).
-
 set -euo pipefail
 
 SUITE=${1:-ci-test}

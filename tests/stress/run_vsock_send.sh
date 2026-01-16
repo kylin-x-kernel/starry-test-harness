@@ -6,9 +6,9 @@
 # 
 # This file has been modified by KylinSoft on 2025.
 
-# Driver for the Arm Generic Interrupt Controller version 3 (or 4).
 
 # Wrapper script for running VSOCK tests with host companion
+
 set -euo pipefail
 
 if [[ $# -lt 1 ]]; then
