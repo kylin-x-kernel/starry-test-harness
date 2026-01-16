@@ -1,0 +1,115 @@
+#!/bin/sh
+set -eu
+
+usage() {
+  echo "usage: $0 <dir|file> [static|dynamic]" >&2
+  exit 2
+}
+
+[ $# -ge 1 ] || usage
+
+target="$1"
+mode="${2:-dynamic}"
+
+runtest="src/common/runtest.exe"
+
+if [ ! -x "$runtest" ]; then
+  echo "error: $runtest not found or not executable" >&2
+  exit 2
+fi
+
+is_dir=0
+if [ -d "$target" ]; then
+  is_dir=1
+elif [ ! -f "$target" ]; then
+  echo "error: not found: $target" >&2
+  exit 2
+fi
+
+SKIP_PATTERNS="\
+ipc_shm.exe ipc_shm-static.exe \
+fcntl.exe fcntl-static.exe \
+ipc_msg.exe ipc_msg-static.exe \
+ipc_sem.exe ipc_sem-static.exe \
+malloc-brk-fail.exe malloc-brk-fail-static.exe \
+malloc-oom.exe malloc-oom-static.exe \
+mntent.exe mntent-static.exe \
+pthread_create-oom.exe pthread_create-oom-static.exe \
+pthread_mutex_pi.exe pthread_mutex_pi-static.exe \
+pthread_robust.exe pthread_robust-static.exe \
+powf.exe powf-static.exe \
+pthread_atfork-errno-clobber.exe pthread_atfork-errno-clobber-static.exe \
+raise-race.exe raise-race-static.exe \
+sigaltstack.exe sigaltstack-static.exe \
+setenv-oom.exe setenv-oom-static.exe \
+strptime.exe strptime-static.exe \
+tls_get_new-dtv.exe tls_get_new-dtv-static.exe"
+
+is_skipped() {
+  for p in $SKIP_PATTERNS; do
+    case "$1" in
+      */"$p") return 0 ;;
+    esac
+  done
+  return 1
+}
+
+run_one() {
+  t="$1"
+  if is_skipped "$t"; then
+    skipped=$((skipped+1))
+    echo "SKIP $t"
+    return
+  fi
+  total=$((total+1))
+  out="$($runtest "$t" 2>&1)" || {
+    failed=$((failed+1))
+    echo "FAIL $t"
+    [ -n "$out" ] && echo "$out"
+    return
+  }
+  passed=$((passed+1))
+}
+
+run_dynamic() {
+  for t in "$target"/*.exe; do
+    [ -x "$t" ] || continue
+    case "$t" in
+      *-static.exe) continue ;;
+    esac
+    run_one "$t"
+  done
+}
+
+run_static() {
+  for t in "$target"/*-static.exe; do
+    [ -x "$t" ] || continue
+    run_one "$t"
+  done
+}
+
+total=0
+passed=0
+failed=0
+skipped=0
+
+if [ "$is_dir" -eq 1 ]; then
+  case "$mode" in
+    dynamic) run_dynamic ;;
+    static) run_static ;;
+    *) usage ;;
+  esac
+else
+  if [ ! -x "$target" ]; then
+    echo "error: not executable: $target" >&2
+    exit 2
+  fi
+  run_one "$target"
+fi
+
+echo "Total: $total"
+echo "Passed: $passed"
+echo "Failed: $failed"
+echo "Skipped: $skipped"
+
+[ "$failed" -eq 0 ]
