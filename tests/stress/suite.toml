@@ -10,3 +10,10 @@ description = "CPU-bound workload with synthetic telemetry"
 path = "tests/stress/run_case.sh"
 args = ["cpu_saturator", "4", "15"]
 timeout_secs = 120
+
+[[cases]]
+name = "vsock-send-demo"
+description = "Detecting timing, credit requests and updates, and result matching during vsock reception through long data transmission"
+path = "tests/stress/run_vsock_send.sh"
+args = ["vsock_send", "vsock-client-recv"]
+timeout_secs = 600
