@@ -1,0 +1,686 @@
+[case] unixbench-fsdisk-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh fsdisk fsdisk-r fsdisk-w
+[case] timeout budget: 1200s
+[starry-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[starry-ci] spawning make ARCH=aarch64 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.axconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+make[2]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/arceos'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1G -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/StarryOS_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-DiFbIr.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: fsdisk fsdisk-r fsdisk-w
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x File Copy 4096 bufsize 8000 maxblocks [37m[ 17.154083 1:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 18.639326 0:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 21.621983 0:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 23.627491 1:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 27.926405 2:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 29.929890 3:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 33.940140 0:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 35.947235 2:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 67.382744 2:75 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 68.958190 1:77 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 71.954614 1:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 73.959851 2:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 81.742726 3:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 83.747946 0:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 87.754726 1:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 89.757924 3:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[121.215033 1:82 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[122.781739 0:84 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[125.726159 0:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[127.729030 1:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[131.987919 2:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[133.997904 2:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[138.002762 3:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[140.008851 0:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+1 x File Read 4096 bufsize 8000 maxblocks [37m[171.561209 0:89 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[173.255080 3:91 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[176.243199 3:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[178.249969 0:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[184.585821 1:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[186.587873 1:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[219.046893 1:96 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[220.544317 0:98 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[223.486372 0:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[225.497340 1:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[229.843495 2:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[231.848889 2:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[264.281099 2:103 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[265.895170 1:105 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[268.827757 1:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[270.840054 2:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[278.518030 3:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[280.529835 0:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+1 x File Write 4096 bufsize 8000 maxblocks [37m[313.040522 0:110 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[314.728960 3:112 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[317.746630 3:115 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[319.749068 0:115 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[353.543098 0:117 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[355.103593 3:119 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[358.057211 3:122 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[360.061938 0:122 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[392.654793 0:124 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[394.244623 3:126 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[397.167482 3:129 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[399.178022 0:129 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+4 x File Copy 4096 bufsize 8000 maxblocks [37m[432.692433 0:131 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[434.260714 3:133 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[437.470891 3:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[437.486606 0:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[437.582094 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[437.629857 0:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.479951 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.488982 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.589922 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.637250 3:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.543953 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.744865 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.818244 3:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.884043 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.548964 3:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.751748 0:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.832724 1:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.887791 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.553034 3:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.761706 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.839504 2:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.902715 3:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.557956 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.769883 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.849844 2:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.908873 3:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[494.641220 3:144 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[496.196316 2:146 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[499.268867 2:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[499.408797 1:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[499.467084 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[499.629270 0:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.280102 2:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.417934 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.477305 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.637258 1:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[513.672307 2:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[514.020657 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[515.093495 1:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[515.206429 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[515.679847 3:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[516.027245 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[517.098713 1:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[517.209067 2:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[519.697887 3:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[520.039644 1:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[521.111468 2:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[521.242307 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[521.711790 0:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[522.048898 1:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[523.117795 0:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[523.247846 1:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[555.332879 2:157 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[556.900695 1:159 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[559.942490 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[560.155688 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[560.174358 2:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[560.287999 0:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[561.952823 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[562.158008 2:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[562.177935 3:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[562.297261 0:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[574.698187 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[574.739965 0:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[574.817511 2:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[575.381392 3:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[576.707917 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[576.747170 2:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[576.827851 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[577.387925 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[580.717390 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[580.765494 2:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[580.841976 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[581.398898 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[582.719852 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[582.767840 2:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[582.849833 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[583.407239 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+4 x File Read 4096 bufsize 8000 maxblocks [37m[615.603913 0:170 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[617.169827 3:172 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[620.249720 3:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[620.487569 3:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[620.541860 1:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[620.564451 1:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.258076 0:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.498005 1:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.547964 2:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.567971 3:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[633.883656 0:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[634.301714 3:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[634.856473 1:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[634.952029 2:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[635.887228 0:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[636.308822 1:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[636.859846 2:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[636.957811 3:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[669.667275 2:183 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[671.325621 1:185 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[674.370955 1:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[674.579186 3:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[674.646023 2:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[674.752852 0:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.378090 1:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.588013 2:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.647970 3:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.757272 0:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[688.257833 0:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[688.588861 1:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[689.245600 2:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[689.452726 3:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[690.267208 1:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[690.598719 2:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[691.248882 3:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[691.459790 0:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[724.073523 3:196 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[725.634867 2:198 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[728.651360 2:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[728.862017 3:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[728.914866 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[729.010936 1:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[730.658129 2:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[730.868000 3:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[730.917274 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[731.017935 1:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[739.391674 0:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[740.259455 1:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[741.468003 2:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[741.927465 2:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[742.175803 2:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[742.267881 1:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[743.929844 3:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[744.179905 0:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+4 x File Write 4096 bufsize 8000 maxblocks [37m[776.789814 2:209 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[778.374951 1:211 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[781.358247 1:214 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[781.566383 1:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[781.619409 2:218 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[781.761395 0:220 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.360041 3:214 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.568884 0:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.628043 1:218 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.767276 2:220 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[822.070366 2:222 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[823.665405 1:224 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[826.724832 0:229 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[826.927224 2:227 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[826.963079 1:233 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[827.033952 2:231 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[828.727363 2:229 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[828.937961 3:227 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[828.967933 0:233 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[829.040877 1:231 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[865.881305 0:235 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[867.499870 3:237 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[870.700813 2:242 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[870.873879 0:240 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[870.924999 3:246 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[870.992453 0:244 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.709025 0:242 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.879039 1:240 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.929947 2:246 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.999001 3:244 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:12:04 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Mon Jan 19 2026 18:12:05 - 18:19:01
+4 CPUs in system; running 1 parallel copy of tests
+
+File Copy 4096 bufsize 8000 maxblocks          2440.7 KBps  (30.0 s, 2 samples)
+File Read 4096 bufsize 8000 maxblocks          9103.1 KBps  (30.0 s, 2 samples)
+File Write 4096 bufsize 8000 maxblocks         3080.9 KBps  (31.2 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 4096 bufsize 8000 maxblocks          5800.0       2440.7      4.2
+File Read 4096 bufsize 8000 maxblocks             ---       9103.1      ---
+File Write 4096 bufsize 8000 maxblocks            ---       3080.9      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            4.2
+
+------------------------------------------------------------------------
+Benchmark Run: Mon Jan 19 2026 18:19:01 - 18:26:58
+4 CPUs in system; running 4 parallel copies of tests
+
+File Copy 4096 bufsize 8000 maxblocks          2889.7 KBps  (30.1 s, 2 samples)
+File Read 4096 bufsize 8000 maxblocks         11697.4 KBps  (30.0 s, 2 samples)
+File Write 4096 bufsize 8000 maxblocks         5048.4 KBps  (33.4 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 4096 bufsize 8000 maxblocks          5800.0       2889.7      5.0
+File Read 4096 bufsize 8000 maxblocks             ---      11697.4      ---
+File Write 4096 bufsize 8000 maxblocks            ---       5048.4      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            5.0
+
+[UB] Run completed successfully
+File Copy 4096 bufsize 8000 maxblocks 1 parallel: 4.20
+├─ File Read 4096 bufsize 8000 maxblocks 1 parallel: 9103.10
+├─ File Write 4096 bufsize 8000 maxblocks 1 parallel: 3080.90
+├─ File Copy 4096 bufsize 8000 maxblocks 4 parallel: 5.00
+├─ File Read 4096 bufsize 8000 maxblocks 4 parallel: 11697.40
+└─ File Write 4096 bufsize 8000 maxblocks 4 parallel: 5048.40
+[unixbench-fsdisk-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-fsdisk-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-DiFbIr.img
+[unixbench-fsdisk-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-fsdisk-test] 测试用例: fsdisk fsdisk-r fsdisk-w
+[unixbench-fsdisk-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-fsdisk-test] 启动 StarryOS,执行 UnixBench
+[unixbench-fsdisk-test] Host 级别超时保护: 1500s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-19 18:11:49.004024432 UTC
+
+[37m[  1.193102 axnet:131] [33m  No vsock device found![m
+[m[37m[  1.194300 axdisplay:26] [33m  No display device found![m
+[mWelcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: fsdisk fsdisk-r fsdisk-w
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x File Copy 4096 bufsize 8000 maxblocks [37m[ 17.154083 1:68 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 18.639326 0:70 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 21.621983 0:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 23.627491 1:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 27.926405 2:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 29.929890 3:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 33.940140 0:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 35.947235 2:73 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 67.382744 2:75 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 68.958190 1:77 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 71.954614 1:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 73.959851 2:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 81.742726 3:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 83.747946 0:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 87.754726 1:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 89.757924 3:80 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[121.215033 1:82 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[122.781739 0:84 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[125.726159 0:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[127.729030 1:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[131.987919 2:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[133.997904 2:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[138.002762 3:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[140.008851 0:87 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+1 x File Read 4096 bufsize 8000 maxblocks [37m[171.561209 0:89 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[173.255080 3:91 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[176.243199 3:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[178.249969 0:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[184.585821 1:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[186.587873 1:94 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[219.046893 1:96 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[220.544317 0:98 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[223.486372 0:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[225.497340 1:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[229.843495 2:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[231.848889 2:101 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[264.281099 2:103 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[265.895170 1:105 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[268.827757 1:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[270.840054 2:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[278.518030 3:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[280.529835 0:108 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+1 x File Write 4096 bufsize 8000 maxblocks [37m[313.040522 0:110 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[314.728960 3:112 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[317.746630 3:115 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[319.749068 0:115 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[353.543098 0:117 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[355.103593 3:119 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[358.057211 3:122 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[360.061938 0:122 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[392.654793 0:124 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[394.244623 3:126 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[397.167482 3:129 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[399.178022 0:129 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+4 x File Copy 4096 bufsize 8000 maxblocks [37m[432.692433 0:131 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[434.260714 3:133 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[437.470891 3:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[437.486606 0:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[437.582094 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[437.629857 0:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.479951 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.488982 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.589922 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[439.637250 3:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.543953 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.744865 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.818244 3:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[453.884043 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.548964 3:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.751748 0:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.832724 1:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[455.887791 2:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.553034 3:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.761706 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.839504 2:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[459.902715 3:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.557956 0:138 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.769883 1:136 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.849844 2:141 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[461.908873 3:142 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[494.641220 3:144 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[496.196316 2:146 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[499.268867 2:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[499.408797 1:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[499.467084 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[499.629270 0:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.280102 2:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.417934 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.477305 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[501.637258 1:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[513.672307 2:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[514.020657 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[515.093495 1:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[515.206429 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[515.679847 3:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[516.027245 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[517.098713 1:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[517.209067 2:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[519.697887 3:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[520.039644 1:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[521.111468 2:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[521.242307 3:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[521.711790 0:149 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[522.048898 1:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[523.117795 0:155 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[523.247846 1:153 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[555.332879 2:157 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[556.900695 1:159 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[559.942490 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[560.155688 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[560.174358 2:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[560.287999 0:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[561.952823 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[562.158008 2:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[562.177935 3:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[562.297261 0:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[574.698187 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[574.739965 0:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[574.817511 2:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[575.381392 3:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[576.707917 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[576.747170 2:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[576.827851 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[577.387925 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[580.717390 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[580.765494 2:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[580.841976 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[581.398898 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[582.719852 1:162 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[582.767840 2:168 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[582.849833 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[583.407239 0:166 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+4 x File Read 4096 bufsize 8000 maxblocks [37m[615.603913 0:170 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[617.169827 3:172 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[620.249720 3:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[620.487569 3:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[620.541860 1:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[620.564451 1:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.258076 0:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.498005 1:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.547964 2:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[622.567971 3:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[633.883656 0:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[634.301714 3:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[634.856473 1:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[634.952029 2:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[635.887228 0:175 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[636.308822 1:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[636.859846 2:181 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[636.957811 3:179 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[669.667275 2:183 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[671.325621 1:185 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[674.370955 1:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[674.579186 3:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[674.646023 2:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[674.752852 0:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.378090 1:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.588013 2:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.647970 3:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[676.757272 0:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[688.257833 0:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[688.588861 1:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[689.245600 2:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[689.452726 3:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[690.267208 1:194 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[690.598719 2:188 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[691.248882 3:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[691.459790 0:192 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[724.073523 3:196 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[725.634867 2:198 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[728.651360 2:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[728.862017 3:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[728.914866 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[729.010936 1:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[730.658129 2:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[730.868000 3:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[730.917274 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[731.017935 1:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[739.391674 0:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[740.259455 1:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[741.468003 2:205 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[741.927465 2:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[742.175803 2:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[742.267881 1:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[743.929844 3:201 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[744.179905 0:207 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+4 x File Write 4096 bufsize 8000 maxblocks [37m[776.789814 2:209 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[778.374951 1:211 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[781.358247 1:214 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[781.566383 1:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[781.619409 2:218 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[781.761395 0:220 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.360041 3:214 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.568884 0:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.628043 1:218 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[783.767276 2:220 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[822.070366 2:222 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[823.665405 1:224 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[826.724832 0:229 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[826.927224 2:227 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[826.963079 1:233 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[827.033952 2:231 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[828.727363 2:229 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[828.937961 3:227 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[828.967933 0:233 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[829.040877 1:231 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[865.881305 0:235 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[867.499870 3:237 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[870.700813 2:242 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[870.873879 0:240 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[870.924999 3:246 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[870.992453 0:244 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.709025 0:242 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.879039 1:240 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.929947 2:246 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[872.999001 3:244 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:12:04 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Mon Jan 19 2026 18:12:05 - 18:19:01
+4 CPUs in system; running 1 parallel copy of tests
+
+File Copy 4096 bufsize 8000 maxblocks          2440.7 KBps  (30.0 s, 2 samples)
+File Read 4096 bufsize 8000 maxblocks          9103.1 KBps  (30.0 s, 2 samples)
+File Write 4096 bufsize 8000 maxblocks         3080.9 KBps  (31.2 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 4096 bufsize 8000 maxblocks          5800.0       2440.7      4.2
+File Read 4096 bufsize 8000 maxblocks             ---       9103.1      ---
+File Write 4096 bufsize 8000 maxblocks            ---       3080.9      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            4.2
+
+------------------------------------------------------------------------
+Benchmark Run: Mon Jan 19 2026 18:19:01 - 18:26:58
+4 CPUs in system; running 4 parallel copies of tests
+
+File Copy 4096 bufsize 8000 maxblocks          2889.7 KBps  (30.1 s, 2 samples)
+File Read 4096 bufsize 8000 maxblocks         11697.4 KBps  (30.0 s, 2 samples)
+File Write 4096 bufsize 8000 maxblocks         5048.4 KBps  (33.4 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 4096 bufsize 8000 maxblocks          5800.0       2889.7      5.0
+File Read 4096 bufsize 8000 maxblocks             ---      11697.4      ---
+File Write 4096 bufsize 8000 maxblocks            ---       5048.4      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            5.0
+
+[UB] Run completed successfully
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 10244 (make)
+make[1]: *** [Makefile:44: justrun] Terminated
+[unixbench-fsdisk-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260119-164053/artifacts/unixbench-fsdisk-test/vm-20260119-164053.log
+[unixbench-fsdisk-test] 解析指标：
+[unixbench-fsdisk-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260119-164053/artifacts/unixbench-fsdisk-test/results.json
+[unixbench-fsdisk-test] byte-unixbench 用例完成
+[unixbench-fsdisk-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260119-164053/artifacts/unixbench-fsdisk-test/vm-20260119-164053.log
+[unixbench-fsdisk-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260119-164053/artifacts/unixbench-fsdisk-test/summary.txt
