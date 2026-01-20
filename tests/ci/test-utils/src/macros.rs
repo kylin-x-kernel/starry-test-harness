@@ -1,3 +1,12 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2025 Weikang Guo <guoweikang.kernel@gmail.com>
+// Copyright (C) 2025 KylinSoft Co., Ltd. <https://www.kylinos.cn/>
+// See LICENSE for license details.
+// 
+// This file has been modified by KylinSoft on 2025.
+
+//! Driver for the Arm Generic Interrupt Controller version 3 (or 4).
+
 //! POSIX `waitpid` 状态宏的 Rust 实现
 //!
 //! 这些宏用于解析 `waitpid` 返回的状态码，判断子进程的退出、信号、停止等状态。
