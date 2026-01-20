@@ -1,165 +1,77 @@
 # StarryOS Test Manifest
-# 由 meta-starry 的 test-runner 读取并执行
+# 测试配置中心 - 配置驱动的测试架构
 
 [metadata]
 version = "1.0"
 repository = "https://github.com/kylin-x-kernel/starry-test-harness"
+description = "StarryOS test harness with modular, configuration-driven architecture"
 
-# ==================== CI 门禁测试套件 ====================
-# 快速验证核心功能，每次提交都运行，必须全部通过
+# ==================== CI 门禁测试 ====================
+# 快速验证核心功能，每次提交都运行
 
 [ci]
 description = "CI gate tests - must pass for every commit"
-timeout_default = 300
-critical = true
 enabled = true
+timeout_default = 300
 
-[[ci.tests]]
-name = "file_io_basic"
-description = "基础文件 I/O 读写验证"
-binary = "file_io_basic"
-source = "tests/ci/cases/tests/file_io_basic.rs"
-timeout = 30
+[[ci.modules]]
+name = "rust-tests"
+type = "rust-cargo"
+description = "Rust integration tests for core functionality"
+path = "tests/ci/cases"
+tests = ["file_io_basic", "multi_processors", "process_spawn"]
 critical = true
-tags = ["filesystem", "io"]
 
-[[ci.tests]]
-name = "multi_processors"
-description = "多处理器并发能力验证"
-binary = "multi_processors"
-source = "tests/ci/cases/tests/multi_processors.rs"
-timeout = 60
+[[ci.modules]]
+name = "libc-test"
+type = "libc-suite"
+description = "libc compatibility test suite"
+path = "tests/ci/cases/libc-test"
+runner = "libc-test/run"
+suites = ["functional", "math", "musl", "regression"]
+skip_patterns_file = "tests/ci/cases/libc-test/skip_rules.txt"
 critical = true
-tags = ["concurrency", "multicore"]
 
-[[ci.tests]]
-name = "process_spawn"
-description = "进程创建与管理验证"
-binary = "process_spawn"
-source = "tests/ci/cases/tests/process_spawn.rs"
-timeout = 30
-critical = true
-tags = ["process", "spawn"]
-
-[[ci.tests]]
-name = "libc_test_functional"
-description = "libc-test functional 模块 - 标准 C 库函数测试"
-binary = "libc_test_functional"
-source = "tests/ci/cases/libc-test/libc-test-bins/src/functional"
-timeout = 300
-critical = true
-tags = ["libc", "compatibility", "functional"]
-# 通过包装脚本运行，参数：functional dynamic
-wrapper = true
-
-[[ci.tests]]
-name = "libc_test_math"
-description = "libc-test math 模块 - 数学库函数测试"
-binary = "libc_test_math"
-source = "tests/ci/cases/libc-test/libc-test-bins/src/math"
-timeout = 300
-critical = true
-tags = ["libc", "compatibility", "math"]
-wrapper = true
-
-[[ci.tests]]
-name = "libc_test_musl"
-description = "libc-test musl 模块 - musl libc 静态测试"
-binary = "libc_test_musl"
-source = "tests/ci/cases/libc-test/libc-test-bins/src/musl"
-timeout = 300
-critical = true
-tags = ["libc", "compatibility", "musl"]
-wrapper = true
-
-[[ci.tests]]
-name = "libc_test_regression"
-description = "libc-test regression 模块 - 回归测试"
-binary = "libc_test_regression"
-source = "tests/ci/cases/libc-test/libc-test-bins/src/regression"
-timeout = 300
-critical = true
-tags = ["libc", "compatibility", "regression"]
-wrapper = true
-
-# ==================== Daily 测试套件 ====================
-# 长时间运行测试，包括压力测试和稳定性测试
-# 每日定时运行，不阻塞 CI 门禁
+# ==================== Daily 测试 ====================
+# 长时间运行测试，不阻塞 CI 门禁
 
 [daily]
 description = "Daily tests including stress and long-running scenarios"
-timeout_default = 1800
-critical = false
-# Daily 测试不在 CI 门禁中运行
 enabled = false
+timeout_default = 1800
 
-[[daily.tests]]
-name = "concurrency_load"
-description = "并发负载压力测试（8线程 x 2000次迭代）"
+[[daily.modules]]
+name = "concurrency-load"
+type = "rust-bin"
+description = "Concurrency stress test"
+path = "tests/daily/cases/concurrency_load"
 binary = "concurrency_load"
-source = "tests/daily/cases/concurrency_load/src/main.rs"
-timeout = 600
-critical = false
-tags = ["stress", "concurrency"]
 args = ["8", "2000"]
 
-# ==================== Benchmark 测试套件 ====================
-# 性能基准测试（由 meta-starry 中的 unixbench 包提供）
-# 性能测试，不在 CI 门禁中运行
-
-[benchmark]
-description = "Performance benchmarks"
-timeout_default = 3600
+[[daily.modules]]
+name = "unixbench"
+type = "external-script"
+description = "UnixBench performance tests"
+path = "tests/daily/cases/unixbench"
+runner = "run_byte_unixbench.sh"
 critical = false
-enabled = false
 
-[[benchmark.tests]]
-name = "unixbench_dhry2reg"
-description = "UnixBench Dhrystone 2 测试"
-binary = "/usr/share/unixbench/Run"
-timeout = 600
-tags = ["benchmark", "cpu"]
-# 注意：UnixBench 由 meta-starry 的 unixbench recipe 提供
-external = true
+# ==================== 测试安装配置 ====================
+# 定义如何将测试安装到镜像中
 
-[[benchmark.tests]]
-name = "unixbench_whetstone"
-description = "UnixBench Whetstone 浮点测试"
-binary = "/usr/share/unixbench/Run"
-timeout = 600
-tags = ["benchmark", "fpu"]
-external = true
+[install]
+# 安装基础路径
+base_dir = "/usr/lib/starry-tests"
 
-[[benchmark.tests]]
-name = "unixbench_syscall"
-description = "UnixBench 系统调用测试"
-binary = "/usr/share/unixbench/Run"
-timeout = 600
-tags = ["benchmark", "syscall"]
-external = true
+# 模块安装路径模板
+[install.paths]
+rust-cargo = "{base_dir}/rust-tests"
+libc-suite = "{base_dir}/libc-test"
+rust-bin = "{base_dir}/bins"
+external-script = "{base_dir}/external"
 
-# ==================== 构建配置 ====================
-# 用于 meta-starry 构建系统
-
-[build]
-# CI 测试包的构建配置
-ci_package = "ci-cases"
-ci_package_path = "tests/ci/cases"
-ci_target_type = "tests"  # Cargo 集成测试
-
-# Daily 测试包的构建配置
-daily_packages = [
-    { name = "concurrency_load", path = "tests/daily/cases/concurrency_load", type = "bin" }
-]
-
-# 构建目标架构
-default_target = "aarch64-unknown-linux-musl"
-
-# 构建特性标志
-features = []
-
-# 安装路径（相对于 ${D}${libdir}/starry-tests/）
-install_paths = [
-    { suite = "ci", src = "tests/ci/cases/target/*/release/deps/*", dest = "ci/" },
-    { suite = "daily", src = "tests/daily/cases/*/target/*/release/*", dest = "daily/" }
-]
+# 公共工具安装
+[install.common]
+enabled = true
+source = "common"
+dest = "{base_dir}/common"
