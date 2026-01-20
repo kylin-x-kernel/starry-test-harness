@@ -1,77 +1,69 @@
 # StarryOS Test Manifest
 # 测试配置中心 - 配置驱动的测试架构
-
-[metadata]
 version = "1.0"
-repository = "https://github.com/kylin-x-kernel/starry-test-harness"
-description = "StarryOS test harness with modular, configuration-driven architecture"
+harness_path = "."
 
 # ==================== CI 门禁测试 ====================
-# 快速验证核心功能，每次提交都运行
-
-[ci]
-description = "CI gate tests - must pass for every commit"
-enabled = true
+[[test_suite]]
+name = "ci"
+description = "Continuous Integration tests for StarryOS"
 timeout_default = 300
-
-[[ci.modules]]
-name = "rust-tests"
-type = "rust-cargo"
-description = "Rust integration tests for core functionality"
-path = "tests/ci/cases"
-tests = ["file_io_basic", "multi_processors", "process_spawn"]
 critical = true
-
-[[ci.modules]]
-name = "libc-test"
-type = "libc-suite"
-description = "libc compatibility test suite"
-path = "tests/ci/cases/libc-test"
-runner = "libc-test/run"
-suites = ["functional", "math", "musl", "regression"]
-skip_patterns_file = "tests/ci/cases/libc-test/skip_rules.txt"
-critical = true
-
-# ==================== Daily 测试 ====================
-# 长时间运行测试，不阻塞 CI 门禁
-
-[daily]
-description = "Daily tests including stress and long-running scenarios"
-enabled = false
-timeout_default = 1800
-
-[[daily.modules]]
-name = "concurrency-load"
-type = "rust-bin"
-description = "Concurrency stress test"
-path = "tests/daily/cases/concurrency_load"
-binary = "concurrency_load"
-args = ["8", "2000"]
-
-[[daily.modules]]
-name = "unixbench"
-type = "external-script"
-description = "UnixBench performance tests"
-path = "tests/daily/cases/unixbench"
-runner = "run_byte_unixbench.sh"
-critical = false
-
-# ==================== 测试安装配置 ====================
-# 定义如何将测试安装到镜像中
-
-[install]
-# 安装基础路径
-base_dir = "/usr/lib/starry-tests"
-
-# 模块安装路径模板
-[install.paths]
-rust-cargo = "{base_dir}/rust-tests"
-libc-suite = "{base_dir}/libc-test"
-rust-bin = "{base_dir}/bins"
-external-script = "{base_dir}/external"
-
-# 公共工具安装
-[install.common]
 enabled = true
-source = "common"
-dest = "{base_dir}/common"
+
+[[test_suite.tests]]
+name = "file_io_basic"
+type = "rust"
+path = "tests/ci/cases/target/{rust_target}/release/deps/file_io_basic-{hash}"
+description = "Basic file I/O operations test"
+timeout_seconds = 30
+
+[[test_suite.tests]]
+name = "multi_processors"
+type = "rust"
+path = "tests/ci/cases/target/{rust_target}/release/deps/multi_processors-{hash}"
+description = "Multi-processor concurrency test"
+timeout_seconds = 60
+
+[[test_suite.tests]]
+name = "process_spawn"
+type = "rust"
+path = "tests/ci/cases/target/{rust_target}/release/deps/process_spawn-{hash}"
+description = "Process spawn and basic management test"
+timeout_seconds = 60
+
+[[test_suite.tests]]
+name = "libc_test_functional"
+type = "libc"
+path = "tests/ci/cases/libc-test"
+module = "functional"
+mode = "dynamic"
+description = "libc-test functional module"
+timeout_seconds = 600
+
+[[test_suite.tests]]
+name = "libc_test_math"
+type = "libc"
+path = "tests/ci/cases/libc-test"
+module = "math"
+mode = "dynamic"
+description = "libc-test math module"
+timeout_seconds = 600
+
+[[test_suite.tests]]
+name = "libc_test_musl"
+type = "libc"
+path = "tests/ci/cases/libc-test"
+module = "musl"
+mode = "static"
+description = "libc-test musl module (static)"
+timeout_seconds = 600
+
+[[test_suite.tests]]
+name = "libc_test_regression"
+type = "libc"
+path = "tests/ci/cases/libc-test"
+module = "regression"
+mode = "dynamic"
+description = "libc-test regression module"
+timeout_seconds = 600
