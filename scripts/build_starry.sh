@@ -14,7 +14,7 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SUITE=${1:-ci-test}
 ARCH=${ARCH:-aarch64}
 
-STARRYOS_REMOTE="${STARRYOS_REMOTE:-https://github.com/kylin-x-kernel/StarryOS.git}"
+STARRYOS_REMOTE="${STARRYOS_REMOTE:-https://github.com/kylin-x-kernel/x-kernel.git}"
 STARRYOS_COMMIT="${STARRYOS_REF:-${STARRYOS_COMMIT:-main}}"
 STARRYOS_BRANCH="${STARRYOS_BRANCH:-local}"
 STARRYOS_ROOT=${STARRYOS_ROOT:-${REPO_ROOT}/.cache/StarryOS}
