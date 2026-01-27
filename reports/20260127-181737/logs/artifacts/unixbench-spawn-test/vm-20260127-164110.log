@@ -1,0 +1,99 @@
+[starry-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[starry-ci] spawning make ARCH=aarch64 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-neTIhH.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+tarry:~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: spawn
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Process Creation [37m[ 18.260727 1:67 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 19.847516 0:69 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 53.225988 2:3780 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 54.717147 1:3782 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 88.116419 2:7519 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 89.759116 1:7521 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Process Creation [37m[123.240294 0:11265 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[124.757657 3:11267 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[158.527469 1:19059 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[160.026838 0:19061 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[193.935044 1:26863 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[195.506820 0:26865 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   17:10:00 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Tue Jan 27 2026 17:10:01 - 17:11:46
+4 CPUs in system; running 1 parallel copy of tests
+
+Process Creation                                123.6 lps   (30.2 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Process Creation                                126.0        123.6      9.8
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            9.8
+
+------------------------------------------------------------------------
+Benchmark Run: Tue Jan 27 2026 17:11:46 - 17:13:33
+4 CPUs in system; running 4 parallel copies of tests
+
+Process Creation                                256.4 lps   (30.4 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Process Creation                                126.0        256.4     20.4
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           20.4
+
+[UB] Run completed successfully

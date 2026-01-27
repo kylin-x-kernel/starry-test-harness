@@ -1,0 +1,300 @@
+[case] unixbench-dhry2reg-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh dhry2reg
+[case] timeout budget: 600s
+[starry-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[starry-ci] spawning make ARCH=aarch64 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-YuSFLp.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+tarry:~# 
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: dhry2reg
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Dhrystone 2 using register variables [37m[ 19.899225 1:67 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 21.466748 0:69 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 34.936379 3:74 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 36.460161 2:76 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 49.986794 0:81 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 51.506411 3:83 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 64.845422 1:88 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 66.459378 0:90 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 79.714692 3:95 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 81.343036 2:97 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[ 94.740251 1:102 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 96.328508 0:104 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[109.732150 3:109 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[111.223696 2:111 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[124.507569 1:116 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[126.052800 0:118 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[139.445596 3:123 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[140.967248 2:125 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[154.330107 1:130 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[155.931548 0:132 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x Dhrystone 2 using register variables [37m[169.290888 3:137 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[170.808559 2:139 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[184.794087 1:150 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[186.361988 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[200.391566 3:163 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[201.896701 2:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[216.031068 3:176 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[217.514047 2:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[231.593584 3:189 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[233.100114 2:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[246.970083 1:202 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[248.493233 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[262.752629 0:215 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[264.270019 3:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[278.182685 0:228 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[279.720093 3:230 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[293.577201 0:241 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[295.153225 3:243 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[309.183070 1:254 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[310.785206 0:256 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   16:41:55 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Tue Jan 27 2026 16:41:56 - 16:44:25
+4 CPUs in system; running 1 parallel copy of tests
+
+Dhrystone 2 using register variables        2426766.5 lps   (10.2 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Dhrystone 2 using register variables         116700.0    2426766.5    207.9
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                          207.9
+
+------------------------------------------------------------------------
+Benchmark Run: Tue Jan 27 2026 16:44:25 - 16:47:01
+4 CPUs in system; running 4 parallel copies of tests
+
+Dhrystone 2 using register variables        5906500.1 lps   (10.4 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Dhrystone 2 using register variables         116700.0    5906500.1    506.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                          506.1
+
+[UB] Run completed successfully
+Dhrystone 2 using register variables 1 parallel: 207.90
+└─ Dhrystone 2 using register variables 4 parallel: 506.10
+[unixbench-dhry2reg-test] 下载 UnixBench 镜像: https://github.com/sunhaosheng/rootfs-unixbench/releases/download/20251216/disk.img.xz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+ 82 65.9M   82 54.2M    0     0  48.4M      0  0:00:01  0:00:01 --:--:-- 48.4M100 65.9M  100 65.9M    0     0  48.4M      0  0:00:01  0:00:01 --:--:-- 48.7M
+[unixbench-dhry2reg-test] 解压 UnixBench 镜像
+[unixbench-dhry2reg-test] 已缓存 UnixBench 镜像 -> /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-dhry2reg-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-dhry2reg-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-YuSFLp.img
+[unixbench-dhry2reg-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-dhry2reg-test] 测试用例: dhry2reg
+[unixbench-dhry2reg-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-dhry2reg-test] 启动 StarryOS,执行 UnixBench
+[unixbench-dhry2reg-test] Host 级别超时保护: 900s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-27 16:41:37.003684272 UTC
+
+Welcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# /root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: dhry2reg
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Dhrystone 2 using register variables [37m[ 19.899225 1:67 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 21.466748 0:69 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 34.936379 3:74 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 36.460161 2:76 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 49.986794 0:81 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 51.506411 3:83 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 64.845422 1:88 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 66.459378 0:90 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 79.714692 3:95 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 81.343036 2:97 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[ 94.740251 1:102 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 96.328508 0:104 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[109.732150 3:109 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[111.223696 2:111 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[124.507569 1:116 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[126.052800 0:118 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[139.445596 3:123 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[140.967248 2:125 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[154.330107 1:130 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[155.931548 0:132 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x Dhrystone 2 using register variables [37m[169.290888 3:137 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[170.808559 2:139 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[184.794087 1:150 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[186.361988 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[200.391566 3:163 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[201.896701 2:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[216.031068 3:176 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[217.514047 2:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[231.593584 3:189 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[233.100114 2:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[246.970083 1:202 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[248.493233 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[262.752629 0:215 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[264.270019 3:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[278.182685 0:228 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[279.720093 3:230 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[293.577201 0:241 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[295.153225 3:243 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[309.183070 1:254 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[310.785206 0:256 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   16:41:55 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Tue Jan 27 2026 16:41:56 - 16:44:25
+4 CPUs in system; running 1 parallel copy of tests
+
+Dhrystone 2 using register variables        2426766.5 lps   (10.2 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Dhrystone 2 using register variables         116700.0    2426766.5    207.9
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                          207.9
+
+------------------------------------------------------------------------
+Benchmark Run: Tue Jan 27 2026 16:44:25 - 16:47:01
+4 CPUs in system; running 4 parallel copies of tests
+
+Dhrystone 2 using register variables        5906500.1 lps   (10.4 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Dhrystone 2 using register variables         116700.0    5906500.1    506.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                          506.1
+
+[UB] Run completed successfully
+__EXIT:0__qemu-system-aarch64: terminating on signal 15 from pid 8544 (make)
+[unixbench-dhry2reg-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260127-164110/artifacts/unixbench-dhry2reg-test/vm-20260127-164110.log
+[unixbench-dhry2reg-test] 解析指标：
+[unixbench-dhry2reg-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260127-164110/artifacts/unixbench-dhry2reg-test/results.json
+[unixbench-dhry2reg-test] byte-unixbench 用例完成
+[unixbench-dhry2reg-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260127-164110/artifacts/unixbench-dhry2reg-test/vm-20260127-164110.log
+[unixbench-dhry2reg-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260127-164110/artifacts/unixbench-dhry2reg-test/summary.txt
