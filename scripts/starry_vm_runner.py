@@ -126,7 +126,7 @@ def run(args):
     if not root.is_dir():
         raise SystemExit(f"StarryOS root not found: {root}")
 
-    plat_config = root / ".axconfig.toml"
+    plat_config = root / ".platconfig.toml"
     if not plat_config.exists():
         raise SystemExit(f"missing {plat_config}, run make ARCH={args.arch} build first")
 
