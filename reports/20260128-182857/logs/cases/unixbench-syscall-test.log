@@ -1,0 +1,293 @@
+[case] unixbench-syscall-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh syscall
+[case] timeout budget: 600s
+[starry-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[starry-ci] spawning make ARCH=aarch64 SMP=4 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-8iulUm.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+tarry:~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: syscall
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x System Call Overhead [37m[ 18.571047 0:67 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 20.097794 3:69 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 33.516282 2:74 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 35.176530 1:76 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 48.556172 3:81 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 50.120131 2:83 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 63.587703 0:88 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 65.086565 3:90 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 78.522139 2:95 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 80.173493 1:97 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[ 93.647654 0:102 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 95.182942 3:104 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[108.627929 1:109 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[110.205700 0:111 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[123.605314 3:116 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[125.134394 2:118 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[138.562819 1:123 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[140.098050 0:125 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[153.478328 3:130 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[155.041080 2:132 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x System Call Overhead [37m[168.589393 1:137 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[170.261216 0:139 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[184.178284 1:150 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[185.840871 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[199.853123 0:163 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[201.452568 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[215.440645 0:176 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[217.067898 3:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[231.083647 0:189 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[232.634467 3:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[246.499304 1:202 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[248.008677 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[261.945944 2:215 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[263.492375 1:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[277.452759 1:228 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[278.995873 0:230 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[293.393080 0:241 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[294.988570 3:243 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[308.801515 0:254 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[310.322035 3:256 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   17:03:34 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Jan 28 2026 17:03:36 - 17:06:06
+4 CPUs in system; running 1 parallel copy of tests
+
+System Call Overhead                          33029.5 lps   (10.2 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+System Call Overhead                          15000.0      33029.5     22.0
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           22.0
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Jan 28 2026 17:06:06 - 17:08:42
+4 CPUs in system; running 4 parallel copies of tests
+
+System Call Overhead                          36902.8 lps   (10.5 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+System Call Overhead                          15000.0      36902.8     24.6
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           24.6
+
+[UB] Run completed successfully
+System Call Overhead 1 parallel: 22.00
+└─ System Call Overhead 4 parallel: 24.60
+[unixbench-syscall-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-syscall-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-8iulUm.img
+[unixbench-syscall-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-syscall-test] 测试用例: syscall
+[unixbench-syscall-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-syscall-test] 启动 StarryOS,执行 UnixBench
+[unixbench-syscall-test] Host 级别超时保护: 900s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+       d8888                            .d88888b.   .d8888b.
+      d88888                           d88P" "Y88b d88P  Y88b
+     d88P888                           888     888 Y88b.
+    d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+   d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+  d88P   888 888     888      88888888 888     888       "888
+ d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-28 17:03:18.004050416 UTC
+
+Welcome to [96m[1mStarry OS[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+starry:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: syscall
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x System Call Overhead [37m[ 18.571047 0:67 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 20.097794 3:69 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 33.516282 2:74 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 35.176530 1:76 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 48.556172 3:81 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 50.120131 2:83 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 63.587703 0:88 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 65.086565 3:90 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 78.522139 2:95 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 80.173493 1:97 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[ 93.647654 0:102 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 95.182942 3:104 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[108.627929 1:109 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[110.205700 0:111 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[123.605314 3:116 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[125.134394 2:118 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[138.562819 1:123 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[140.098050 0:125 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[153.478328 3:130 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[155.041080 2:132 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x System Call Overhead [37m[168.589393 1:137 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[170.261216 0:139 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[184.178284 1:150 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[185.840871 0:152 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[199.853123 0:163 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[201.452568 3:165 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[215.440645 0:176 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[217.067898 3:178 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[231.083647 0:189 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[232.634467 3:191 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[246.499304 1:202 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[248.008677 0:204 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[261.945944 2:215 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[263.492375 1:217 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[277.452759 1:228 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[278.995873 0:230 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[293.393080 0:241 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[294.988570 3:243 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[308.801515 0:254 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[310.322035 3:256 starry_api::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: starry: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   17:03:34 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Jan 28 2026 17:03:36 - 17:06:06
+4 CPUs in system; running 1 parallel copy of tests
+
+System Call Overhead                          33029.5 lps   (10.2 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+System Call Overhead                          15000.0      33029.5     22.0
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           22.0
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Jan 28 2026 17:06:06 - 17:08:42
+4 CPUs in system; running 4 parallel copies of tests
+
+System Call Overhead                          36902.8 lps   (10.5 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+System Call Overhead                          15000.0      36902.8     24.6
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           24.6
+
+[UB] Run completed successfully
+__EXIT:0__qemu-system-aarch64: terminating on signal 15 from pid 9013 (make)
+[unixbench-syscall-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260128-165111/artifacts/unixbench-syscall-test/vm-20260128-165111.log
+[unixbench-syscall-test] 解析指标：
+[unixbench-syscall-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260128-165111/artifacts/unixbench-syscall-test/results.json
+[unixbench-syscall-test] byte-unixbench 用例完成
+[unixbench-syscall-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260128-165111/artifacts/unixbench-syscall-test/vm-20260128-165111.log
+[unixbench-syscall-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260128-165111/artifacts/unixbench-syscall-test/summary.txt
