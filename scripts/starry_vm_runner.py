@@ -152,9 +152,13 @@ def run(args):
                 "fix device permissions or run with elevated privileges"
             )
 
+    # Read SMP from environment or use default
+    smp = os.environ.get("SMP", "4")
+    
     cmd = [
         "make",
         f"ARCH={args.arch}",
+        f"SMP={smp}",
         f"PLAT_CONFIG={plat_config}",
         "NET=y",
         f"VSOCK={'y' if vsock_enabled else 'n'}",
