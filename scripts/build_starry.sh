@@ -99,6 +99,48 @@ clone_or_update_repo
 STARRYOS_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
 log "StarryOS commit: ${STARRYOS_COMMIT}"
 
+# Download rootfs template with cache directory support
+ROOTFS_CACHE_DIR="${ROOTFS_CACHE_DIR:-${REPO_ROOT}/.cache/rootfs}"
+mkdir -p "${ROOTFS_CACHE_DIR}"
+log "Ensuring rootfs template is available in ${ROOTFS_CACHE_DIR}"
+IMG="rootfs-${ARCH}.img"
+
+ensure_rootfs_template() {
+  local arch="$1"
+  local img_path="${ROOTFS_CACHE_DIR}/rootfs-${arch}.img"
+
+  if [[ "${arch}" == "x86_64" ]]; then
+    local x86_url="${X86_64_ROOTFS_URL:-https://github.com/Starry-OS/rootfs/releases/download/20250917/rootfs-x86_64.img.xz}"
+    if [[ ! -f "${img_path}" ]]; then
+      log "Downloading rootfs template for x86_64 from ${x86_url}" >&2
+      curl -f -L "${x86_url}" -o "${img_path}.xz"
+      xz -d "${img_path}.xz"
+    fi
+    log "Rootfs template ready: ${img_path}" >&2
+    echo "${img_path}"
+    return 0
+  fi
+
+  local img_version="${ROOTFS_VERSION:-20250917}"
+  local img_url="https://github.com/Starry-OS/rootfs/releases/download/${img_version}"
+  if [[ ! -f "${img_path}" ]]; then
+    log "Downloading rootfs template rootfs-${arch}.img (version ${img_version})" >&2
+    curl -f -L "${img_url}/rootfs-${arch}.img.xz" -o "${img_path}.xz"
+    xz -d "${img_path}.xz"
+  fi
+  log "Rootfs template ready: ${img_path}" >&2
+  echo "${img_path}"
+}
+
+IMG_PATH="$(ensure_rootfs_template "${ARCH}")"
+
+# Copy rootfs template to StarryOS root for test scripts
+STARRYOS_IMG="${STARRYOS_ROOT}/${IMG}"
+if [[ ! -f "${STARRYOS_IMG}" ]] || [[ "${IMG_PATH}" -nt "${STARRYOS_IMG}" ]]; then
+  log "Copying rootfs template to ${STARRYOS_IMG}"
+  cp "${IMG_PATH}" "${STARRYOS_IMG}"
+fi
+
 if ! command -v rustup >/dev/null 2>&1; then
   log "rustup not found, please install Rust toolchains before running build"
   exit 1
@@ -120,28 +162,11 @@ if [[ "${STARRYOS_CARGO_UPDATE}" == "1" ]]; then
 fi
 
 log "Building StarryOS (ARCH=${ARCH})"
+log "Refreshing defconfig for ARCH=${ARCH}"
+make ARCH="${ARCH}" defconfig
 make ARCH="${ARCH}" build
-
-# Download rootfs template with cache directory support
-ROOTFS_CACHE_DIR="${ROOTFS_CACHE_DIR:-${REPO_ROOT}/.cache/rootfs}"
-mkdir -p "${ROOTFS_CACHE_DIR}"
-log "Ensuring rootfs template is available in ${ROOTFS_CACHE_DIR}"
-IMG_VERSION="${ROOTFS_VERSION:-20250917}"
-IMG_URL="https://github.com/Starry-OS/rootfs/releases/download/${IMG_VERSION}"
-IMG="rootfs-${ARCH}.img"
-IMG_PATH="${ROOTFS_CACHE_DIR}/${IMG}"
-if [[ ! -f "${IMG_PATH}" ]]; then
-  log "Downloading rootfs template ${IMG} (version ${IMG_VERSION})"
-  curl -f -L "${IMG_URL}/${IMG}.xz" -o "${IMG_PATH}.xz"
-  xz -d "${IMG_PATH}.xz"
-fi
-log "Rootfs template ready: ${IMG_PATH}"
-
-# Copy rootfs template to StarryOS root for test scripts
-STARRYOS_IMG="${STARRYOS_ROOT}/${IMG}"
-if [[ ! -f "${STARRYOS_IMG}" ]] || [[ "${IMG_PATH}" -nt "${STARRYOS_IMG}" ]]; then
-  log "Copying rootfs template to ${STARRYOS_IMG}"
-  cp "${IMG_PATH}" "${STARRYOS_IMG}"
+if [[ -f "${STARRYOS_ROOT}/.platconfig.toml" ]]; then
+  cp -f "${STARRYOS_ROOT}/.platconfig.toml" "${STARRYOS_ROOT}/.axconfig.toml"
 fi
 popd >/dev/null
 

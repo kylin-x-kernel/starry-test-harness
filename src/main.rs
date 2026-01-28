@@ -195,7 +195,15 @@ fn default_timeout() -> u64 {
 }
 
 fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
-    let manifest = load_manifest(workspace, suite)?;
+    let mut manifest = load_manifest(workspace, suite)?;
+    let suite_arch = env::var("ARCH")
+        .ok()
+        .map(|v| v.trim().to_string())
+        .filter(|v| !v.is_empty())
+        .or_else(|| manifest.arch.clone());
+    if let Some(ref arch) = suite_arch {
+        manifest.arch = Some(arch.clone());
+    }
     if manifest.cases.is_empty() {
         bail!(
             "suite {} has no cases defined - add entries to {}",
@@ -246,7 +254,7 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
     println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
     println!();
 
-    maybe_run_build(&manifest, suite, workspace, &mut run_log)?;
+    maybe_run_build(&manifest, suite, workspace, &mut run_log, suite_arch.as_deref())?;
 
     let mut case_details = Vec::new();
     let mut passed = 0usize;
@@ -289,6 +297,7 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
             &case_artifact_dir,
             &timestamp,
             &case_slug,
+            suite_arch.as_deref(),
         )?;
 
         let status_str = outcome.status.as_str();
@@ -531,6 +540,7 @@ fn run_case(
     case_artifact_dir: &Path,
     run_id: &str,
     case_slug: &str,
+    suite_arch: Option<&str>,
 ) -> Result<CaseOutcome> {
     let script_path = workspace.join(&case.path);
     if !script_path.exists() {
@@ -568,6 +578,9 @@ fn run_case(
     command.env("STARRY_CASE_LOG_DIR", case_log_dir);
     command.env("STARRY_CASE_ARTIFACT_DIR", case_artifact_dir);
     command.env("STARRY_CASE_TIMEOUT_SECS", timeout_secs.to_string());
+    if let Some(arch) = suite_arch {
+        command.env("ARCH", arch);
+    }
 
     let start = Instant::now();
     let output = command
@@ -627,6 +640,7 @@ fn maybe_run_build(
     suite: Suite,
     workspace: &Path,
     log: &mut File,
+    suite_arch: Option<&str>,
 ) -> Result<()> {
     let script = manifest
         .build_script
@@ -650,9 +664,12 @@ fn maybe_run_build(
     );
     writeln!(log, "{}", build_start_msg)?;
     println!("{}", build_start_msg);
-    let output = Command::new(&script_path)
-        .arg(suite.dir_name())
-        .current_dir(workspace)
+    let mut cmd = Command::new(&script_path);
+    cmd.arg(suite.dir_name()).current_dir(workspace);
+    if let Some(arch) = suite_arch {
+        cmd.env("ARCH", arch);
+    }
+    let output = cmd
         .output()
         .with_context(|| format!("failed to run build script {}", script_path.display()))?;
     log.write_all(&output.stdout)?;

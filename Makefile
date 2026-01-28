@@ -8,6 +8,12 @@
 
 CARGO ?= cargo
 RUNNER := $(CARGO) run --quiet --bin starry-test-harness --
+ARCH ?=
+ifneq ($(strip $(arch)),)
+ARCH := $(arch)
+endif
+ARCH ?= aarch64
+export ARCH
 SUPPORTED_SUITES := ci-test ci-test-iter stress-test daily-test
 
 SUITE := $(firstword $(MAKECMDGOALS))
@@ -42,7 +48,6 @@ help:
 	@echo "  make test-ptest-install # test ptest installation locally"
 
 # ==================== Yocto ptest 支持 ====================
-ARCH ?= aarch64
 TARGET ?= $(ARCH)-unknown-linux-musl
 PTEST_DESTDIR ?= /tmp/ptest-install
 
