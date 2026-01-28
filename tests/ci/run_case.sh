@@ -31,7 +31,14 @@ RUN_ID="${STARRY_RUN_ID:-$(date +%Y%m%d-%H%M%S)}"
 RUN_DIR="${STARRY_RUN_DIR:-${WORKSPACE}/logs/ci/${RUN_ID}}"
 CASE_ARTIFACT_DIR="${STARRY_CASE_ARTIFACT_DIR:-${RUN_DIR}/artifacts/${BINARY_NAME}}"
 
-TARGET_TRIPLE="${TARGET_TRIPLE:-aarch64-unknown-linux-musl}"
+ARCH="${ARCH:-aarch64}"
+if [[ -z "${TARGET_TRIPLE:-}" ]]; then
+  case "${ARCH}" in
+    aarch64) TARGET_TRIPLE="aarch64-unknown-linux-musl" ;;
+    x86_64) TARGET_TRIPLE="x86_64-unknown-linux-musl" ;;
+    *) TARGET_TRIPLE="${ARCH}-unknown-linux-musl" ;;
+  esac
+fi
 
 # Remote change: Check for cross-compiler before proceeding
 if [[ "${TARGET_TRIPLE}" == "aarch64-unknown-linux-musl" ]]; then
@@ -58,6 +65,32 @@ if [[ "${TARGET_TRIPLE}" == "aarch64-unknown-linux-musl" ]]; then
 MSG
     exit 1
   fi
+elif [[ "${TARGET_TRIPLE}" == "x86_64-unknown-linux-musl" ]]; then
+  REQUIRED_LINKER="x86_64-linux-musl-gcc"
+  LINKER_ENV="${CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER:-}"
+  if [[ -n "${LINKER_ENV}" ]]; then
+    LINKER_BIN="${LINKER_ENV%% *}"
+    if ! command -v "${LINKER_BIN}" >/dev/null 2>&1; then
+      echo "[${CASE_LABEL}] CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER=${LINKER_ENV} 但未找到可执行文件" >&2
+      exit 1
+    fi
+  elif [[ -n "${CC_x86_64_unknown_linux_musl:-}" ]]; then
+    if ! command -v "${CC_x86_64_unknown_linux_musl}" >/dev/null 2>&1; then
+      echo "[${CASE_LABEL}] CC_x86_64_unknown_linux_musl=${CC_x86_64_unknown_linux_musl} 但未找到可执行文件" >&2
+      exit 1
+    fi
+    export CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="${CC_x86_64_unknown_linux_musl}"
+  elif command -v "${REQUIRED_LINKER}" >/dev/null 2>&1; then
+    export CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="${REQUIRED_LINKER}"
+  elif command -v "musl-gcc" >/dev/null 2>&1; then
+    export CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="musl-gcc"
+  else
+    cat >&2 <<MSG
+[${CASE_LABEL}] 未检测到 x86_64 musl 交叉编译器。
+请安装 ${REQUIRED_LINKER} 或设置 CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER/CC_x86_64_unknown_linux_musl 后重试。
+MSG
+    exit 1
+  fi
 fi
 
 mkdir -p "${CASE_ARTIFACT_DIR}"
@@ -78,7 +111,6 @@ STARRYOS_ROOT="${STARRYOS_ROOT:-${SCRIPT_DIR}/../../.cache/StarryOS}"
 if [[ "${STARRYOS_ROOT}" != /* ]]; then
   STARRYOS_ROOT="${WORKSPACE}/${STARRYOS_ROOT}"
 fi
-ARCH="${ARCH:-aarch64}"
 ROOTFS_TEMPLATE="${STARRYOS_ROOT}/rootfs-${ARCH}.img"
 CLEANUP_DISK=0
 
