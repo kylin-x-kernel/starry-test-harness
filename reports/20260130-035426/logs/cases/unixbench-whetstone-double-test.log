@@ -1,0 +1,325 @@
+[case] unixbench-whetstone-double-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh whetstone-double
+[case] timeout budget: 600s
+[starry-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[starry-ci] spawning make ARCH=aarch64 SMP=4 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-oKofLU.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -device virtio-mouse-pci -device virtio-keyboard-pci -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+:~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: whetstone-double
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Double-Precision Whetstone [37m[ 17.590572 2:68 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 19.244190 1:70 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 34.306322 0:75 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 35.857876 3:77 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 50.694473 2:82 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 52.381930 1:84 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 67.412517 0:89 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 69.073043 3:91 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 84.037811 2:96 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 85.668302 1:98 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[100.630370 0:103 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[102.294093 3:105 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[117.052716 2:110 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[118.688683 1:112 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[133.786711 0:117 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[135.393196 3:119 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[150.294331 2:124 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[151.823591 1:126 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[166.674732 0:131 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[168.267004 3:133 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x Double-Precision Whetstone [37m[183.333803 2:138 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[184.883544 1:140 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[201.119938 2:151 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[202.704905 1:153 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[220.163500 0:164 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[221.728253 3:166 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[238.128135 2:177 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[239.658526 1:179 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[256.018698 0:190 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[257.502819 3:192 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[274.460377 2:203 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[276.089608 1:205 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[293.485517 0:216 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[295.146687 3:218 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[311.641774 3:229 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[313.151275 2:231 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[330.011506 3:242 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[331.505525 2:244 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[348.082365 0:255 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[349.572839 3:257 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 6.6.0 -- 6.6.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   02:22:55 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 02:22:57 - 02:25:43
+4 CPUs in system; running 1 parallel copy of tests
+
+Double-Precision Whetstone                      349.4 MWIPS (10.1 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Double-Precision Whetstone                       55.0        349.4     63.5
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           63.5
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 02:25:43 - 02:28:46
+4 CPUs in system; running 4 parallel copies of tests
+
+Double-Precision Whetstone                      867.2 MWIPS (10.0 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Double-Precision Whetstone                       55.0        867.2    157.7
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                          157.7
+
+[UB] Run completed successfully
+Double-Precision Whetstone 1 parallel: 63.50
+└─ Double-Precision Whetstone 4 parallel: 157.70
+[unixbench-whetstone-double-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-whetstone-double-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-oKofLU.img
+[unixbench-whetstone-double-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-whetstone-double-test] 测试用例: whetstone-double
+[unixbench-whetstone-double-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-whetstone-double-test] 启动 StarryOS,执行 UnixBench
+[unixbench-whetstone-double-test] Host 级别超时保护: 900s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-30 02:22:40.004537472 UTC
+
+[37m[  1.043078 knet:129] [33m  No vsock device found![m
+[m[37m[  1.044346 fbdevice:20] [33m  No framebuffer device found![m
+[m[37m[  1.074071 0:2 unittest::test_framework:238] [33m--------------------------------[m
+[m[37m[  1.074816 0:2 unittest::test_framework:238] [33mStarting unit tests [TEST_SUITE]...[m
+[m[37m[  1.075506 0:2 unittest::test_framework:238] [33m  Running test: test_add_two_numbers[m
+[m[37m[  1.076122 0:2 unittest::test_framework:238] [33m    Test test_add_two_numbers ... OK[m
+[m[37m[  1.076647 0:2 unittest::test_framework:238] [33m  Running test: test_string_compare[m
+[m[37m[  1.077335 0:2 unittest::test_framework:238] [33m    Test test_string_compare ... OK[m
+[m[37m[  1.077917 0:2 unittest::test_framework:238] [33m  Running test: test_boolean_condition[m
+[m[37m[  1.078456 0:2 unittest::test_framework:238] [33m    Test test_boolean_condition ... OK[m
+[m[37m[  1.078934 0:2 unittest::test_framework:238] [33m  Running test: test_should_fail[m
+[m[37m[  1.079440 0:2 unittest::test_framework:238] [33m    Test test_should_fail ... OK[m
+[m[37m[  1.079917 0:2 unittest::test_framework:238] [33m  Running test: test_another_failure[m
+[m[37m[  1.080452 0:2 unittest::test_framework:238] [33m    Test test_another_failure ... OK[m
+[m[37m[  1.081048 0:2 unittest::test_framework:238] [33m  >>> Test results: 5 passed, 0 failed, 0 ignored, 5 total[m
+[m[37m[  1.081645 0:2 unittest::test_framework:238] [33m  >>> This tests PASSED![m
+[m[37m[  1.082165 0:2 unittest::test_examples:75] [33mFinal Test Stats: total=5, passed=5, failed=0, ignored=0[m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: whetstone-double
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Double-Precision Whetstone [37m[ 17.590572 2:68 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 19.244190 1:70 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 34.306322 0:75 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 35.857876 3:77 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 50.694473 2:82 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 52.381930 1:84 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[ 67.412517 0:89 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 69.073043 3:91 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[ 84.037811 2:96 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 85.668302 1:98 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[100.630370 0:103 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[102.294093 3:105 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[117.052716 2:110 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[118.688683 1:112 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[133.786711 0:117 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[135.393196 3:119 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[150.294331 2:124 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[151.823591 1:126 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[166.674732 0:131 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[168.267004 3:133 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+4 x Double-Precision Whetstone [37m[183.333803 2:138 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[184.883544 1:140 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[201.119938 2:151 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[202.704905 1:153 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[220.163500 0:164 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[221.728253 3:166 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3[37m[238.128135 2:177 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[239.658526 1:179 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 4[37m[256.018698 0:190 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[257.502819 3:192 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 5[37m[274.460377 2:203 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[276.089608 1:205 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 6[37m[293.485517 0:216 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[295.146687 3:218 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 7[37m[311.641774 3:229 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[313.151275 2:231 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 8[37m[330.011506 3:242 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[331.505525 2:244 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 9[37m[348.082365 0:255 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[349.572839 3:257 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 6.6.0 -- 6.6.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   02:22:55 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 02:22:57 - 02:25:43
+4 CPUs in system; running 1 parallel copy of tests
+
+Double-Precision Whetstone                      349.4 MWIPS (10.1 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Double-Precision Whetstone                       55.0        349.4     63.5
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           63.5
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 02:25:43 - 02:28:46
+4 CPUs in system; running 4 parallel copies of tests
+
+Double-Precision Whetstone                      867.2 MWIPS (10.0 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Double-Precision Whetstone                       55.0        867.2    157.7
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                          157.7
+
+[UB] Run completed successfully
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 8881 (make)
+[unixbench-whetstone-double-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-021634/artifacts/unixbench-whetstone-double-test/vm-20260130-021634.log
+[unixbench-whetstone-double-test] 解析指标：
+[unixbench-whetstone-double-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-021634/artifacts/unixbench-whetstone-double-test/results.json
+[unixbench-whetstone-double-test] byte-unixbench 用例完成
+[unixbench-whetstone-double-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-021634/artifacts/unixbench-whetstone-double-test/vm-20260130-021634.log
+[unixbench-whetstone-double-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-021634/artifacts/unixbench-whetstone-double-test/summary.txt
