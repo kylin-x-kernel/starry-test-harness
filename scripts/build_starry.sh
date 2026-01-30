@@ -22,6 +22,7 @@ STARRYOS_DEPTH=${STARRYOS_DEPTH:-0}
 ARTIFACT_DIR="${REPO_ROOT}/artifacts/${SUITE}"
 LOG_FILE="${ARTIFACT_DIR}/build.log"
 STARRYOS_CARGO_UPDATE="${STARRYOS_CARGO_UPDATE:-1}"
+STARRY_CI_UNAME_LINUX="${STARRY_CI_UNAME_LINUX:-1}"
 
 if [[ "${STARRYOS_ROOT}" != /* ]]; then
   STARRYOS_ROOT="${REPO_ROOT}/${STARRYOS_ROOT}"
@@ -139,6 +140,23 @@ STARRYOS_IMG="${STARRYOS_ROOT}/${IMG}"
 if [[ ! -f "${STARRYOS_IMG}" ]] || [[ "${IMG_PATH}" -nt "${STARRYOS_IMG}" ]]; then
   log "Copying rootfs template to ${STARRYOS_IMG}"
   cp "${IMG_PATH}" "${STARRYOS_IMG}"
+fi
+
+if [[ "${STARRY_CI_UNAME_LINUX}" != "0" ]]; then
+  uname_src="${STARRYOS_ROOT}/api/kapi/src/syscall/sys.rs"
+  if [[ -f "${uname_src}" ]]; then
+    log "Patching uname for UnixBench compatibility: ${uname_src}"
+    python3 - "${uname_src}" <<'PY'
+import re
+import sys
+
+path = sys.argv[1]
+data = open(path, "r", encoding="utf-8", errors="ignore").read()
+data = re.sub(r'const VERSION: &str = .*?;', 'const VERSION: &str = "6.6.0";', data)
+data = re.sub(r'sysname:\s*pad_str\(".*?"\)', 'sysname: pad_str("Linux")', data)
+open(path, "w", encoding="utf-8").write(data)
+PY
+  fi
 fi
 
 if ! command -v rustup >/dev/null 2>&1; then
