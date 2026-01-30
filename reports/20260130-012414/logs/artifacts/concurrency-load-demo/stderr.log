@@ -1,0 +1,63 @@
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-30 01:18:46.002841184 UTC
+
+[37m[  0.943705 knet:129] [33m  No vsock device found![m
+[m[37m[  0.944462 fbdevice:20] [33m  No framebuffer device found![m
+[m[37m[  0.974311 0:2 unittest::test_framework:238] [33m--------------------------------[m
+[m[37m[  0.974736 0:2 unittest::test_framework:238] [33mStarting unit tests [TEST_SUITE]...[m
+[m[37m[  0.975069 0:2 unittest::test_framework:238] [33m  Running test: test_add_two_numbers[m
+[m[37m[  0.975366 0:2 unittest::test_framework:238] [33m    Test test_add_two_numbers ... OK[m
+[m[37m[  0.975584 0:2 unittest::test_framework:238] [33m  Running test: test_string_compare[m
+[m[37m[  0.975824 0:2 unittest::test_framework:238] [33m    Test test_string_compare ... OK[m
+[m[37m[  0.976019 0:2 unittest::test_framework:238] [33m  Running test: test_boolean_condition[m
+[m[37m[  0.976243 0:2 unittest::test_framework:238] [33m    Test test_boolean_condition ... OK[m
+[m[37m[  0.976462 0:2 unittest::test_framework:238] [33m  Running test: test_should_fail[m
+[m[37m[  0.976661 0:2 unittest::test_framework:238] [33m    Test test_should_fail ... OK[m
+[m[37m[  0.976856 0:2 unittest::test_framework:238] [33m  Running test: test_another_failure[m
+[m[37m[  0.977071 0:2 unittest::test_framework:238] [33m    Test test_another_failure ... OK[m
+[m[37m[  0.977361 0:2 unittest::test_framework:238] [33m  >>> Test results: 5 passed, 0 failed, 0 ignored, 5 total[m
+[m[37m[  0.977647 0:2 unittest::test_framework:238] [33m  >>> This tests PASSED![m
+[m[37m[  0.977902 0:2 unittest::test_examples:75] [33mFinal Test Stats: total=5, passed=5, failed=0, ignored=0[m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# /usr/tests/concurrency_load 8 2000; echo __EXIT:$?__
+{"status":"pass","workers":8,"iterations":2000,"duration_ms":52,"total_sum":16048000,"max_worker_latency_ms":0}
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 8577 (make)
