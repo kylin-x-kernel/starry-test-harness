@@ -1,0 +1,301 @@
+[case] unixbench-execl-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh execl
+[case] timeout budget: 500s
+[starry-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[starry-ci] spawning make ARCH=aarch64 SMP=4 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/StarryOS/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-dKWtJC.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -device virtio-mouse-pci -device virtio-keyboard-pci -monitor none -serial tcp::4444,server=on[0m
+[starry-ci] shell prompt detected, executing command
+[starry-ci] command completed with exit code 0
+[starry-ci] BusyBox shell exited cleanly
+[6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: execl
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Execl Throughput [37m[ 17.210268 0:68 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 18.850056 3:70 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 51.404566 2:75 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 52.937756 1:77 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 85.457529 0:82 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 87.026438 3:84 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Execl Throughput [37m[120.464881 2:89 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[122.018255 1:91 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[155.738954 3:102 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[157.248507 2:104 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[191.474113 2:115 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[193.129841 1:117 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 6.6.0 -- 6.6.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:09:10 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 18:09:11 - 18:10:55
+4 CPUs in system; running 1 parallel copy of tests
+
+Execl Throughput                                 11.4 lps   (29.8 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         11.4      2.6
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            2.6
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 18:10:55 - 18:12:41
+4 CPUs in system; running 4 parallel copies of tests
+
+Execl Throughput                                 17.4 lps   (30.3 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         17.4      4.0
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            4.0
+
+[UB] Run completed successfully
+Execl Throughput 1 parallel: 2.60
+└─ Execl Throughput 4 parallel: 4.00
+[unixbench-execl-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-execl-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-dKWtJC.img
+[unixbench-execl-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-execl-test] 测试用例: execl
+[unixbench-execl-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-execl-test] 启动 StarryOS,执行 UnixBench
+[unixbench-execl-test] Host 级别超时保护: 800s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-30 18:08:55.004536496 UTC
+
+[37m[  0.988122 knet:129] [33m  No vsock device found![m
+[m[37m[  0.989146 fbdevice:20] [33m  No framebuffer device found![m
+[m[37m[  1.015440 0:2 unittest::test_examples:70] [33m********************************[m
+[m[37m[  1.016002 0:2 unittest::test_examples:71] [33mStarting example unit tests...[m
+[m[37m[  1.016524 0:2 unittest::test_framework:250] [33m--------------------------------[m
+[m[37m[  1.017102 0:2 unittest::test_framework:250] [33mStarting unit tests [TEST_SUITE]...[m
+[m[37m[  1.017758 0:2 unittest::test_framework:250] [33m  Running test: test_add_two_numbers[m
+[m[37m[  1.018358 0:2 unittest::test_framework:250] [33m    Test test_add_two_numbers ... OK[m
+[m[37m[  1.018846 0:2 unittest::test_framework:250] [33m  Running test: test_string_compare[m
+[m[37m[  1.019261 0:2 unittest::test_framework:250] [33m    Test test_string_compare ... OK[m
+[m[37m[  1.019670 0:2 unittest::test_framework:250] [33m  Running test: test_boolean_condition[m
+[m[37m[  1.020084 0:2 unittest::test_framework:250] [33m    Test test_boolean_condition ... OK[m
+[m[37m[  1.020510 0:2 unittest::test_framework:250] [33m  Running test: test_should_fail[m
+[m[37m[  1.020914 0:2 unittest::test_framework:250] [33m    Test test_should_fail ... OK[m
+[m[37m[  1.021291 0:2 unittest::test_framework:250] [33m  Running test: test_another_failure[m
+[m[37m[  1.021700 0:2 unittest::test_framework:250] [33m    Test test_another_failure ... OK[m
+[m[37m[  1.022356 0:2 unittest::test_framework:250] [33m  >>> Test results: 5 passed, 0 failed, 0 ignored, 5 total[m
+[m[37m[  1.023074 0:2 unittest::test_framework:250] [33m  >>> This tests PASSED![m
+[m[37m[  1.023755 0:2 unittest::test_examples:78] [33mFinal Test Stats: total=5, passed=5, failed=0, ignored=0[m
+[m[37m[  1.024286 0:2 unittest::test_examples:83] [33m********************************
+[m
+[m[37m[  1.024772 0:2 kapi::tee::test_unit_test:12] [33m********************************[m
+[m[37m[  1.025166 0:2 kapi::tee::test_unit_test:13] [33mStarting TEE unit tests...[m
+[m[37m[  1.025522 0:2 unittest::test_framework:250] [33m--------------------------------[m
+[m[37m[  1.025920 0:2 unittest::test_framework:250] [33mStarting unit tests [TEST_TEE_SESSION]...[m
+[m[37m[  1.026417 0:2 unittest::test_framework:250] [33m  Running test: test_tee_ta_ctx[m
+[m[37m[  1.027038 0:2 unittest::test_framework:250] [33m    Test test_tee_ta_ctx ... OK[m
+[m[37m[  1.027521 0:2 unittest::test_framework:250] [33m  Running test: test_with_tee_ta_ctx[m
+[m[37m[  1.028139 0:2 unittest::test_framework:250] [33m    Test test_with_tee_ta_ctx ... OK[m
+[m[37m[  1.028636 0:2 unittest::test_framework:250] [33m  >>> Test results: 2 passed, 0 failed, 0 ignored, 2 total[m
+[m[37m[  1.029184 0:2 unittest::test_framework:250] [33m  >>> This tests PASSED![m
+[m[37m[  1.029610 0:2 unittest::test_framework:250] [33m--------------------------------[m
+[m[37m[  1.030051 0:2 unittest::test_framework:250] [33mStarting unit tests [TEST_USER_ACCESS]...[m
+[m[37m[  1.030539 0:2 unittest::test_framework:250] [33m  Running test: test_copy_from_user[m
+[m[37m[  1.031084 0:2 unittest::test_framework:250] [33m    Test test_copy_from_user ... OK[m
+[m[37m[  1.031551 0:2 unittest::test_framework:250] [33m  Running test: test_copy_to_user[m
+[m[37m[  1.033372 0:2 unittest::test_framework:250] [33m    Test test_copy_to_user ... OK[m
+[m[37m[  1.033742 0:2 unittest::test_framework:250] [33m  Running test: test_copy_from_user_u64[m
+[m[37m[  1.034148 0:2 unittest::test_framework:250] [33m    Test test_copy_from_user_u64 ... OK[m
+[m[37m[  1.034545 0:2 unittest::test_framework:250] [33m  Running test: test_bb_alloc_free[m
+[m[37m[  1.034927 0:2 unittest::test_framework:250] [33m    Test test_bb_alloc_free ... OK[m
+[m[37m[  1.035345 0:2 unittest::test_framework:250] [33m  Running test: test_bb_memdup_user[m
+[m[37m[  1.035801 0:2 unittest::test_framework:250] [33m    Test test_bb_memdup_user ... OK[m
+[m[37m[  1.036171 0:2 unittest::test_framework:250] [33m  Running test: test_bb_memdup_user_private[m
+[m[37m[  1.036647 0:2 unittest::test_framework:250] [33m    Test test_bb_memdup_user_private ... OK[m
+[m[37m[  1.037065 0:2 unittest::test_framework:250] [33m  >>> Test results: 6 passed, 0 failed, 0 ignored, 6 total[m
+[m[37m[  1.037532 0:2 unittest::test_framework:250] [33m  >>> This tests PASSED![m
+[m[37m[  1.037954 0:2 kapi::tee::test_unit_test:21] [33m!!! ALL TESTS PASSED !!![m
+[m[37m[  1.038352 0:2 kapi::tee::test_unit_test:24] [33m********************************
+[m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: execl
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Execl Throughput [37m[ 17.210268 0:68 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 18.850056 3:70 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[ 51.404566 2:75 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 52.937756 1:77 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[ 85.457529 0:82 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[ 87.026438 3:84 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+4 x Execl Throughput [37m[120.464881 2:89 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[122.018255 1:91 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 1[37m[155.738954 3:102 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[157.248507 2:104 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 2[37m[191.474113 2:115 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m[37m[193.129841 1:117 kapi::syscall::fs::ctl:517] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 6.6.0 -- 6.6.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:09:10 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 18:09:11 - 18:10:55
+4 CPUs in system; running 1 parallel copy of tests
+
+Execl Throughput                                 11.4 lps   (29.8 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         11.4      2.6
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            2.6
+
+------------------------------------------------------------------------
+Benchmark Run: Fri Jan 30 2026 18:10:55 - 18:12:41
+4 CPUs in system; running 4 parallel copies of tests
+
+Execl Throughput                                 17.4 lps   (30.3 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         17.4      4.0
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            4.0
+
+[UB] Run completed successfully
+__EXIT:0__qemu-system-aarch64: terminating on signal 15 from pid 10396 (make)
+[unixbench-execl-test] StarryOS 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-165227/artifacts/unixbench-execl-test/vm-20260130-165227.log
+[unixbench-execl-test] 解析指标：
+[unixbench-execl-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-165227/artifacts/unixbench-execl-test/results.json
+[unixbench-execl-test] byte-unixbench 用例完成
+[unixbench-execl-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-165227/artifacts/unixbench-execl-test/vm-20260130-165227.log
+[unixbench-execl-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-165227/artifacts/unixbench-execl-test/summary.txt

@@ -1,0 +1,134 @@
+[case] concurrency-load-demo
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/run_case.sh concurrency_load 8 2000
+[case] timeout budget: 1800s
+debugfs:  cd /usr/tests
+debugfs:  rm concurrency_load
+debugfs:  <inux-musl/release/concurrency_load concurrency_load
+Allocated inode: 24580
+debugfs:  quit
+[daily] stored result -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260130-165227/artifacts/concurrency-load-demo/result.json
+[daily] installing Rust target aarch64-unknown-linux-musl
+info: downloading component 'rust-std' for 'aarch64-unknown-linux-musl'
+info: installing component 'rust-std' for 'aarch64-unknown-linux-musl'
+[daily] building concurrency_load for aarch64-unknown-linux-musl
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded itoa v1.0.15
+  Downloaded ryu v1.0.20
+  Downloaded proc-macro2 v1.0.103
+  Downloaded serde_json v1.0.145
+  Downloaded syn v2.0.110
+   Compiling proc-macro2 v1.0.103
+   Compiling quote v1.0.42
+   Compiling unicode-ident v1.0.22
+   Compiling serde_core v1.0.228
+   Compiling serde_json v1.0.145
+   Compiling serde v1.0.228
+   Compiling itoa v1.0.15
+   Compiling ryu v1.0.20
+   Compiling memchr v2.7.6
+   Compiling syn v2.0.110
+   Compiling serde_derive v1.0.228
+   Compiling concurrency_load v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/concurrency_load)
+    Finished `release` profile [optimized] target(s) in 4.37s
+[daily] creating fresh disk image from template
+debugfs 1.47.0 (5-Feb-2023)
+rm: File not found by ext2_lookup while trying to resolve filename
+[daily] deployed binary to /usr/tests/concurrency_load
+[daily] running inside StarryOS: /usr/tests/concurrency_load 8 2000
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-01-30 16:52:54.003602592 UTC
+
+[37m[  1.006381 knet:129] [33m  No vsock device found![m
+[m[37m[  1.007130 fbdevice:20] [33m  No framebuffer device found![m
+[m[37m[  1.033036 0:2 unittest::test_examples:70] [33m********************************[m
+[m[37m[  1.033406 0:2 unittest::test_examples:71] [33mStarting example unit tests...[m
+[m[37m[  1.033758 0:2 unittest::test_framework:250] [33m--------------------------------[m
+[m[37m[  1.034154 0:2 unittest::test_framework:250] [33mStarting unit tests [TEST_SUITE]...[m
+[m[37m[  1.034644 0:2 unittest::test_framework:250] [33m  Running test: test_add_two_numbers[m
+[m[37m[  1.035080 0:2 unittest::test_framework:250] [33m    Test test_add_two_numbers ... OK[m
+[m[37m[  1.035449 0:2 unittest::test_framework:250] [33m  Running test: test_string_compare[m
+[m[37m[  1.035786 0:2 unittest::test_framework:250] [33m    Test test_string_compare ... OK[m
+[m[37m[  1.036093 0:2 unittest::test_framework:250] [33m  Running test: test_boolean_condition[m
+[m[37m[  1.036397 0:2 unittest::test_framework:250] [33m    Test test_boolean_condition ... OK[m
+[m[37m[  1.036689 0:2 unittest::test_framework:250] [33m  Running test: test_should_fail[m
+[m[37m[  1.036957 0:2 unittest::test_framework:250] [33m    Test test_should_fail ... OK[m
+[m[37m[  1.037227 0:2 unittest::test_framework:250] [33m  Running test: test_another_failure[m
+[m[37m[  1.037497 0:2 unittest::test_framework:250] [33m    Test test_another_failure ... OK[m
+[m[37m[  1.037859 0:2 unittest::test_framework:250] [33m  >>> Test results: 5 passed, 0 failed, 0 ignored, 5 total[m
+[m[37m[  1.038259 0:2 unittest::test_framework:250] [33m  >>> This tests PASSED![m
+[m[37m[  1.038571 0:2 unittest::test_examples:78] [33mFinal Test Stats: total=5, passed=5, failed=0, ignored=0[m
+[m[37m[  1.038925 0:2 unittest::test_examples:83] [33m********************************
+[m
+[m[37m[  1.039308 0:2 kapi::tee::test_unit_test:12] [33m********************************[m
+[m[37m[  1.039603 0:2 kapi::tee::test_unit_test:13] [33mStarting TEE unit tests...[m
+[m[37m[  1.040042 0:2 unittest::test_framework:250] [33m--------------------------------[m
+[m[37m[  1.040525 0:2 unittest::test_framework:250] [33mStarting unit tests [TEST_TEE_SESSION]...[m
+[m[37m[  1.041033 0:2 unittest::test_framework:250] [33m  Running test: test_tee_ta_ctx[m
+[m[37m[  1.041716 0:2 unittest::test_framework:250] [33m    Test test_tee_ta_ctx ... OK[m
+[m[37m[  1.042131 0:2 unittest::test_framework:250] [33m  Running test: test_with_tee_ta_ctx[m
+[m[37m[  1.042609 0:2 unittest::test_framework:250] [33m    Test test_with_tee_ta_ctx ... OK[m
+[m[37m[  1.042879 0:2 unittest::test_framework:250] [33m  >>> Test results: 2 passed, 0 failed, 0 ignored, 2 total[m
+[m[37m[  1.043212 0:2 unittest::test_framework:250] [33m  >>> This tests PASSED![m
+[m[37m[  1.043510 0:2 unittest::test_framework:250] [33m--------------------------------[m
+[m[37m[  1.043779 0:2 unittest::test_framework:250] [33mStarting unit tests [TEST_USER_ACCESS]...[m
+[m[37m[  1.044057 0:2 unittest::test_framework:250] [33m  Running test: test_copy_from_user[m
+[m[37m[  1.044419 0:2 unittest::test_framework:250] [33m    Test test_copy_from_user ... OK[m
+[m[37m[  1.044680 0:2 unittest::test_framework:250] [33m  Running test: test_copy_to_user[m
+[m[37m[  1.044993 0:2 unittest::test_framework:250] [33m    Test test_copy_to_user ... OK[m
+[m[37m[  1.045271 0:2 unittest::test_framework:250] [33m  Running test: test_copy_from_user_u64[m
+[m[37m[  1.045581 0:2 unittest::test_framework:250] [33m    Test test_copy_from_user_u64 ... OK[m
+[m[37m[  1.045874 0:2 unittest::test_framework:250] [33m  Running test: test_bb_alloc_free[m
+[m[37m[  1.046200 0:2 unittest::test_framework:250] [33m    Test test_bb_alloc_free ... OK[m
+[m[37m[  1.046471 0:2 unittest::test_framework:250] [33m  Running test: test_bb_memdup_user[m
+[m[37m[  1.046824 0:2 unittest::test_framework:250] [33m    Test test_bb_memdup_user ... OK[m
+[m[37m[  1.047129 0:2 unittest::test_framework:250] [33m  Running test: test_bb_memdup_user_private[m
+[m[37m[  1.047505 0:2 unittest::test_framework:250] [33m    Test test_bb_memdup_user_private ... OK[m
+[m[37m[  1.047779 0:2 unittest::test_framework:250] [33m  >>> Test results: 6 passed, 0 failed, 0 ignored, 6 total[m
+[m[37m[  1.048106 0:2 unittest::test_framework:250] [33m  >>> This tests PASSED![m
+[m[37m[  1.048451 0:2 kapi::tee::test_unit_test:21] [33m!!! ALL TESTS PASSED !!![m
+[m[37m[  1.048733 0:2 kapi::tee::test_unit_test:24] [33m********************************
+[m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# [6n/usr/tests/concurrency_load 8 2000; echo __EXIT:$?__
+{"status":"pass","workers":8,"iterations":2000,"duration_ms":23,"total_sum":16048000,"max_worker_latency_ms":0}
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 8700 (make)
