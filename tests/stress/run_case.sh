@@ -56,11 +56,19 @@ else:
 '
 )"
 
+source "${SCRIPT_DIR}/../../common/arch_utils.sh"
+
 TARGET_DIR="${WORKSPACE_ROOT}/target/stress-cases"
 ARTIFACT_DIR="${STARRY_CASE_ARTIFACT_DIR:-${CASE_DIR}/artifacts}"
 mkdir -p "${TARGET_DIR}" "${ARTIFACT_DIR}"
 
-TARGET_TRIPLE="${TARGET_TRIPLE:-aarch64-unknown-linux-musl}"
+ARCH="${ARCH:-aarch64}"
+TARGET_TRIPLE="$(get_target_triple "${ARCH}")"
+
+if ! check_musl_linker "${ARCH}" "stress"; then
+  exit 1
+fi
+
 if ! rustup target list --installed | grep -q "^${TARGET_TRIPLE}$"; then
   echo "[stress] installing Rust target ${TARGET_TRIPLE}" >&2
   rustup target add "${TARGET_TRIPLE}"
