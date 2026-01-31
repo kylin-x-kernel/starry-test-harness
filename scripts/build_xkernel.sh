@@ -14,21 +14,21 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SUITE=${1:-ci-test}
 ARCH=${ARCH:-aarch64}
 
-STARRYOS_REMOTE="${STARRYOS_REMOTE:-https://github.com/kylin-x-kernel/x-kernel.git}"
-STARRYOS_COMMIT="${STARRYOS_REF:-${STARRYOS_COMMIT:-main}}"
-STARRYOS_BRANCH="${STARRYOS_BRANCH:-local}"
-STARRYOS_ROOT=${STARRYOS_ROOT:-${REPO_ROOT}/.cache/StarryOS}
-STARRYOS_DEPTH=${STARRYOS_DEPTH:-0}
+XKERNEL_REMOTE="${XKERNEL_REMOTE:-https://github.com/kylin-x-kernel/x-kernel.git}"
+XKERNEL_COMMIT="${XKERNEL_REF:-${XKERNEL_COMMIT:-main}}"
+XKERNEL_BRANCH="${XKERNEL_BRANCH:-local}"
+XKERNEL_ROOT=${XKERNEL_ROOT:-${REPO_ROOT}/.cache/X-Kernel}
+XKERNEL_DEPTH=${XKERNEL_DEPTH:-0}
 ARTIFACT_DIR="${REPO_ROOT}/artifacts/${SUITE}"
 LOG_FILE="${ARTIFACT_DIR}/build.log"
-STARRYOS_CARGO_UPDATE="${STARRYOS_CARGO_UPDATE:-1}"
+XKERNEL_CARGO_UPDATE="${XKERNEL_CARGO_UPDATE:-1}"
 STARRY_CI_UNAME_LINUX="${STARRY_CI_UNAME_LINUX:-1}"
 
-if [[ "${STARRYOS_ROOT}" != /* ]]; then
-  STARRYOS_ROOT="${REPO_ROOT}/${STARRYOS_ROOT}"
+if [[ "${XKERNEL_ROOT}" != /* ]]; then
+  XKERNEL_ROOT="${REPO_ROOT}/${XKERNEL_ROOT}"
 fi
 
-mkdir -p "${ARTIFACT_DIR}" "$(dirname "${STARRYOS_ROOT}")"
+mkdir -p "${ARTIFACT_DIR}" "$(dirname "${XKERNEL_ROOT}")"
 : >"${LOG_FILE}"
 exec > >(tee -a "${LOG_FILE}") 2>&1
 
@@ -38,67 +38,67 @@ log() {
 
 clone_or_update_repo() {
   log "----------------------------------------"
-  log "StarryOS Source Info"
-  log "  path   : ${STARRYOS_ROOT}"
+  log "X-Kernel Source Info"
+  log "  path   : ${XKERNEL_ROOT}"
   
-  if [[ ! -d "${STARRYOS_ROOT}/.git" ]]; then
-    log "  remote : ${STARRYOS_REMOTE}"
-    log "  branch : ${STARRYOS_BRANCH}"
-    log "  ref    : ${STARRYOS_COMMIT}"
-    log "Cloning StarryOS from ${STARRYOS_REMOTE}"
-    git clone --recursive "${STARRYOS_REMOTE}" "${STARRYOS_ROOT}"
-    log "Checking out ref ${STARRYOS_COMMIT}"
-    git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
+  if [[ ! -d "${XKERNEL_ROOT}/.git" ]]; then
+    log "  remote : ${XKERNEL_REMOTE}"
+    log "  branch : ${XKERNEL_BRANCH}"
+    log "  ref    : ${XKERNEL_COMMIT}"
+    log "Cloning X-Kernel from ${XKERNEL_REMOTE}"
+    git clone --recursive "${XKERNEL_REMOTE}" "${XKERNEL_ROOT}"
+    log "Checking out ref ${XKERNEL_COMMIT}"
+    git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"
   else
-    log "Using existing StarryOS repo (pre-checked out by CI or previous run)"
+    log "Using existing X-Kernel repo (pre-checked out by CI or previous run)"
     
     # 在 CI 环境中，代码已经被 actions/checkout 完整检出，无需 fetch/checkout
     # 在本地环境中，检查并更新到指定版本
     if [[ -z "${CI:-}" && -z "${GITHUB_ACTIONS:-}" ]]; then
       # 检查并修正 remote URL（防止本地缓存指向错误仓库）
-      CURRENT_REMOTE=$(git -C "${STARRYOS_ROOT}" remote get-url origin 2>/dev/null || echo "")
-      if [[ "${CURRENT_REMOTE}" != "${STARRYOS_REMOTE}" ]]; then
-        log "Warning: local remote is ${CURRENT_REMOTE}, expected ${STARRYOS_REMOTE}"
-        log "Updating remote URL to ${STARRYOS_REMOTE}"
-        git -C "${STARRYOS_ROOT}" remote set-url origin "${STARRYOS_REMOTE}"
+      CURRENT_REMOTE=$(git -C "${XKERNEL_ROOT}" remote get-url origin 2>/dev/null || echo "")
+      if [[ "${CURRENT_REMOTE}" != "${XKERNEL_REMOTE}" ]]; then
+        log "Warning: local remote is ${CURRENT_REMOTE}, expected ${XKERNEL_REMOTE}"
+        log "Updating remote URL to ${XKERNEL_REMOTE}"
+        git -C "${XKERNEL_ROOT}" remote set-url origin "${XKERNEL_REMOTE}"
       fi
       
-      log "Local environment detected, syncing to ref ${STARRYOS_COMMIT}"
+      log "Local environment detected, syncing to ref ${XKERNEL_COMMIT}"
       
       # 验证远程是否存在该分支
-      if git -C "${STARRYOS_ROOT}" ls-remote --heads origin "${STARRYOS_COMMIT}" | grep -q "${STARRYOS_COMMIT}"; then
-        log "Remote branch ${STARRYOS_COMMIT} found, fetching..."
-        git -C "${STARRYOS_ROOT}" fetch origin "${STARRYOS_COMMIT}"
-        git -C "${STARRYOS_ROOT}" checkout -B "${STARRYOS_COMMIT}" "origin/${STARRYOS_COMMIT}"
-      elif git -C "${STARRYOS_ROOT}" ls-remote --tags origin "${STARRYOS_COMMIT}" | grep -q "${STARRYOS_COMMIT}"; then
-        log "Remote tag ${STARRYOS_COMMIT} found, fetching..."
-        git -C "${STARRYOS_ROOT}" fetch --tags origin
-        git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"
+      if git -C "${XKERNEL_ROOT}" ls-remote --heads origin "${XKERNEL_COMMIT}" | grep -q "${XKERNEL_COMMIT}"; then
+        log "Remote branch ${XKERNEL_COMMIT} found, fetching..."
+        git -C "${XKERNEL_ROOT}" fetch origin "${XKERNEL_COMMIT}"
+        git -C "${XKERNEL_ROOT}" checkout -B "${XKERNEL_COMMIT}" "origin/${XKERNEL_COMMIT}"
+      elif git -C "${XKERNEL_ROOT}" ls-remote --tags origin "${XKERNEL_COMMIT}" | grep -q "${XKERNEL_COMMIT}"; then
+        log "Remote tag ${XKERNEL_COMMIT} found, fetching..."
+        git -C "${XKERNEL_ROOT}" fetch --tags origin
+        git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"
       else
-        log "Trying to checkout ${STARRYOS_COMMIT} as commit SHA..."
-        git -C "${STARRYOS_ROOT}" fetch origin
-        if ! git -C "${STARRYOS_ROOT}" checkout "${STARRYOS_COMMIT}"; then
-          log "Error: cannot find or checkout ${STARRYOS_COMMIT}"
+        log "Trying to checkout ${XKERNEL_COMMIT} as commit SHA..."
+        git -C "${XKERNEL_ROOT}" fetch origin
+        if ! git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"; then
+          log "Error: cannot find or checkout ${XKERNEL_COMMIT}"
           log "Available remote branches:"
-          git -C "${STARRYOS_ROOT}" ls-remote --heads origin | head -10
+          git -C "${XKERNEL_ROOT}" ls-remote --heads origin | head -10
           exit 1
         fi
       fi
-      git -C "${STARRYOS_ROOT}" submodule update --init --recursive
+      git -C "${XKERNEL_ROOT}" submodule update --init --recursive
     else
       log "CI environment detected, skipping fetch (using pre-checked out code)"
     fi
   fi
   
-  REAL_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
+  REAL_COMMIT=$(git -C "${XKERNEL_ROOT}" rev-parse HEAD)
   log "  commit : ${REAL_COMMIT}"
   log "----------------------------------------"
 }
 
 clone_or_update_repo
 
-STARRYOS_COMMIT=$(git -C "${STARRYOS_ROOT}" rev-parse HEAD)
-log "StarryOS commit: ${STARRYOS_COMMIT}"
+XKERNEL_COMMIT=$(git -C "${XKERNEL_ROOT}" rev-parse HEAD)
+log "X-Kernel commit: ${XKERNEL_COMMIT}"
 
 # Download rootfs template with cache directory support
 ROOTFS_CACHE_DIR="${ROOTFS_CACHE_DIR:-${REPO_ROOT}/.cache/rootfs}"
@@ -135,15 +135,15 @@ ensure_rootfs_template() {
 
 IMG_PATH="$(ensure_rootfs_template "${ARCH}")"
 
-# Copy rootfs template to StarryOS root for test scripts
-STARRYOS_IMG="${STARRYOS_ROOT}/${IMG}"
-if [[ ! -f "${STARRYOS_IMG}" ]] || [[ "${IMG_PATH}" -nt "${STARRYOS_IMG}" ]]; then
-  log "Copying rootfs template to ${STARRYOS_IMG}"
-  cp "${IMG_PATH}" "${STARRYOS_IMG}"
+# Copy rootfs template to X-Kernel root for test scripts
+XKERNEL_IMG="${XKERNEL_ROOT}/${IMG}"
+if [[ ! -f "${XKERNEL_IMG}" ]] || [[ "${IMG_PATH}" -nt "${XKERNEL_IMG}" ]]; then
+  log "Copying rootfs template to ${XKERNEL_IMG}"
+  cp "${IMG_PATH}" "${XKERNEL_IMG}"
 fi
 
 if [[ "${STARRY_CI_UNAME_LINUX}" != "0" ]]; then
-  uname_src="${STARRYOS_ROOT}/api/kapi/src/syscall/sys.rs"
+  uname_src="${XKERNEL_ROOT}/api/kapi/src/syscall/sys.rs"
   if [[ -f "${uname_src}" ]]; then
     log "Patching uname for UnixBench compatibility: ${uname_src}"
     python3 - "${uname_src}" <<'PY'
@@ -163,35 +163,35 @@ if ! command -v rustup >/dev/null 2>&1; then
   log "rustup not found, please install Rust toolchains before running build"
   exit 1
 fi
-if [[ -n "${STARRYOS_TOOLCHAIN:-}" ]]; then
-  export RUSTUP_TOOLCHAIN="${STARRYOS_TOOLCHAIN}"
+if [[ -n "${XKERNEL_TOOLCHAIN:-}" ]]; then
+  export RUSTUP_TOOLCHAIN="${XKERNEL_TOOLCHAIN}"
   log "Using override toolchain ${RUSTUP_TOOLCHAIN}"
 fi
-log "Rust toolchain will follow ${STARRYOS_ROOT}/rust-toolchain.toml (auto-managed by rustup)"
+log "Rust toolchain will follow ${XKERNEL_ROOT}/rust-toolchain.toml (auto-managed by rustup)"
 ACTIVE_TOOLCHAIN="$(rustup show active-toolchain 2>/dev/null | tr -d '\r')"
 if [[ -n "${ACTIVE_TOOLCHAIN}" ]]; then
   log "Active toolchain: ${ACTIVE_TOOLCHAIN}"
 fi
 
-pushd "${STARRYOS_ROOT}" >/dev/null
-if [[ "${STARRYOS_CARGO_UPDATE}" == "1" ]]; then
-  log "Running cargo update in ${STARRYOS_ROOT}"
+pushd "${XKERNEL_ROOT}" >/dev/null
+if [[ "${XKERNEL_CARGO_UPDATE}" == "1" ]]; then
+  log "Running cargo update in ${XKERNEL_ROOT}"
   cargo update
 fi
 
-log "Building StarryOS (ARCH=${ARCH})"
+log "Building X-Kernel (ARCH=${ARCH})"
 log "Refreshing defconfig for ARCH=${ARCH}"
 make ARCH="${ARCH}" defconfig
 make ARCH="${ARCH}" ${UNITTEST:+UNITTEST=y} build
 
-if [[ -f "${STARRYOS_ROOT}/.platconfig.toml" ]]; then
-  cp -f "${STARRYOS_ROOT}/.platconfig.toml" "${STARRYOS_ROOT}/.axconfig.toml"
+if [[ -f "${XKERNEL_ROOT}/.platconfig.toml" ]]; then
+  cp -f "${XKERNEL_ROOT}/.platconfig.toml" "${XKERNEL_ROOT}/.axconfig.toml"
 fi
 popd >/dev/null
 
 log "Copying build artifacts"
 shopt -s nullglob
-for artifact in "${STARRYOS_ROOT}"/StarryOS_"${ARCH}"*-qemu-virt.*; do
+for artifact in "${XKERNEL_ROOT}"/X-Kernel_"${ARCH}"*-qemu-virt.*; do
   cp "${artifact}" "${ARTIFACT_DIR}/"
   log "  -> $(basename "${artifact}")"
 done
@@ -201,10 +201,10 @@ cat >"${ARTIFACT_DIR}/build.info" <<META
 suite=${SUITE}
 arch=${ARCH}
 stamp=$(date -u +%Y%m%d-%H%M%S)
-starryos_remote=${STARRYOS_REMOTE}
-starryos_ref=${STARRYOS_REF:-}
-starryos_root=${STARRYOS_ROOT}
-starryos_commit=${STARRYOS_COMMIT}
+starryos_remote=${XKERNEL_REMOTE}
+starryos_ref=${XKERNEL_REF:-}
+starryos_root=${XKERNEL_ROOT}
+starryos_commit=${XKERNEL_COMMIT}
 META
 
-log "StarryOS 构建完成，产物位于 ${ARTIFACT_DIR}"
+log "X-Kernel 构建完成，产物位于 ${ARTIFACT_DIR}"

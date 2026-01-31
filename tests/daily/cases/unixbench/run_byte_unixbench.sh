@@ -122,13 +122,13 @@ fi
 ARCH="${ARCH:-aarch64}"
 UNIXBENCH_DEST_DIR="/root/UnixBench"
 
-# === 阶段 2: 定位 StarryOS 根目录（仅用于 VM runner） ===
+# === 阶段 2: 定位 X-Kernel 根目录（仅用于 VM runner） ===
 
-STARRYOS_ROOT_RAW="${STARRYOS_ROOT:-${WORKSPACE}/.cache/StarryOS}"
-STARRYOS_ROOT="$(abspath "${STARRYOS_ROOT_RAW}")"
+XKERNEL_ROOT_RAW="${XKERNEL_ROOT:-${WORKSPACE}/.cache/X-Kernel}"
+XKERNEL_ROOT="$(abspath "${XKERNEL_ROOT_RAW}")"
 
-if [[ ! -d "${STARRYOS_ROOT}" ]]; then
-  echo "[${CASE_LABEL}] 未找到 StarryOS 仓库: ${STARRYOS_ROOT}" >&2
+if [[ ! -d "${XKERNEL_ROOT}" ]]; then
+  echo "[${CASE_LABEL}] 未找到 X-Kernel 仓库: ${XKERNEL_ROOT}" >&2
   exit 1
 fi
 
@@ -180,8 +180,8 @@ run_sudo() {
 # === 阶段 4: 准备可写磁盘镜像 ===
 
 CLEANUP_DISK=0
-if [[ -n "${STARRYOS_DISK_IMAGE:-}" ]]; then
-  DISK_IMAGE="$(abspath "${STARRYOS_DISK_IMAGE}")"
+if [[ -n "${XKERNEL_DISK_IMAGE:-}" ]]; then
+  DISK_IMAGE="$(abspath "${XKERNEL_DISK_IMAGE}")"
   mkdir -p "$(dirname "${DISK_IMAGE}")"
 else
   DISK_IMAGE="$(mktemp /tmp/starry-byte-unixbench-XXXXXX.img)"
@@ -278,7 +278,7 @@ log "脚本注入完成: /root/run_unixbench.sh"
 
 # === 阶段 5: 启动 QEMU 并在 guest 中执行 UnixBench ===
 
-VM_RUNNER_RAW="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/starry_vm_runner.py}}"
+VM_RUNNER_RAW="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/xkernel_vm_runner.py}}"
 VM_RUNNER="$(abspath "${VM_RUNNER_RAW}")"
 if [[ ! -x "${VM_RUNNER}" ]]; then
   log "未找到 starry_vm_runner: ${VM_RUNNER}"
@@ -290,12 +290,12 @@ VM_STDERR="${CASE_ARTIFACT_DIR}/vm-${RUN_ID}.err"
 
 VM_COMMAND="/root/run_unixbench.sh"
 
-log "启动 StarryOS,执行 UnixBench"
+log "启动 X-Kernel,执行 UnixBench"
 VM_RUNNER_CMD=(
   env
   PYTHONUNBUFFERED=1
   python3 "${VM_RUNNER}"
-  --root "${STARRYOS_ROOT}"
+  --root "${XKERNEL_ROOT}"
   --arch "${ARCH}"
   --command "${VM_COMMAND}"
   --command-timeout "${COMMAND_TIMEOUT}"
@@ -344,7 +344,7 @@ if [[ ! -s "${LOG_SOURCE}" && -s "${VM_STDERR}" ]]; then
   log "命令输出主要写入 stderr，改用 ${LOG_SOURCE} 解析"
 fi
 
-log "StarryOS 执行完成，guest 日志位于 ${LOG_SOURCE}"
+log "X-Kernel 执行完成，guest 日志位于 ${LOG_SOURCE}"
 
 
 # === 阶段 6: 收集 Benchmark 结果并导出总结 ===

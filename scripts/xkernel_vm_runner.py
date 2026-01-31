@@ -27,7 +27,7 @@ VHOST_VSOCK_PATH = "/dev/vhost-vsock"
 
 
 def log(msg: str) -> None:
-    print(f"[starry-ci] {msg}")
+    print(f"[xkernel-ci] {msg}")
 
 
 def read_stderr(proc: subprocess.Popen, ready_event: threading.Event) -> None:
@@ -124,7 +124,7 @@ def resolve_vsock_setting(raw: Optional[str]) -> str:
 def run(args):
     root = Path(args.root).resolve()
     if not root.is_dir():
-        raise SystemExit(f"StarryOS root not found: {root}")
+        raise SystemExit(f"X-Kernel root not found: {root}")
 
     plat_config = root / ".platconfig.toml"
     if not plat_config.exists():
@@ -329,8 +329,8 @@ def run(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run StarryOS under QEMU and optionally execute a command")
-    parser.add_argument("--root", required=True, help="Path to StarryOS repository root")
+    parser = argparse.ArgumentParser(description="Run X-Kernel under QEMU and optionally execute a command")
+    parser.add_argument("--root", required=True, help="Path to X-Kernel repository root")
     parser.add_argument("--arch", default="aarch64")
     parser.add_argument("--port", type=int, default=4444)
     parser.add_argument("--boot-timeout", type=int, default=60)

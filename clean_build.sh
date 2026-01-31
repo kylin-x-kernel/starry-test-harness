@@ -27,7 +27,7 @@ remove_path() {
 remove_path "${REPO_ROOT}/target"
 remove_path "${REPO_ROOT}/build"
 remove_path "${REPO_ROOT}/artifacts"
-remove_path "${REPO_ROOT}/.cache/StarryOS"
+remove_path "${REPO_ROOT}/.cache/X-Kernel"
 remove_path "${REPO_ROOT}/.cache/rootfs"
 remove_path "${REPO_ROOT}/.cache/unixbench"
 # per-case build caches and artifacts

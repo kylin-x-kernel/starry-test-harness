@@ -9,18 +9,18 @@
 ├── Cargo.toml               # Rust harness 配置
 ├── Makefile                 # 顶层入口 (例如 make ci-test run)
 ├── scripts/
-│   └── build_starry.sh      # 编译 StarryOS 内核并准备 rootfs 模板
+│   └── build_xkernel.sh      # 编译 X-Kernel 内核并准备 rootfs 模板
 ├── src/
 │   └── main.rs              # Harness 主逻辑 (解析 suite.toml, 调度测试)
 ├── tests/
 │   ├── ci/
 │   │   ├── suite.toml       # CI 套件: 用例清单
-│   │   ├── run_starry_boot.sh # CI 用例: 启动验证脚本
+│   │   ├── run_xkernel_boot.sh # CI 用例: 启动验证脚本
 │   │   ├── run_case.sh      # CI 用例: Rust 测试用例运行器
 │   │   └── cases/           # CI 用例: 所有 Rust 测试源码 (一个 Crate)
 │   ├── ci-test-iter/
 │   │   ├── suite.toml         # 迭代套件: 用例清单
-│   │   ├── run_starry_boot.sh # 用例: 启动验证脚本
+│   │   ├── run_xkernel_boot.sh # 用例: 启动验证脚本
 │   │   ├── run_case.sh        # 迭代用例运行器
 │   │   └── cases/             # 迭代用例源码/脚本
 │   ├── stress/
@@ -40,10 +40,10 @@
 当执行 `make <suite-name> run` (例如 `make stress-test run`) 或 `CASES=<name> make ci-test-iter run`（例如`CASES=process-spawn make ci-test-iter run`）时，框架会自动执行以下步骤：
 
 1.  **Harness 启动**: `Makefile` 调用 Rust 编写的 `starry-test-harness` 程序。
-2.  **环境与内核构建**: Harness 首先执行 `scripts/build_starry.sh`，该脚本负责：
+2.  **环境与内核构建**: Harness 首先执行 `scripts/build_xkernel.sh`，该脚本负责：
     *   自动安装并切换到指定的 **Rust nightly** 工具链及所需组件 (`aarch64` 目标, `llvm-tools`)。
-    *   克隆或更新 StarryOS 仓库代码。
-    *   编译 StarryOS 内核 (`.bin` 文件)。
+    *   克隆或更新 X-Kernel 仓库代码。
+    *   编译 X-Kernel 内核 (`.bin` 文件)。
     *   下载 `rootfs` 模板镜像 (如果本地没有)。
 3.  **用例迭代执行**: Harness 解析对应 `tests/<suite-name>/suite.toml` 文件，并依次执行其中定义的每个测试用例，如果指定CASES则执行该CASES。
 4.  **动态镜像生成与测试**:
@@ -140,7 +140,7 @@
     args = ["my_ci_test"]               # args[0] 是你的测试文件名 (不含 .rs)
     ```
 
-    harness 会自动把交叉编译好的测试二进制写入 StarryOS 镜像，并在虚拟机内执行该程序；Rust 测试框架返回的退出码会直接作为 PASS/FAIL。
+    harness 会自动把交叉编译好的测试二进制写入 X-Kernel 镜像，并在虚拟机内执行该程序；Rust 测试框架返回的退出码会直接作为 PASS/FAIL。
 
 ## 超时配置
 
@@ -172,8 +172,8 @@ timeout_secs = 1200  # 单独为这个用例设置 20 分钟超时
 
 `.github/workflows/ci-test.yml` 已经配置好所有依赖的安装和缓存，并会自动执行 `make ci-test run`。
 
-- `STARRYOS_REMOTE`: StarryOS 仓库地址（默认：https://github.com/kylin-x-kernel/StarryOS.git）。
-- `STARRYOS_REF`: StarryOS 分支/标签。
-- `STARRYOS_ROOT`: StarryOS 本地克隆路径。
+- `XKERNEL_REMOTE`: X-Kernel 仓库地址（默认：https://github.com/kylin-x-kernel/X-Kernel.git）。
+- `XKERNEL_REF`: X-Kernel 分支/标签。
+- `XKERNEL_ROOT`: X-Kernel 本地克隆路径。
 
 这些环境变量可以在 workflow 文件中修改，以适配不同的测试目标。

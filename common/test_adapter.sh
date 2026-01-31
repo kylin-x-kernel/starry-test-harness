@@ -1,5 +1,4 @@
 #!/bin/sh
-# StarryOS Test Harness - Test Adapter Interface
 # 定义测试模块的标准接口
 
 # ==================== 测试模块接口 ====================

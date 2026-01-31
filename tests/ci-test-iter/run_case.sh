@@ -74,12 +74,12 @@ if [[ "${SKIP_DISK_IMAGE:-0}" == "1" ]]; then
 fi
 
 # Your change: Create fresh disk image from template
-STARRYOS_ROOT="${STARRYOS_ROOT:-${SCRIPT_DIR}/../../.cache/StarryOS}"
-if [[ "${STARRYOS_ROOT}" != /* ]]; then
-  STARRYOS_ROOT="${WORKSPACE}/${STARRYOS_ROOT}"
+XKERNEL_ROOT="${XKERNEL_ROOT:-${SCRIPT_DIR}/../../.cache/X-Kernel}"
+if [[ "${XKERNEL_ROOT}" != /* ]]; then
+  XKERNEL_ROOT="${WORKSPACE}/${XKERNEL_ROOT}"
 fi
 ARCH="${ARCH:-aarch64}"
-ROOTFS_TEMPLATE="${STARRYOS_ROOT}/rootfs-${ARCH}.img"
+ROOTFS_TEMPLATE="${XKERNEL_ROOT}/rootfs-${ARCH}.img"
 CLEANUP_DISK=0
 
 if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
@@ -88,10 +88,10 @@ if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
   exit 1
 fi
 
-if [[ -n "${STARRYOS_DISK_IMAGE:-}" ]]; then
-  DISK_IMAGE="${STARRYOS_DISK_IMAGE}"
+if [[ -n "${XKERNEL_DISK_IMAGE:-}" ]]; then
+  DISK_IMAGE="${XKERNEL_DISK_IMAGE}"
   if [[ "${DISK_IMAGE}" != /* ]]; then
-    DISK_IMAGE="${WORKSPACE}/${STARRYOS_DISK_IMAGE}"
+    DISK_IMAGE="${WORKSPACE}/${XKERNEL_DISK_IMAGE}"
   fi
   mkdir -p "$(dirname "${DISK_IMAGE}")"
 else
@@ -182,7 +182,7 @@ then
   exit 1
 fi
 
-VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/starry_vm_runner.py}}"
+VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/xkernel_vm_runner.py}}"
 if [[ ! -x "${VM_RUNNER}" ]]; then
   echo "[${CASE_LABEL}] 未找到 starry_vm_runner：${VM_RUNNER}" >&2
   exit 1
@@ -194,7 +194,7 @@ VM_STDERR="${CASE_ARTIFACT_DIR}/vm-${RUN_ID}.err"
 
 # Build VM runner command with optional host companion
 VM_RUNNER_ARGS=(
-  --root "${STARRYOS_ROOT}"
+  --root "${XKERNEL_ROOT}"
   --arch "${ARCH}"
   --command "${DEST_PATH} --show-output"
   --command-timeout "${COMMAND_TIMEOUT}"
@@ -229,7 +229,7 @@ if [[ -n "${STARRY_HOST_COMPANION:-}" ]]; then
   fi
 fi
 
-echo "[${CASE_LABEL}] 启动 StarryOS 执行 ${DEST_PATH}" >&2
+echo "[${CASE_LABEL}] 启动 X-Kernel 执行 ${DEST_PATH}" >&2
 if ! python3 "${VM_RUNNER}" "${VM_RUNNER_ARGS[@]}" \
   2> >(tee "${VM_STDERR}" >&2) | tee "${VM_STDOUT}"; then
   echo "[${CASE_LABEL}] 虚拟机执行失败，详见 ${VM_STDERR}" >&2
@@ -242,4 +242,4 @@ if ! python3 "${VM_RUNNER}" "${VM_RUNNER_ARGS[@]}" \
   exit 1
 fi
 
-echo "[${CASE_LABEL}] StarryOS 执行完成，日志已写入 ${VM_STDOUT}" >&2
+echo "[${CASE_LABEL}] X-Kernel 执行完成，日志已写入 ${VM_STDOUT}" >&2

@@ -107,7 +107,7 @@ PY
 ```toml
 [[cases]]
 name = "byte-unixbench"
-description = "在 StarryOS 中运行 Byte UnixBench"
+description = "在 X-Kernel 中运行 Byte UnixBench"
 path = "tests/daily/cases/unixbench/run_byte_unixbench.sh"
 args = ["dhry2reg", "whetstone-double", "syscall"]
 timeout_secs = 3600

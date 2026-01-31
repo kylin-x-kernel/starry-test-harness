@@ -48,11 +48,11 @@ if [[ "${SKIP_DISK_IMAGE:-0}" == "1" ]]; then
 fi
 
 # Create fresh disk image from template
-STARRYOS_ROOT="${STARRYOS_ROOT:-${SCRIPT_DIR}/../../.cache/StarryOS}"
-if [[ "${STARRYOS_ROOT}" != /* ]]; then
-  STARRYOS_ROOT="${WORKSPACE}/${STARRYOS_ROOT}"
+XKERNEL_ROOT="${XKERNEL_ROOT:-${SCRIPT_DIR}/../../.cache/X-Kernel}"
+if [[ "${XKERNEL_ROOT}" != /* ]]; then
+  XKERNEL_ROOT="${WORKSPACE}/${XKERNEL_ROOT}"
 fi
-ROOTFS_TEMPLATE="${STARRYOS_ROOT}/rootfs-${ARCH}.img"
+ROOTFS_TEMPLATE="${XKERNEL_ROOT}/rootfs-${ARCH}.img"
 CLEANUP_DISK=0
 
 if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
@@ -61,10 +61,10 @@ if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
   exit 1
 fi
 
-if [[ -n "${STARRYOS_DISK_IMAGE:-}" ]]; then
-  DISK_IMAGE="${STARRYOS_DISK_IMAGE}"
+if [[ -n "${XKERNEL_DISK_IMAGE:-}" ]]; then
+  DISK_IMAGE="${XKERNEL_DISK_IMAGE}"
   if [[ "${DISK_IMAGE}" != /* ]]; then
-    DISK_IMAGE="${WORKSPACE}/${STARRYOS_DISK_IMAGE}"
+    DISK_IMAGE="${WORKSPACE}/${XKERNEL_DISK_IMAGE}"
   fi
   mkdir -p "$(dirname "${DISK_IMAGE}")"
 else
@@ -162,7 +162,7 @@ echo "[${CASE_LABEL}] libc-test 目录已完整复制到磁盘镜像" >&2
 mkdir -p "${CASE_ARTIFACT_DIR}/bins"
 cp -r "${LIBC_TEST_DIR}/libc-test-bins/src/${TEST_MODULE}" "${CASE_ARTIFACT_DIR}/bins/" 2>/dev/null || true
 
-VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/starry_vm_runner.py}}"
+VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/xkernel_vm_runner.py}}"
 if [[ ! -x "${VM_RUNNER}" ]]; then
   echo "[${CASE_LABEL}] 未找到 starry_vm_runner：${VM_RUNNER}" >&2
   exit 1
@@ -174,9 +174,9 @@ VM_STDERR="${CASE_ARTIFACT_DIR}/vm-${RUN_ID}.err"
 
 # Run the test module
 TEST_COMMAND="cd /usr/libc-test && sh run src/${TEST_MODULE} ${TEST_MODE}"
-echo "[${CASE_LABEL}] 启动 StarryOS 执行 ${TEST_MODULE} 测试 (${TEST_MODE})" >&2
+echo "[${CASE_LABEL}] 启动 X-Kernel 执行 ${TEST_MODULE} 测试 (${TEST_MODE})" >&2
 python3 "${VM_RUNNER}" \
-  --root "${STARRYOS_ROOT}" \
+  --root "${XKERNEL_ROOT}" \
   --arch "${ARCH}" \
   --command "${TEST_COMMAND}" \
   --command-timeout "${COMMAND_TIMEOUT}" \
@@ -220,6 +220,6 @@ if [[ "${FAILED_COUNT}" != "0" ]]; then
 fi
 
 echo "[${CASE_LABEL}] 全部 ${PASSED_COUNT} 个测试用例通过" >&2
-echo "[${CASE_LABEL}] StarryOS 执行完成，日志已写入 ${VM_STDOUT}" >&2
+echo "[${CASE_LABEL}] X-Kernel 执行完成，日志已写入 ${VM_STDOUT}" >&2
 SCRIPT_EXIT_CODE=0
 exit 0

@@ -6,7 +6,7 @@
 # 
 # This file has been modified by KylinSoft on 2025.
 
-"""LOC report generator for StarryOS.
+"""LOC report generator for X-Kernel.
 
 - Outputs loc.json, loc.md，若指定 --comment-output，内容与 loc.md 相同，便于直接贴到评论。
 - 仓库按 LOC 降序展示。
@@ -24,7 +24,7 @@ DEFAULT_EXCLUDES = ["target", ".git", "arceos/target", "build", "dist"]
 # 参数解析
 # --------------------------
 def parse_args():
-    parser = argparse.ArgumentParser(description="StarryOS LOC report generator")
+    parser = argparse.ArgumentParser(description="X-Kernel LOC report generator")
 
     parser.add_argument("--workspace", required=True)
     parser.add_argument("--clone-dir", required=True)
@@ -141,7 +141,7 @@ def main():
     # -------- 写 loc.md--------
     md_lines = []
 
-    md_lines.append("# StarryOS 代码统计报告")
+    md_lines.append("# X-Kernel 代码统计报告")
     md_lines.append("")
     md_lines.append(f"**总计代码行数：{total_all:,} 行**")
     md_lines.append("")

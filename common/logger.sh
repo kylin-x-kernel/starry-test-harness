@@ -1,5 +1,4 @@
 #!/bin/sh
-# StarryOS Test Harness - Logging Utilities
 # 统一的日志格式化工具
 
 # 颜色定义（如果终端支持）

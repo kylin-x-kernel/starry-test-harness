@@ -76,14 +76,14 @@ if [[ ! -f "${TARGET_BIN}" ]]; then
   exit 1
 fi
 
-STARRYOS_ROOT="${STARRYOS_ROOT:-${WORKSPACE_ROOT}/.cache/StarryOS}"
-if [[ "${STARRYOS_ROOT}" != /* ]]; then
-  STARRYOS_ROOT="${WORKSPACE_ROOT}/${STARRYOS_ROOT}"
+XKERNEL_ROOT="${XKERNEL_ROOT:-${WORKSPACE_ROOT}/.cache/X-Kernel}"
+if [[ "${XKERNEL_ROOT}" != /* ]]; then
+  XKERNEL_ROOT="${WORKSPACE_ROOT}/${XKERNEL_ROOT}"
 fi
 
 # Create fresh disk image from template for each test run
 ARCH="${ARCH:-aarch64}"
-ROOTFS_TEMPLATE="${STARRYOS_ROOT}/rootfs-${ARCH}.img"
+ROOTFS_TEMPLATE="${XKERNEL_ROOT}/rootfs-${ARCH}.img"
 CLEANUP_DISK=0
 
 if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
@@ -92,8 +92,8 @@ if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
   exit 1
 fi
 
-if [[ -n "${STARRYOS_DISK_IMAGE:-}" ]]; then
-  DISK_IMAGE="${STARRYOS_DISK_IMAGE}"
+if [[ -n "${XKERNEL_DISK_IMAGE:-}" ]]; then
+  DISK_IMAGE="${XKERNEL_DISK_IMAGE}"
   if [[ "${DISK_IMAGE}" != /* ]]; then
     DISK_IMAGE="${WORKSPACE_ROOT}/${DISK_IMAGE}"
   fi
@@ -129,7 +129,7 @@ if ! command -v debugfs >/dev/null 2>&1; then
   exit 1
 fi
 
-REMOTE_ROOT="${STARRYOS_TEST_PATH:-/usr/tests}"
+REMOTE_ROOT="${XKERNEL_TEST_PATH:-/usr/tests}"
 if [[ "${REMOTE_ROOT}" != /* ]]; then
   REMOTE_ROOT="/${REMOTE_ROOT}"
 fi
@@ -164,7 +164,7 @@ then
 fi
 echo "[daily] deployed binary to ${REMOTE_PATH}" >&2
 
-VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE_ROOT}/scripts/starry_vm_runner.py}}"
+VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE_ROOT}/scripts/xkernel_vm_runner.py}}"
 if [[ ! -x "${VM_RUNNER}" ]]; then
   echo "[daily] starry_vm_runner not found at ${VM_RUNNER}" >&2
   exit 1
@@ -183,16 +183,16 @@ RUN_STDERR="${ARTIFACT_DIR}/stderr.log"
 RESULT_PATH="${ARTIFACT_DIR}/result.json"
 COMMAND_TIMEOUT="${STARRY_CASE_TIMEOUT_SECS:-600}"
 
-echo "[daily] running inside StarryOS: ${REMOTE_CMD}" >&2
+echo "[daily] running inside X-Kernel: ${REMOTE_CMD}" >&2
 if ! VM_OUTPUT="$(
   python3 "${VM_RUNNER}" \
-    --root "${STARRYOS_ROOT}" \
+    --root "${XKERNEL_ROOT}" \
     --arch "${ARCH}" \
     --command "${REMOTE_CMD}" \
     --command-timeout "${COMMAND_TIMEOUT}" \
     2> >(tee "${RUN_STDERR}" >&2)
 )"; then
-  echo "[daily] StarryOS command failed" >&2
+  echo "[daily] X-Kernel command failed" >&2
   exit 1
 fi
 

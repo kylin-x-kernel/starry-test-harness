@@ -1,5 +1,4 @@
 #!/bin/sh
-# StarryOS Test Harness - Common Utilities
 # BusyBox 兼容的工具函数库
 
 # ==================== 文件操作工具 ====================

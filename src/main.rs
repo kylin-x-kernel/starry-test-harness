@@ -39,7 +39,7 @@ fn main() -> Result<()> {
 #[command(
     name = "starry-test-harness",
     version,
-    about = "Rust harness for Starry OS test suites"
+    about = "Rust harness for X-Kernel test suites"
 )]
 struct Cli {
     #[arg(value_enum)]
