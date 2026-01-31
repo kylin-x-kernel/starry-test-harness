@@ -12,11 +12,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
 ARCH=${ARCH:-aarch64}
-STARRYOS_ROOT=${STARRYOS_ROOT:-${REPO_ROOT}/.cache/StarryOS}
-VM_RUNNER=${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${REPO_ROOT}/scripts/starry_vm_runner.py}}
+XKERNEL_ROOT=${XKERNEL_ROOT:-${REPO_ROOT}/.cache/X-Kernel}
+VM_RUNNER=${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${REPO_ROOT}/scripts/xkernel_vm_runner.py}}
 
-if [[ "${STARRYOS_ROOT}" != /* ]]; then
-  STARRYOS_ROOT="${REPO_ROOT}/${STARRYOS_ROOT}"
+if [[ "${XKERNEL_ROOT}" != /* ]]; then
+  XKERNEL_ROOT="${REPO_ROOT}/${XKERNEL_ROOT}"
 fi
 
 ROOTFS_CACHE_DIR="${ROOTFS_CACHE_DIR:-${REPO_ROOT}/.cache/rootfs}"
@@ -47,10 +47,10 @@ fi
 
 export DISK_IMG="${TMP_DISK}"
 
-echo "[starry-boot] 使用 StarryOS 路径: ${STARRYOS_ROOT}"
+echo "[starry-boot] 使用 X-Kernel 路径: ${XKERNEL_ROOT}"
 
-if [[ ! -d "${STARRYOS_ROOT}" ]]; then
-  echo "[starry-boot] 未找到 StarryOS 仓库：${STARRYOS_ROOT}" >&2
+if [[ ! -d "${XKERNEL_ROOT}" ]]; then
+  echo "[starry-boot] 未找到 X-Kernel 仓库：${XKERNEL_ROOT}" >&2
   exit 1
 fi
 
@@ -59,4 +59,4 @@ if [[ ! -x "${VM_RUNNER}" ]]; then
   exit 1
 fi
 
-python3 "${VM_RUNNER}" --root "${STARRYOS_ROOT}" --arch "${ARCH}"
+python3 "${VM_RUNNER}" --root "${XKERNEL_ROOT}" --arch "${ARCH}"

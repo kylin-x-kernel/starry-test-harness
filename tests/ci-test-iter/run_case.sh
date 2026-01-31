@@ -31,33 +31,13 @@ RUN_ID="${STARRY_RUN_ID:-$(date +%Y%m%d-%H%M%S)}"
 RUN_DIR="${STARRY_RUN_DIR:-${WORKSPACE}/logs/ci/${RUN_ID}}"
 CASE_ARTIFACT_DIR="${STARRY_CASE_ARTIFACT_DIR:-${RUN_DIR}/artifacts/${BINARY_NAME}}"
 
-TARGET_TRIPLE="${TARGET_TRIPLE:-aarch64-unknown-linux-musl}"
+source "${SCRIPT_DIR}/../../common/arch_utils.sh"
 
-# Remote change: Check for cross-compiler before proceeding
-if [[ "${TARGET_TRIPLE}" == "aarch64-unknown-linux-musl" ]]; then
-  REQUIRED_LINKER="aarch64-linux-musl-gcc"
-  LINKER_ENV="${CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER:-}"
-  if [[ -n "${LINKER_ENV}" ]]; then
-    LINKER_BIN="${LINKER_ENV%% *}"
-    if ! command -v "${LINKER_BIN}" >/dev/null 2>&1; then
-      echo "[${CASE_LABEL}] CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER=${LINKER_ENV} 但未找到可执行文件" >&2
-      exit 1
-    fi
-  elif [[ -n "${CC_aarch64_unknown_linux_musl:-}" ]]; then
-    if ! command -v "${CC_aarch64_unknown_linux_musl}" >/dev/null 2>&1; then
-      echo "[${CASE_LABEL}] CC_aarch64_unknown_linux_musl=${CC_aarch64_unknown_linux_musl} 但未找到可执行文件" >&2
-      exit 1
-    fi
-    export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="${CC_aarch64_unknown_linux_musl}"
-  elif command -v "${REQUIRED_LINKER}" >/dev/null 2>&1; then
-    export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="${REQUIRED_LINKER}"
-  else
-    cat >&2 <<MSG
-[${CASE_LABEL}] 未检测到 aarch64 musl 交叉编译器。
-请安装 ${REQUIRED_LINKER} 或设置 CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER/CC_aarch64_unknown_linux_musl 后重试。
-MSG
-    exit 1
-  fi
+ARCH="${ARCH:-aarch64}"
+TARGET_TRIPLE="$(get_target_triple "${ARCH}")"
+
+if ! check_musl_linker "${ARCH}" "${CASE_LABEL}"; then
+  exit 1
 fi
 
 mkdir -p "${CASE_ARTIFACT_DIR}"
@@ -74,12 +54,12 @@ if [[ "${SKIP_DISK_IMAGE:-0}" == "1" ]]; then
 fi
 
 # Your change: Create fresh disk image from template
-STARRYOS_ROOT="${STARRYOS_ROOT:-${SCRIPT_DIR}/../../.cache/StarryOS}"
-if [[ "${STARRYOS_ROOT}" != /* ]]; then
-  STARRYOS_ROOT="${WORKSPACE}/${STARRYOS_ROOT}"
+XKERNEL_ROOT="${XKERNEL_ROOT:-${SCRIPT_DIR}/../../.cache/X-Kernel}"
+if [[ "${XKERNEL_ROOT}" != /* ]]; then
+  XKERNEL_ROOT="${WORKSPACE}/${XKERNEL_ROOT}"
 fi
 ARCH="${ARCH:-aarch64}"
-ROOTFS_TEMPLATE="${STARRYOS_ROOT}/rootfs-${ARCH}.img"
+ROOTFS_TEMPLATE="${XKERNEL_ROOT}/rootfs-${ARCH}.img"
 CLEANUP_DISK=0
 
 if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
@@ -88,10 +68,10 @@ if [[ ! -f "${ROOTFS_TEMPLATE}" ]]; then
   exit 1
 fi
 
-if [[ -n "${STARRYOS_DISK_IMAGE:-}" ]]; then
-  DISK_IMAGE="${STARRYOS_DISK_IMAGE}"
+if [[ -n "${XKERNEL_DISK_IMAGE:-}" ]]; then
+  DISK_IMAGE="${XKERNEL_DISK_IMAGE}"
   if [[ "${DISK_IMAGE}" != /* ]]; then
-    DISK_IMAGE="${WORKSPACE}/${STARRYOS_DISK_IMAGE}"
+    DISK_IMAGE="${WORKSPACE}/${XKERNEL_DISK_IMAGE}"
   fi
   mkdir -p "$(dirname "${DISK_IMAGE}")"
 else
@@ -182,7 +162,7 @@ then
   exit 1
 fi
 
-VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/starry_vm_runner.py}}"
+VM_RUNNER="${STARRY_VM_RUNNER:-${CI_TEST_RUNNER:-${WORKSPACE}/scripts/xkernel_vm_runner.py}}"
 if [[ ! -x "${VM_RUNNER}" ]]; then
   echo "[${CASE_LABEL}] 未找到 starry_vm_runner：${VM_RUNNER}" >&2
   exit 1
@@ -194,7 +174,7 @@ VM_STDERR="${CASE_ARTIFACT_DIR}/vm-${RUN_ID}.err"
 
 # Build VM runner command with optional host companion
 VM_RUNNER_ARGS=(
-  --root "${STARRYOS_ROOT}"
+  --root "${XKERNEL_ROOT}"
   --arch "${ARCH}"
   --command "${DEST_PATH} --show-output"
   --command-timeout "${COMMAND_TIMEOUT}"
@@ -229,7 +209,7 @@ if [[ -n "${STARRY_HOST_COMPANION:-}" ]]; then
   fi
 fi
 
-echo "[${CASE_LABEL}] 启动 StarryOS 执行 ${DEST_PATH}" >&2
+echo "[${CASE_LABEL}] 启动 X-Kernel 执行 ${DEST_PATH}" >&2
 if ! python3 "${VM_RUNNER}" "${VM_RUNNER_ARGS[@]}" \
   2> >(tee "${VM_STDERR}" >&2) | tee "${VM_STDOUT}"; then
   echo "[${CASE_LABEL}] 虚拟机执行失败，详见 ${VM_STDERR}" >&2
@@ -242,4 +222,4 @@ if ! python3 "${VM_RUNNER}" "${VM_RUNNER_ARGS[@]}" \
   exit 1
 fi
 
-echo "[${CASE_LABEL}] StarryOS 执行完成，日志已写入 ${VM_STDOUT}" >&2
+echo "[${CASE_LABEL}] X-Kernel 执行完成，日志已写入 ${VM_STDOUT}" >&2

@@ -14,6 +14,8 @@ ARCH := $(arch)
 endif
 ARCH ?= aarch64
 export ARCH
+XKERNEL_ROOT ?= .cache/X-Kernel
+export XKERNEL_ROOT
 SUPPORTED_SUITES := ci-test ci-test-iter stress-test daily-test
 
 SUITE := $(firstword $(MAKECMDGOALS))

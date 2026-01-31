@@ -8,7 +8,7 @@
 //! Driver for the Arm Generic Interrupt Controller version 3 (or 4).
 
 // vsock client for receiving data stress tests
-// Connects to StarryOS guest VM, then receives test data
+// Connects to X-Kernel guest VM, then receives test data
 // about stress:
 //    - data size increased to 100MB
 //    - verify data integrity by checking sent/received byte counts
@@ -20,7 +20,7 @@ use std::io::{Read, Write};
 use std::time::Duration;
 use vsock::{VsockAddr, VsockStream};
 
-const GUEST_CID: u32 = 103; // QEMU guest CID configured in starry_vm_runner.py
+const GUEST_CID: u32 = 103; // QEMU guest CID configured in xkernel_vm_runner.py
 const GUEST_PORT: u32 = 1234; // Port where guest test is listening
 const MAX_RETRIES: u32 = 30; // Maximum connection retries
 const RETRY_DELAY_MS: u64 = 1000; // Delay between retries (1 second)

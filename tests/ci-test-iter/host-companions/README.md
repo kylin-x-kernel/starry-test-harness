@@ -2,7 +2,7 @@
 
 ## 概述
 
-Host Companion Programs 是运行在宿主机（host）上的辅助程序，用于与 StarryOS 虚拟机（guest）进行通信测试。
+Host Companion Programs 是运行在宿主机（host）上的辅助程序，用于与 X-Kernel 虚拟机（guest）进行通信测试。
 
 这个机制支持需要 **host-guest 双向通信** 的测试场景，例如：
 - VSOCK 通信测试
@@ -140,7 +140,7 @@ CASES=your-test make ci-test-iter run
 
 ## VM Runner 参数
 
-`starry_vm_runner.py` 支持的参数：
+`xkernel_vm_runner.py` 支持的参数：
 
 | 参数 | 描述 | 默认值 |
 |------|------|--------|

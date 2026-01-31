@@ -8,7 +8,7 @@
 //! Driver for the Arm Generic Interrupt Controller version 3 (or 4).
 
 // vsock client for sending data stress tests
-// Connects to StarryOS guest VM, then sends test data
+// Connects to X-Kernel guest VM, then sends test data
 // about stress:
 //    - data size increased to 100MB
 //    - verify data integrity by checking sent/received byte counts
