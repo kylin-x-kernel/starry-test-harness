@@ -182,7 +182,8 @@ fi
 log "Building StarryOS (ARCH=${ARCH})"
 log "Refreshing defconfig for ARCH=${ARCH}"
 make ARCH="${ARCH}" defconfig
-make ARCH="${ARCH}" build
+make ARCH="${ARCH}" ${UNITTEST:+UNITTEST=y} build
+
 if [[ -f "${STARRYOS_ROOT}/.platconfig.toml" ]]; then
   cp -f "${STARRYOS_ROOT}/.platconfig.toml" "${STARRYOS_ROOT}/.axconfig.toml"
 fi
