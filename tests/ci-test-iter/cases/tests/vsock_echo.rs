@@ -2,7 +2,7 @@
 // Copyright (C) 2025 Weikang Guo <guoweikang.kernel@gmail.com>
 // Copyright (C) 2025 KylinSoft Co., Ltd. <https://www.kylinos.cn/>
 // See LICENSE for license details.
-// 
+//
 // This file has been modified by KylinSoft on 2025.
 
 //! Driver for the Arm Generic Interrupt Controller version 3 (or 4).
@@ -23,20 +23,32 @@ fn vsock_echo_smoke() {
 
     // 2. wait for client connection
     let (mut stream, client_addr) = listener.accept().expect("VSOCK-GUEST: accept failed");
-    println!("VSOCK-GUEST: Accepted connection from CID:{} Port:{}", client_addr.cid(), client_addr.port());
+    println!(
+        "VSOCK-GUEST: Accepted connection from CID:{} Port:{}",
+        client_addr.cid(),
+        client_addr.port()
+    );
 
-    // --- Phase 1: Receive from Host ---    
+    // --- Phase 1: Receive from Host ---
     let mut received_count = 0;
     let mut buffer = [0u8; 4096]; // 4KB buffer
     while received_count < DATA_SIZE {
         let n = stream.read(&mut buffer).expect("VSOCK-GUEST: read failed");
-        assert!(n > 0, "VSOCK-GUEST: Guest disconnected unexpectedly during Phase 1");
-        assert!(buffer[0..n].iter().all(|&x| x == 65u8), "VSOCK-GUEST: Guest received invalid data during Phase 1");
+        assert!(
+            n > 0,
+            "VSOCK-GUEST: Guest disconnected unexpectedly during Phase 1"
+        );
+        assert!(
+            buffer[0..n].iter().all(|&x| x == 65u8),
+            "VSOCK-GUEST: Guest received invalid data during Phase 1"
+        );
         received_count += n;
     }
     // Send the received length to host for confirmation
     let len_bytes = (received_count as u64).to_be_bytes();
-    stream.write_all(&len_bytes).expect("VSOCK-GUEST: failed to send ack len");
+    stream
+        .write_all(&len_bytes)
+        .expect("VSOCK-GUEST: failed to send ack len");
 
     // --- Phase 2: Send to Host ---
     let chunk = [66u8; 1024]; // 1KB of 'B'
@@ -45,12 +57,16 @@ fn vsock_echo_smoke() {
         stream.write_all(&chunk).expect("VSOCK-GUEST: write failed");
         sent_count += chunk.len();
     }
-    
+
     // wait for ack message from host
     println!("VSOCK-GUEST: [Phase 2] Waiting for Host ack...");
     let mut ack_buf = [0u8; 8];
-    stream.read_exact(&mut ack_buf).expect("VSOCK-GUEST: failed to read ack len");
+    stream
+        .read_exact(&mut ack_buf)
+        .expect("VSOCK-GUEST: failed to read ack len");
     let ack_len = u64::from_be_bytes(ack_buf);
-    assert_eq!(ack_len, sent_count as u64, "VSOCK-GUEST: Guest received wrong amount of data!");
-
+    assert_eq!(
+        ack_len, sent_count as u64,
+        "VSOCK-GUEST: Guest received wrong amount of data!"
+    );
 }
