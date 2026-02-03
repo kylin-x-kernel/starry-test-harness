@@ -2,7 +2,7 @@
 // Copyright (C) 2025 Weikang Guo <guoweikang.kernel@gmail.com>
 // Copyright (C) 2025 KylinSoft Co., Ltd. <https://www.kylinos.cn/>
 // See LICENSE for license details.
-// 
+//
 // This file has been modified by KylinSoft on 2025.
 
 //! Driver for the Arm Generic Interrupt Controller version 3 (or 4).
@@ -17,7 +17,7 @@ use std::{
     time::Instant,
 };
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use chrono::{DateTime, Local};
 use clap::{Parser, ValueEnum};
 use colored::Colorize;
@@ -245,16 +245,53 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
     writeln!(run_log, "{}", suite_header)?;
 
     println!();
-    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
-    println!("{}", format!("  {} Test Suite", suite_label).bright_white().bold());
-    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
-    println!("  {}: {}", "Architecture".bright_cyan(), manifest.arch.as_deref().unwrap_or("unknown"));
-    println!("  {}: {}", "Description".bright_cyan(), manifest.description.as_deref().unwrap_or("no description"));
-    println!("  {}: {}{}", "Test Cases".bright_cyan(), cases.len(), if cases.len() != manifest.cases.len() { format!(" (filtered from {})", manifest.cases.len()) } else { String::new() });
-    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!(
+        "{}",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue()
+    );
+    println!(
+        "{}",
+        format!("  {} Test Suite", suite_label)
+            .bright_white()
+            .bold()
+    );
+    println!(
+        "{}",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue()
+    );
+    println!(
+        "  {}: {}",
+        "Architecture".bright_cyan(),
+        manifest.arch.as_deref().unwrap_or("unknown")
+    );
+    println!(
+        "  {}: {}",
+        "Description".bright_cyan(),
+        manifest.description.as_deref().unwrap_or("no description")
+    );
+    println!(
+        "  {}: {}{}",
+        "Test Cases".bright_cyan(),
+        cases.len(),
+        if cases.len() != manifest.cases.len() {
+            format!(" (filtered from {})", manifest.cases.len())
+        } else {
+            String::new()
+        }
+    );
+    println!(
+        "{}",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue()
+    );
     println!();
 
-    maybe_run_build(&manifest, suite, workspace, &mut run_log, suite_arch.as_deref())?;
+    maybe_run_build(
+        &manifest,
+        suite,
+        workspace,
+        &mut run_log,
+        suite_arch.as_deref(),
+    )?;
 
     let mut case_details = Vec::new();
     let mut passed = 0usize;
@@ -275,7 +312,15 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         if let Some(desc) = &case.description {
             println!("{} {}", "│ ".bright_yellow(), desc.bright_white());
         }
-        println!("{} {}: {}", "│ ".bright_yellow(), "Log".bright_cyan(), rel_path(&case_log_path, workspace).display().to_string().dimmed());
+        println!(
+            "{} {}: {}",
+            "│ ".bright_yellow(),
+            "Log".bright_cyan(),
+            rel_path(&case_log_path, workspace)
+                .display()
+                .to_string()
+                .dimmed()
+        );
         println!("{} {}", "└─".bright_yellow(), "Running...".bright_yellow());
 
         let case_start_msg = format!(
@@ -308,10 +353,17 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
         writeln!(run_log, "{}", case_finish_msg)?;
 
         let duration_sec = outcome.duration_ms as f64 / 1000.0;
-        let (status_colored, box_color): (colored::ColoredString, fn(colored::ColoredString) -> colored::ColoredString) = match outcome.status {
-            CaseStatus::Passed => ("✓ PASSED".to_string().bright_green(), |s| s.bright_green()),
+        let (status_colored, box_color): (
+            colored::ColoredString,
+            fn(colored::ColoredString) -> colored::ColoredString,
+        ) = match outcome.status {
+            CaseStatus::Passed => ("✓ PASSED".to_string().bright_green(), |s| {
+                s.bright_green()
+            }),
             CaseStatus::Failed => ("✗ FAILED".to_string().bright_red(), |s| s.bright_red()),
-            CaseStatus::SoftFailed => ("⚠ SOFT FAIL".to_string().bright_yellow(), |s| s.bright_yellow()),
+            CaseStatus::SoftFailed => ("⚠ SOFT FAIL".to_string().bright_yellow(), |s| {
+                s.bright_yellow()
+            }),
         };
 
         // Check if stdout is a TTY (interactive terminal)
@@ -321,14 +373,14 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
             .as_ref()
             .map(|details| format_failed_subtest_lines(details))
             .unwrap_or_default();
-        
+
         // Format metrics info if available
         let metrics_lines = outcome
             .test_metrics
             .as_ref()
             .map(|metrics| format_metrics_lines(metrics))
             .unwrap_or_default();
-        
+
         // Format error summary if available
         let error_lines = outcome
             .error_summary
@@ -341,25 +393,34 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
             // Number of lines to move up: 1 (└─ line) + 1 (Log line) + desc_line_count + 1 (header)
             let lines_to_move = 3 + desc_line_count;
             for _ in 0..lines_to_move {
-                print!("\x1b[1A");  // Move up
+                print!("\x1b[1A"); // Move up
             }
-            print!("\r");  // Move to beginning of line
+            print!("\r"); // Move to beginning of line
 
             // Redraw the entire box with the result color
-            print!("\x1b[2K");  // Clear line
+            print!("\x1b[2K"); // Clear line
             println!("{}", box_color(case_header.into()));
             if let Some(desc) = &case.description {
-                print!("\x1b[2K");  // Clear line
+                print!("\x1b[2K"); // Clear line
                 println!("{} {}", box_color("│ ".into()), desc.bright_white());
             }
-            print!("\x1b[2K");  // Clear line
-            println!("{} {}: {}", box_color("│ ".into()), "Log".bright_cyan(), rel_path(&case_log_path, workspace).display().to_string().dimmed());
-            
+            print!("\x1b[2K"); // Clear line
+            println!(
+                "{} {}: {}",
+                box_color("│ ".into()),
+                "Log".bright_cyan(),
+                rel_path(&case_log_path, workspace)
+                    .display()
+                    .to_string()
+                    .dimmed()
+            );
+
             // Determine if we have additional content to display
-            let has_extra_content = !failed_lines.is_empty() || !metrics_lines.is_empty() || !error_lines.is_empty();
-            
+            let has_extra_content =
+                !failed_lines.is_empty() || !metrics_lines.is_empty() || !error_lines.is_empty();
+
             if !has_extra_content {
-                print!("\x1b[2K");  // Clear line
+                print!("\x1b[2K"); // Clear line
                 println!(
                     "{} {} {}",
                     box_color("└─".into()),
@@ -367,74 +428,56 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
                     format!("(completed in {:.2}s)", duration_sec).dimmed()
                 );
             } else {
-                print!("\x1b[2K");  // Clear line
+                print!("\x1b[2K"); // Clear line
                 println!(
                     "{} {} {}",
                     box_color("│ ".into()),
                     status_colored,
                     format!("(completed in {:.2}s)", duration_sec).dimmed()
                 );
-                
+
                 // Display metrics first
                 let metrics_count = metrics_lines.len();
                 for (idx, line) in metrics_lines.iter().enumerate() {
-                    let is_last = error_lines.is_empty() && failed_lines.is_empty() && idx + 1 == metrics_count;
+                    let is_last = error_lines.is_empty()
+                        && failed_lines.is_empty()
+                        && idx + 1 == metrics_count;
                     if is_last {
-                        println!(
-                            "{} {}",
-                            box_color("└─".into()),
-                            line.bright_cyan()
-                        );
+                        println!("{} {}", box_color("└─".into()), line.bright_cyan());
                     } else {
-                        println!(
-                            "{} {}",
-                            box_color("│ ".into()),
-                            line.bright_cyan()
-                        );
+                        println!("{} {}", box_color("│ ".into()), line.bright_cyan());
                     }
                 }
-                
+
                 // Display error summary
                 let error_count = error_lines.len();
                 for (idx, line) in error_lines.iter().enumerate() {
                     let is_last = failed_lines.is_empty() && idx + 1 == error_count;
                     if is_last {
-                        println!(
-                            "{} {}",
-                            box_color("└─".into()),
-                            line.bright_red().bold()
-                        );
+                        println!("{} {}", box_color("└─".into()), line.bright_red().bold());
                     } else {
-                        println!(
-                            "{} {}",
-                            box_color("│ ".into()),
-                            line.bright_red().bold()
-                        );
+                        println!("{} {}", box_color("│ ".into()), line.bright_red().bold());
                     }
                 }
-                
+
                 // Display failures (Rust test failures)
                 for (idx, line) in failed_lines.iter().enumerate() {
                     let indent = if idx == 0 { "  " } else { "    " };
                     let formatted = format!("{}{}", indent, line);
                     if idx + 1 == failed_lines.len() {
-                        println!(
-                            "{} {}",
-                            box_color("└─".into()),
-                            formatted.bright_red()
-                        );
+                        println!("{} {}", box_color("└─".into()), formatted.bright_red());
                     } else {
-                        println!(
-                            "{} {}",
-                            box_color("│ ".into()),
-                            formatted.bright_red()
-                        );
+                        println!("{} {}", box_color("│ ".into()), formatted.bright_red());
                     }
                 }
             }
         } else {
             // Non-TTY (like GitHub Actions): just print the result line
-            println!("{} {}", status_colored, format!("(completed in {:.2}s)", duration_sec).dimmed());
+            println!(
+                "{} {}",
+                status_colored,
+                format!("(completed in {:.2}s)", duration_sec).dimmed()
+            );
             for line in &metrics_lines {
                 println!("{}", line.bright_cyan());
             }
@@ -504,20 +547,45 @@ fn run_suite(suite: Suite, workspace: &Path) -> Result<()> {
     let duration_secs = total_duration.num_milliseconds() as f64 / 1000.0;
 
     println!();
-    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!(
+        "{}",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue()
+    );
     println!("{}", "  Test Suite Summary".bright_white().bold());
-    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!(
+        "{}",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue()
+    );
     println!("  {}: {} tests", "Total".bright_cyan(), summary.total);
-    println!("  {}: {}", "Passed".bright_green(), passed.to_string().bright_green().bold());
+    println!(
+        "  {}: {}",
+        "Passed".bright_green(),
+        passed.to_string().bright_green().bold()
+    );
     if failed > 0 {
-        println!("  {}: {}", "Failed".bright_red(), failed.to_string().bright_red().bold());
+        println!(
+            "  {}: {}",
+            "Failed".bright_red(),
+            failed.to_string().bright_red().bold()
+        );
     }
     if soft_failed > 0 {
-        println!("  {}: {}", "Soft Fail".bright_yellow(), soft_failed.to_string().bright_yellow().bold());
+        println!(
+            "  {}: {}",
+            "Soft Fail".bright_yellow(),
+            soft_failed.to_string().bright_yellow().bold()
+        );
     }
     println!("  {}: {:.2}s", "Duration".bright_cyan(), duration_secs);
-    println!("  {}: {}", "Log".bright_cyan(), summary.log_file.display().to_string().dimmed());
-    println!("{}", "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue());
+    println!(
+        "  {}: {}",
+        "Log".bright_cyan(),
+        summary.log_file.display().to_string().dimmed()
+    );
+    println!(
+        "{}",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━".bright_blue()
+    );
     println!();
 
     if failed > 0 {
@@ -602,7 +670,7 @@ fn run_case(
 
     // Try to load test metrics from artifacts directory
     let test_metrics = load_test_metrics(case_artifact_dir);
-    
+
     // Extract error summary for failed tests
     let error_summary = if !output.status.success() {
         extract_error_summary(&output.stdout, &output.stderr, case_artifact_dir)
@@ -679,7 +747,6 @@ fn maybe_run_build(
     Ok(())
 }
 
-
 fn filter_cases(cases: &[TestCase]) -> Result<Vec<TestCase>> {
     let raw = match env::var("CASES") {
         Ok(v) if !v.trim().is_empty() => v,
@@ -690,7 +757,11 @@ fn filter_cases(cases: &[TestCase]) -> Result<Vec<TestCase>> {
         .split(|c: char| c == ',' || c.is_whitespace())
         .filter_map(|s| {
             let trimmed = s.trim();
-            if trimmed.is_empty() { None } else { Some(trimmed.to_string()) }
+            if trimmed.is_empty() {
+                None
+            } else {
+                Some(trimmed.to_string())
+            }
         })
         .collect();
     if selected.is_empty() {
@@ -730,8 +801,7 @@ fn extract_failed_subtests(stdout: &[u8]) -> Option<Vec<FailedSubCaseDetail>> {
     let content = String::from_utf8_lossy(stdout);
     let fail_pattern =
         Regex::new(r"(?m)^test\s+([^\s]+)\s+\.\.\.\s+FAILED\b").expect("valid regex");
-    let section_pattern =
-        Regex::new(r"^----\s+([^\s]+)\s+stdout\s+----").expect("valid regex");
+    let section_pattern = Regex::new(r"^----\s+([^\s]+)\s+stdout\s+----").expect("valid regex");
 
     let mut sections: HashMap<String, Vec<String>> = HashMap::new();
     let mut current_name: Option<String> = None;
@@ -746,7 +816,7 @@ fn extract_failed_subtests(stdout: &[u8]) -> Option<Vec<FailedSubCaseDetail>> {
             sections.entry(name).or_default();
             continue;
         }
-        
+
         // Parse "failures:" block
         if line.trim() == "failures:" {
             in_failures_block = true;
@@ -857,10 +927,12 @@ fn load_test_metrics(artifact_dir: &Path) -> Option<TestMetrics> {
     let raw_json: JsonValue = serde_json::from_str(&content).ok()?;
 
     let score = raw_json.get("score").and_then(|v| v.as_f64());
-    let score_type = raw_json.get("score_type")
+    let score_type = raw_json
+        .get("score_type")
         .and_then(|v| v.as_str())
         .map(|s| s.to_string());
-    let metrics = raw_json.get("metrics")
+    let metrics = raw_json
+        .get("metrics")
         .and_then(|v| v.as_array())
         .map(|arr| arr.clone());
 
@@ -889,7 +961,10 @@ fn format_metrics_lines(metrics: &TestMetrics) -> Vec<String> {
                 }
             }
         } else if metric_list.len() > 5 {
-            lines.push(format!("  {} metrics collected (see results.json)", metric_list.len()));
+            lines.push(format!(
+                "  {} metrics collected (see results.json)",
+                metric_list.len()
+            ));
         }
     }
 
@@ -917,11 +992,11 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
 
     // Try to find error in stderr first
     let stderr_content = String::from_utf8_lossy(stderr);
-    
+
     // Check for common error patterns in stderr
     for line in stderr_content.lines().rev().take(50) {
         let trimmed = line.trim();
-        
+
         // Skip empty lines and debug/info messages
         let is_error = is_error_line(trimmed);
         if trimmed.is_empty()
@@ -929,10 +1004,11 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
                 && (trimmed.starts_with('[')
                     || trimmed.starts_with("make[")
                     || trimmed.starts_with("qemu-system")
-                    || trimmed.contains("terminating on signal"))) {
+                    || trimmed.contains("terminating on signal")))
+        {
             continue;
         }
-        
+
         // Look for error indicators
         if is_error {
             // Clean up ANSI codes
@@ -945,7 +1021,7 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
             }
         }
     }
-    
+
     // Check vm stderr file
     for entry in fs::read_dir(artifact_dir).ok()? {
         let entry = entry.ok()?;
@@ -954,17 +1030,18 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
             if let Ok(content) = fs::read_to_string(&path) {
                 for line in content.lines().rev().take(30) {
                     let trimmed = line.trim();
-                    
+
                     let is_error = is_error_line(trimmed);
                     if trimmed.is_empty()
                         || (!is_error
                             && (trimmed.starts_with('[')
                                 || trimmed.starts_with("make[")
                                 || trimmed.starts_with("qemu-system")
-                                || trimmed.contains("terminating on signal"))) {
+                                || trimmed.contains("terminating on signal")))
+                    {
                         continue;
                     }
-                    
+
                     if is_error {
                         let cleaned = regex::Regex::new(r"\x1b\[[0-9;]*[A-Za-z]")
                             .ok()?
@@ -978,7 +1055,7 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
             }
         }
     }
-    
+
     // Fallback to stdout
     let stdout_content = String::from_utf8_lossy(stdout);
     for line in stdout_content.lines().rev().take(50) {
@@ -993,6 +1070,6 @@ fn extract_error_summary(stdout: &[u8], stderr: &[u8], artifact_dir: &Path) -> O
             }
         }
     }
-    
+
     None
 }

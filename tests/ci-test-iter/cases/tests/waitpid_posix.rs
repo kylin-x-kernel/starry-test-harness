@@ -2,7 +2,7 @@
 // Copyright (C) 2025 Weikang Guo <guoweikang.kernel@gmail.com>
 // Copyright (C) 2025 KylinSoft Co., Ltd. <https://www.kylinos.cn/>
 // See LICENSE for license details.
-// 
+//
 // This file has been modified by KylinSoft on 2025.
 
 //! Driver for the Arm Generic Interrupt Controller version 3 (or 4).
@@ -20,7 +20,7 @@
 //! - Signal termination (WIFSIGNALED, WTERMSIG)
 
 use libc::{
-    exit, fork, getpid, getpgid, kill, setpgid, waitpid, ECHILD, EINVAL, SIGKILL, SIGTERM, WNOHANG,
+    exit, fork, getpgid, getpid, kill, setpgid, waitpid, ECHILD, EINVAL, SIGKILL, SIGTERM, WNOHANG,
 };
 use std::ptr;
 use test_utils::*;
@@ -66,12 +66,7 @@ fn waitpid_child_exit_with_code() {
                 let result = waitpid(pid, &mut status, 0);
                 assert_eq!(result, pid, "waitpid 应返回子进程 PID");
                 assert!(wifexited!(status), "子进程应正常退出");
-                assert_eq!(
-                    wexitstatus!(status),
-                    exit_code,
-                    "退出码应为 {}",
-                    exit_code
-                );
+                assert_eq!(wexitstatus!(status), exit_code, "退出码应为 {}", exit_code);
             }
         }
     }
@@ -124,7 +119,10 @@ fn waitpid_wnohang_no_child_ready() {
                 let final_result = waitpid(pid, &mut status, 0);
                 assert_eq!(final_result, pid, "最终 waitpid 应返回子进程 PID");
             }
-            assert!(wifexited!(status) || result == 0, "子进程应正常退出或仍在运行");
+            assert!(
+                wifexited!(status) || result == 0,
+                "子进程应正常退出或仍在运行"
+            );
         }
     }
 }
@@ -275,11 +273,7 @@ fn waitpid_multiple_children_any_order() {
         // Verify all children were reaped
         assert_eq!(reaped_pids.len(), child_count as usize, "应回收所有子进程");
         for &pid in &expected_pids {
-            assert!(
-                reaped_pids.contains(&pid),
-                "应回收 PID {} 的子进程",
-                pid
-            );
+            assert!(reaped_pids.contains(&pid), "应回收 PID {} 的子进程", pid);
         }
     }
 }
@@ -387,10 +381,7 @@ fn waitpid_specific_process_group() {
             assert!(wifexited!(status), "子进程应正常退出");
 
             let exit_code = wexitstatus!(status);
-            assert!(
-                exit_code == 77 || exit_code == 1,
-                "退出码应为 77 或 1"
-            );
+            assert!(exit_code == 77 || exit_code == 1, "退出码应为 77 或 1");
         }
     }
 }
