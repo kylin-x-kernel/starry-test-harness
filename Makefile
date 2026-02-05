@@ -14,8 +14,14 @@ ARCH := $(arch)
 endif
 ARCH ?= aarch64
 export ARCH
+
+ifdef CI
 XKERNEL_ROOT ?= .cache/X-Kernel
 export XKERNEL_ROOT
+else ifdef GITHUB_ACTIONS
+XKERNEL_ROOT ?= .cache/X-Kernel
+export XKERNEL_ROOT
+endif
 SUPPORTED_SUITES := ci-test ci-test-iter stress-test daily-test
 
 SUITE := $(firstword $(MAKECMDGOALS))

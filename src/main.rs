@@ -649,6 +649,9 @@ fn run_case(
     if let Some(arch) = suite_arch {
         command.env("ARCH", arch);
     }
+    if let Ok(xkernel_root) = env::var("XKERNEL_ROOT") {
+        command.env("XKERNEL_ROOT", xkernel_root);
+    }
 
     let start = Instant::now();
     let output = command
@@ -737,6 +740,9 @@ fn maybe_run_build(
     if let Some(arch) = suite_arch {
         cmd.env("ARCH", arch);
     }
+    if let Ok(xkernel_root) = env::var("XKERNEL_ROOT") {
+        cmd.env("XKERNEL_ROOT", xkernel_root);
+    }
     let output = cmd
         .output()
         .with_context(|| format!("failed to run build script {}", script_path.display()))?;
@@ -744,6 +750,14 @@ fn maybe_run_build(
     log.write_all(&output.stderr)?;
     print!("{}", String::from_utf8_lossy(&output.stdout));
     eprint!("{}", String::from_utf8_lossy(&output.stderr));
+    
+    if !output.status.success() {
+        bail!(
+            "build script {} failed with exit code {:?}",
+            script_path.display(),
+            output.status.code()
+        );
+    }
     Ok(())
 }
 
