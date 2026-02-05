@@ -14,15 +14,23 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 SUITE=${1:-ci-test}
 ARCH=${ARCH:-aarch64}
 
-XKERNEL_REMOTE="${XKERNEL_REMOTE:-https://github.com/kylin-x-kernel/x-kernel.git}"
+XKERNEL_REMOTE="${XKERNEL_REMOTE:-https://github.com/kylin-x-kernel/x-kernel}"
 XKERNEL_COMMIT="${XKERNEL_REF:-${XKERNEL_COMMIT:-main}}"
 XKERNEL_BRANCH="${XKERNEL_BRANCH:-local}"
-XKERNEL_ROOT=${XKERNEL_ROOT:-${REPO_ROOT}/.cache/X-Kernel}
-XKERNEL_DEPTH=${XKERNEL_DEPTH:-0}
 ARTIFACT_DIR="${REPO_ROOT}/artifacts/${SUITE}"
 LOG_FILE="${ARTIFACT_DIR}/build.log"
 XKERNEL_CARGO_UPDATE="${XKERNEL_CARGO_UPDATE:-1}"
 STARRY_CI_UNAME_LINUX="${STARRY_CI_UNAME_LINUX:-1}"
+
+if [[ -n "${CI:-}" || -n "${GITHUB_ACTIONS:-}" ]]; then
+  XKERNEL_ROOT=${XKERNEL_ROOT:-${REPO_ROOT}/.cache/X-Kernel}
+else
+  if [[ "${XKERNEL_REMOTE}" = /* ]]; then
+    XKERNEL_ROOT="${XKERNEL_REMOTE}"
+  else
+    XKERNEL_ROOT="${REPO_ROOT}/.cache/X-Kernel"
+  fi
+fi
 
 if [[ "${XKERNEL_ROOT}" != /* ]]; then
   XKERNEL_ROOT="${REPO_ROOT}/${XKERNEL_ROOT}"
@@ -36,66 +44,16 @@ log() {
   echo "[build:starry] $*"
 }
 
-clone_or_update_repo() {
-  log "----------------------------------------"
-  log "X-Kernel Source Info"
-  log "  path   : ${XKERNEL_ROOT}"
-  
-  if [[ ! -d "${XKERNEL_ROOT}/.git" ]]; then
-    log "  remote : ${XKERNEL_REMOTE}"
-    log "  branch : ${XKERNEL_BRANCH}"
-    log "  ref    : ${XKERNEL_COMMIT}"
-    log "Cloning X-Kernel from ${XKERNEL_REMOTE}"
-    git clone --recursive "${XKERNEL_REMOTE}" "${XKERNEL_ROOT}"
-    log "Checking out ref ${XKERNEL_COMMIT}"
-    git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"
-  else
-    log "Using existing X-Kernel repo (pre-checked out by CI or previous run)"
-    
-    # 在 CI 环境中，代码已经被 actions/checkout 完整检出，无需 fetch/checkout
-    # 在本地环境中，检查并更新到指定版本
-    if [[ -z "${CI:-}" && -z "${GITHUB_ACTIONS:-}" ]]; then
-      # 检查并修正 remote URL（防止本地缓存指向错误仓库）
-      CURRENT_REMOTE=$(git -C "${XKERNEL_ROOT}" remote get-url origin 2>/dev/null || echo "")
-      if [[ "${CURRENT_REMOTE}" != "${XKERNEL_REMOTE}" ]]; then
-        log "Warning: local remote is ${CURRENT_REMOTE}, expected ${XKERNEL_REMOTE}"
-        log "Updating remote URL to ${XKERNEL_REMOTE}"
-        git -C "${XKERNEL_ROOT}" remote set-url origin "${XKERNEL_REMOTE}"
-      fi
-      
-      log "Local environment detected, syncing to ref ${XKERNEL_COMMIT}"
-      
-      # 验证远程是否存在该分支
-      if git -C "${XKERNEL_ROOT}" ls-remote --heads origin "${XKERNEL_COMMIT}" | grep -q "${XKERNEL_COMMIT}"; then
-        log "Remote branch ${XKERNEL_COMMIT} found, fetching..."
-        git -C "${XKERNEL_ROOT}" fetch origin "${XKERNEL_COMMIT}"
-        git -C "${XKERNEL_ROOT}" checkout -B "${XKERNEL_COMMIT}" "origin/${XKERNEL_COMMIT}"
-      elif git -C "${XKERNEL_ROOT}" ls-remote --tags origin "${XKERNEL_COMMIT}" | grep -q "${XKERNEL_COMMIT}"; then
-        log "Remote tag ${XKERNEL_COMMIT} found, fetching..."
-        git -C "${XKERNEL_ROOT}" fetch --tags origin
-        git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"
-      else
-        log "Trying to checkout ${XKERNEL_COMMIT} as commit SHA..."
-        git -C "${XKERNEL_ROOT}" fetch origin
-        if ! git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"; then
-          log "Error: cannot find or checkout ${XKERNEL_COMMIT}"
-          log "Available remote branches:"
-          git -C "${XKERNEL_ROOT}" ls-remote --heads origin | head -10
-          exit 1
-        fi
-      fi
-      git -C "${XKERNEL_ROOT}" submodule update --init --recursive
-    else
-      log "CI environment detected, skipping fetch (using pre-checked out code)"
-    fi
-  fi
-  
-  REAL_COMMIT=$(git -C "${XKERNEL_ROOT}" rev-parse HEAD)
-  log "  commit : ${REAL_COMMIT}"
-  log "----------------------------------------"
-}
+if [[ ! -d "${XKERNEL_ROOT}/.git" ]]; then
+  log "Cloning X-Kernel from ${XKERNEL_REMOTE} to ${XKERNEL_ROOT}"
+  git clone --recursive "${XKERNEL_REMOTE}" "${XKERNEL_ROOT}"
+  git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_COMMIT}"
+fi
 
-clone_or_update_repo
+log "----------------------------------------"
+log "X-Kernel Source: ${XKERNEL_ROOT}"
+log "  commit : $(git -C "${XKERNEL_ROOT}" rev-parse HEAD)"
+log "----------------------------------------"
 
 XKERNEL_COMMIT=$(git -C "${XKERNEL_ROOT}" rev-parse HEAD)
 log "X-Kernel commit: ${XKERNEL_COMMIT}"
@@ -197,14 +155,14 @@ for artifact in "${XKERNEL_ROOT}"/X-Kernel_"${ARCH}"*-qemu-virt.*; do
 done
 shopt -u nullglob
 
-cat >"${ARTIFACT_DIR}/build.info" <<META
+cat >"${ARTIFACT_DIR}/build.info" <<EOF
 suite=${SUITE}
 arch=${ARCH}
 stamp=$(date -u +%Y%m%d-%H%M%S)
-starryos_remote=${XKERNEL_REMOTE}
-starryos_ref=${XKERNEL_REF:-}
-starryos_root=${XKERNEL_ROOT}
-starryos_commit=${XKERNEL_COMMIT}
-META
+xkernel_remote=${XKERNEL_REMOTE}
+xkernel_ref=${XKERNEL_REF:-}
+xkernel_root=${XKERNEL_ROOT}
+xkernel_commit=${XKERNEL_COMMIT}
+EOF
 
 log "X-Kernel 构建完成，产物位于 ${ARTIFACT_DIR}"

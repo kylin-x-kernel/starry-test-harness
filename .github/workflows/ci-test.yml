@@ -13,11 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ARCH: aarch64
-      STARRYOS_REMOTE: https://github.com/kylin-x-kernel/x-kernel.git
-      STARRYOS_REF: main
-      STARRYOS_ROOT: ${{ github.workspace }}/.cache/StarryOS
+      XKERNEL_ROOT: ${{ github.workspace }}/.cache/X-Kernel
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout starry-test-harness
+        uses: actions/checkout@v4
+
+      - name: Create cache directory
+        run: mkdir -p .cache
+
+      - name: Checkout X-Kernel
+        uses: actions/checkout@v4
+        with:
+          repository: kylin-x-kernel/x-kernel
+          path: .cache/X-Kernel
+          submodules: recursive
 
       - uses: Swatinem/rust-cache@v2
         with:
