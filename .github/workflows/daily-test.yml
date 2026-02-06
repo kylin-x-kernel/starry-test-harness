@@ -100,6 +100,14 @@ jobs:
         run: |
           if [[ ! -f "${XKERNEL_ROOT}/.platconfig.toml" || ! -f "${XKERNEL_ROOT}/rootfs-${ARCH}.img" ]]; then
             echo "X-Kernel image not found, building..."
+            MUSL_GCC=$(which ${ARCH}-linux-musl-gcc)
+            MUSL_ROOT=$(dirname "$MUSL_GCC")/..
+            MUSL_INCLUDE="$MUSL_ROOT/${ARCH}-linux-musl/include"
+
+            export CC="$MUSL_GCC"
+            export CFLAGS="-I$MUSL_INCLUDE"
+            export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+            export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=/dev/null"
             scripts/build_xkernel.sh daily-test
           fi
 
