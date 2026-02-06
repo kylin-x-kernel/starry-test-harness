@@ -82,6 +82,20 @@ jobs:
       - name: Install filesystem tools
         run: sudo apt-get update && sudo apt-get install -y e2fsprogs xz-utils
 
+      - name: Install Rust kernel target
+        run: |
+          if [[ ! -d "${XKERNEL_ROOT}/.git" ]]; then
+            git clone --recursive "${XKERNEL_REMOTE}" "${XKERNEL_ROOT}"
+            git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_REF}"
+          fi
+          KERNEL_TARGET="aarch64-unknown-none-softfloat"
+          TOOLCHAIN="$(cd "${XKERNEL_ROOT}" && rustup show active-toolchain 2>/dev/null | awk '{print $1}')"
+          if [[ -n "${TOOLCHAIN}" ]]; then
+            rustup target add "${KERNEL_TARGET}" --toolchain "${TOOLCHAIN}"
+          else
+            rustup target add "${KERNEL_TARGET}"
+          fi
+
       - name: Ensure X-Kernel build artifacts
         run: |
           if [[ ! -f "${XKERNEL_ROOT}/.platconfig.toml" || ! -f "${XKERNEL_ROOT}/rootfs-${ARCH}.img" ]]; then

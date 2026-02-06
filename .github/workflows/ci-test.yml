@@ -62,6 +62,20 @@ jobs:
       - name: Install filesystem tools
         run: sudo apt-get update && sudo apt-get install -y e2fsprogs
 
+      - name: Install Rust kernel target
+        run: |
+          case "${ARCH}" in
+            aarch64) KERNEL_TARGET="aarch64-unknown-none-softfloat" ;;
+            x86_64) KERNEL_TARGET="x86_64-unknown-none" ;;
+            *) KERNEL_TARGET="${ARCH}-unknown-none" ;;
+          esac
+          TOOLCHAIN="$(cd .cache/X-Kernel && rustup show active-toolchain 2>/dev/null | awk '{print $1}')"
+          if [[ -n "${TOOLCHAIN}" ]]; then
+            rustup target add "${KERNEL_TARGET}" --toolchain "${TOOLCHAIN}"
+          else
+            rustup target add "${KERNEL_TARGET}"
+          fi
+
       - name: 执行 ci-test
         run: |
           MUSL_GCC=$(which ${{ matrix.arch }}-linux-musl-gcc)
