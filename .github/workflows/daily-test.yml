@@ -29,14 +29,25 @@ jobs:
       # Default test target for scheduled runs.
       TEST_REF: ${{ github.event.inputs.ref || 'master' }}
       ARCH: aarch64
-      STARRYOS_REMOTE: https://github.com/kylin-x-kernel/x-kernel.git
-      STARRYOS_REF: main
-      STARRYOS_ROOT: ${{ github.workspace }}/.cache/StarryOS
+      XKERNEL_REMOTE: git@github.com:kylin-x-kernel/x-kernel.git
+      XKERNEL_REF: main
+      XKERNEL_ROOT: ${{ github.workspace }}/.cache/X-Kernel
     steps:
       # Check out the repo at the target ref (master by default).
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.TEST_REF }}
+      
+      - name: Setup SSH for private repos
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.XKERNEL_DEPLOY_KEY }}
+
+      - name: Add github.com to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 
       # Cache Rust artifacts across runs to speed up CI.
       - uses: Swatinem/rust-cache@v2
@@ -60,11 +71,11 @@ jobs:
       - name: Install filesystem tools
         run: sudo apt-get update && sudo apt-get install -y e2fsprogs xz-utils
 
-      - name: Ensure StarryOS build artifacts
+      - name: Ensure X-Kernel build artifacts
         run: |
-          if ! ls -1 "${STARRYOS_ROOT}"/StarryOS_"${ARCH}"*-qemu-virt.bin >/dev/null 2>&1; then
-            echo "StarryOS kernel not found, building..."
-            scripts/build_starry.sh daily-test
+          if [[ ! -f "${XKERNEL_ROOT}/.platconfig.toml" || ! -f "${XKERNEL_ROOT}/rootfs-${ARCH}.img" ]]; then
+            echo "X-Kernel image not found, building..."
+            scripts/build_xkernel.sh daily-test
           fi
 
       # Run the daily test target.
