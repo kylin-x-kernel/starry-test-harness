@@ -29,14 +29,25 @@ jobs:
       # Default test target for scheduled runs.
       TEST_REF: ${{ github.event.inputs.ref || 'master' }}
       ARCH: aarch64
-      STARRYOS_REMOTE: https://github.com/kylin-x-kernel/x-kernel.git
-      STARRYOS_REF: main
-      STARRYOS_ROOT: ${{ github.workspace }}/.cache/StarryOS
+      XKERNEL_REMOTE: git@github.com:kylin-x-kernel/x-kernel.git
+      XKERNEL_REF: main
+      XKERNEL_ROOT: ${{ github.workspace }}/.cache/X-Kernel
     steps:
       # Check out the repo at the target ref (master by default).
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.TEST_REF }}
+      
+      - name: Setup SSH for private repos
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.XKERNEL_DEPLOY_KEY }}
+
+      - name: Add github.com to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 
       # Cache Rust artifacts across runs to speed up CI.
       - uses: Swatinem/rust-cache@v2
@@ -49,6 +60,17 @@ jobs:
         with:
           arch: ${{ env.ARCH }}
 
+      - name: Debug musl toolchain paths
+        run: |
+          echo "=== Environment variables ==="
+          env | grep -i musl || true
+          echo "=== Which gcc ==="
+          which ${ARCH}-linux-musl-gcc || true
+          echo "=== GCC search dirs ==="
+          ${ARCH}-linux-musl-gcc -print-search-dirs || true
+          echo "=== Find include dirs ==="
+          dirname $(which ${ARCH}-linux-musl-gcc) | xargs -I{} find {}/../ -type d -name include 2>/dev/null | head -20
+
       # QEMU is required to run the tests under emulation.
       - name: Install QEMU
         uses: arceos-org/setup-qemu@v1
@@ -60,16 +82,57 @@ jobs:
       - name: Install filesystem tools
         run: sudo apt-get update && sudo apt-get install -y e2fsprogs xz-utils
 
-      - name: Ensure StarryOS build artifacts
+      - name: Install Rust kernel target
         run: |
-          if ! ls -1 "${STARRYOS_ROOT}"/StarryOS_"${ARCH}"*-qemu-virt.bin >/dev/null 2>&1; then
-            echo "StarryOS kernel not found, building..."
-            scripts/build_starry.sh daily-test
+          if [[ ! -d "${XKERNEL_ROOT}/.git" ]]; then
+            git clone --recursive "${XKERNEL_REMOTE}" "${XKERNEL_ROOT}"
+            git -C "${XKERNEL_ROOT}" checkout "${XKERNEL_REF}"
+          fi
+          KERNEL_TARGET="aarch64-unknown-none-softfloat"
+          TOOLCHAIN="$(cd "${XKERNEL_ROOT}" && rustup show active-toolchain 2>/dev/null | awk '{print $1}')"
+          if [[ -n "${TOOLCHAIN}" ]]; then
+            rustup target add "${KERNEL_TARGET}" --toolchain "${TOOLCHAIN}"
+          else
+            rustup target add "${KERNEL_TARGET}"
+          fi
+
+      - name: Ensure X-Kernel build artifacts
+        run: |
+          if [[ ! -f "${XKERNEL_ROOT}/.platconfig.toml" || ! -f "${XKERNEL_ROOT}/rootfs-${ARCH}.img" ]]; then
+            echo "X-Kernel image not found, building..."
+            MUSL_GCC=$(which ${ARCH}-linux-musl-gcc)
+            MUSL_ROOT=$(dirname "$MUSL_GCC")/..
+            MUSL_INCLUDE="$MUSL_ROOT/${ARCH}-linux-musl/include"
+
+            export CC="$MUSL_GCC"
+            export CFLAGS="-I$MUSL_INCLUDE"
+            export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+            export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=/dev/null"
+            scripts/build_xkernel.sh daily-test
           fi
 
       # Run the daily test target.
       - name: 执行 daily-test
-        run: make daily-test run
+        run: |
+          MUSL_GCC=$(which ${ARCH}-linux-musl-gcc)
+          MUSL_ROOT=$(dirname "$MUSL_GCC")/..
+          MUSL_INCLUDE="$MUSL_ROOT/${ARCH}-linux-musl/include"
+
+          echo "MUSL_ROOT=$MUSL_ROOT"
+          echo "MUSL_INCLUDE=$MUSL_INCLUDE"
+
+          export CC="$MUSL_GCC"
+          export CFLAGS="-I$MUSL_INCLUDE"
+          case "${ARCH}" in
+            aarch64)
+              export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+              ;;
+            x86_64)
+              export CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+              ;;
+          esac
+          export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=/dev/null"
+          make daily-test run
 
       # Pick the most recent run directory for artifact naming.
       - name: Prepare artifact name and timestamp
