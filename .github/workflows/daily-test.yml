@@ -60,6 +60,17 @@ jobs:
         with:
           arch: ${{ env.ARCH }}
 
+      - name: Debug musl toolchain paths
+        run: |
+          echo "=== Environment variables ==="
+          env | grep -i musl || true
+          echo "=== Which gcc ==="
+          which ${ARCH}-linux-musl-gcc || true
+          echo "=== GCC search dirs ==="
+          ${ARCH}-linux-musl-gcc -print-search-dirs || true
+          echo "=== Find include dirs ==="
+          dirname $(which ${ARCH}-linux-musl-gcc) | xargs -I{} find {}/../ -type d -name include 2>/dev/null | head -20
+
       # QEMU is required to run the tests under emulation.
       - name: Install QEMU
         uses: arceos-org/setup-qemu@v1
@@ -80,7 +91,26 @@ jobs:
 
       # Run the daily test target.
       - name: 执行 daily-test
-        run: make daily-test run
+        run: |
+          MUSL_GCC=$(which ${ARCH}-linux-musl-gcc)
+          MUSL_ROOT=$(dirname "$MUSL_GCC")/..
+          MUSL_INCLUDE="$MUSL_ROOT/${ARCH}-linux-musl/include"
+
+          echo "MUSL_ROOT=$MUSL_ROOT"
+          echo "MUSL_INCLUDE=$MUSL_INCLUDE"
+
+          export CC="$MUSL_GCC"
+          export CFLAGS="-I$MUSL_INCLUDE"
+          case "${ARCH}" in
+            aarch64)
+              export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+              ;;
+            x86_64)
+              export CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+              ;;
+          esac
+          export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=/dev/null"
+          make daily-test run
 
       # Pick the most recent run directory for artifact naming.
       - name: Prepare artifact name and timestamp
