@@ -11,8 +11,12 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [aarch64, x86_64]
     env:
-      ARCH: aarch64
+      ARCH: ${{ matrix.arch }}
       XKERNEL_ROOT: ${{ github.workspace }}/.cache/X-Kernel
     steps:
       - name: Checkout starry-test-harness
@@ -31,24 +35,48 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: starry-ci-harness
+          shared-key: starry-ci-harness-${{ matrix.arch }}
 
       - name: Install musl toolchain
         uses: arceos-org/setup-musl@v1
         with:
-          arch: ${{ env.ARCH }}
+          arch: ${{ matrix.arch }}
+
+      - name: Debug musl toolchain paths
+        run: |
+          echo "=== Environment variables ==="
+          env | grep -i musl || true
+          echo "=== Which gcc ==="
+          which ${{ matrix.arch }}-linux-musl-gcc || true
+          echo "=== GCC search dirs ==="
+          ${{ matrix.arch }}-linux-musl-gcc -print-search-dirs || true
+          echo "=== Find include dirs ==="
+          dirname $(which ${{ matrix.arch }}-linux-musl-gcc) | xargs -I{} find {}/../ -type d -name include 2>/dev/null | head -20
 
       - name: Install QEMU
         uses: arceos-org/setup-qemu@v1
         with:
           version: 10.1.0
-          arch_list: ${{ env.ARCH }}
+          arch_list: ${{ matrix.arch }}
 
       - name: Install filesystem tools
         run: sudo apt-get update && sudo apt-get install -y e2fsprogs
 
       - name: 执行 ci-test
-        run: make ci-test run
+        run: |
+          MUSL_GCC=$(which ${{ matrix.arch }}-linux-musl-gcc)
+          MUSL_ROOT=$(dirname "$MUSL_GCC")/..
+          MUSL_INCLUDE="$MUSL_ROOT/${{ matrix.arch }}-linux-musl/include"
+            
+          echo "MUSL_ROOT=$MUSL_ROOT"
+          echo "MUSL_INCLUDE=$MUSL_INCLUDE"
+            
+          export CC="$MUSL_GCC"
+          export CFLAGS="-I$MUSL_INCLUDE"
+          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+          export CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER="$MUSL_GCC"
+          export BINDGEN_EXTRA_CLANG_ARGS="--sysroot=/dev/null"
+          make ci-test run
 
       # - name: Dump suite logs
       #   if: always()
