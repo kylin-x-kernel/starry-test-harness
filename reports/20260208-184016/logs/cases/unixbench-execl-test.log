@@ -1,0 +1,255 @@
+[case] unixbench-execl-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh execl
+[case] timeout budget: 500s
+[xkernel-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[xkernel-ci] spawning make ARCH=aarch64 SMP=4 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-7zKa70.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -device virtio-mouse-pci -device virtio-keyboard-pci -monitor none -serial tcp::4444,server=on[0m
+[xkernel-ci] shell prompt detected, executing command
+[xkernel-ci] command completed with exit code 0
+[xkernel-ci] BusyBox shell exited cleanly
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: execl
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Execl Throughput [37m[ 23.200463 1:68 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 25.235373 0:70 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[ 58.692975 3:75 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 60.668523 2:77 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[ 93.716277 1:82 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 95.651854 0:84 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3
+
+4 x Execl Throughput [37m[128.898459 3:89 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[130.920524 2:91 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[164.789348 0:102 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[166.750821 3:104 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[200.991807 1:115 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[202.979524 0:117 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:09:29 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 08 2026 18:09:31 - 18:11:17
+4 CPUs in system; running 1 parallel copy of tests
+
+Execl Throughput                                 29.3 lps   (29.4 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         29.3      6.8
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            6.8
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 08 2026 18:11:17 - 18:13:05
+4 CPUs in system; running 4 parallel copies of tests
+
+Execl Throughput                                 33.0 lps   (30.0 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         33.0      7.7
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            7.7
+
+[UB] Run completed successfully
+Execl Throughput 1 parallel: 6.80
+└─ Execl Throughput 4 parallel: 7.70
+[unixbench-execl-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-execl-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-7zKa70.img
+[unixbench-execl-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-execl-test] 测试用例: execl
+[unixbench-execl-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-execl-test] 启动 X-Kernel,执行 UnixBench
+[unixbench-execl-test] Host 级别超时保护: 800s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-02-08 18:09:09.004346432 UTC
+
+[37m[  1.104257 rsext4::ext4:222] [33mFilesystem is in error state[m
+[m[37m[  1.107804 rsext4::ext4:299] [33ms_lpf_ino is 0, lost+found not recorded in superblock[m
+[m[37m[  1.264977 knet:138] [33m  No vsock device found![m
+[m[37m[  1.265461 fbdevice:26] [33m  No framebuffer device found![m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# /root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: execl
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Execl Throughput [37m[ 23.200463 1:68 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 25.235373 0:70 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[ 58.692975 3:75 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 60.668523 2:77 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[ 93.716277 1:82 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 95.651854 0:84 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3
+
+4 x Execl Throughput [37m[128.898459 3:89 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[130.920524 2:91 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[164.789348 0:102 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[166.750821 3:104 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[200.991807 1:115 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[202.979524 0:117 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:09:29 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 08 2026 18:09:31 - 18:11:17
+4 CPUs in system; running 1 parallel copy of tests
+
+Execl Throughput                                 29.3 lps   (29.4 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         29.3      6.8
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            6.8
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 08 2026 18:11:17 - 18:13:05
+4 CPUs in system; running 4 parallel copies of tests
+
+Execl Throughput                                 33.0 lps   (30.0 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Execl Throughput                                 43.0         33.0      7.7
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            7.7
+
+[UB] Run completed successfully
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 14670 (make)
+[unixbench-execl-test] X-Kernel 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260208-164301/artifacts/unixbench-execl-test/vm-20260208-164301.log
+[unixbench-execl-test] 解析指标：
+[unixbench-execl-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260208-164301/artifacts/unixbench-execl-test/results.json
+[unixbench-execl-test] byte-unixbench 用例完成
+[unixbench-execl-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260208-164301/artifacts/unixbench-execl-test/vm-20260208-164301.log
+[unixbench-execl-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260208-164301/artifacts/unixbench-execl-test/summary.txt
