@@ -1,0 +1,697 @@
+[case] unixbench-fsbuffer-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh fsbuffer fsbuffer-r fsbuffer-w
+[case] timeout budget: 1200s
+[xkernel-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[xkernel-ci] spawning make ARCH=aarch64 SMP=4 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-aBWDJd.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -device virtio-mouse-pci -device virtio-keyboard-pci -monitor none -serial tcp::4444,server=on[0m
+[xkernel-ci] shell prompt detected, executing command
+[xkernel-ci] command completed with exit code 0
+[xkernel-ci] BusyBox shell exited cleanly
+-x:~# [6n
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: fsbuffer fsbuffer-r fsbuffer-w
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x File Copy 256 bufsize 500 maxblocks [37m[ 18.690703 3:68 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 20.255278 2:70 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[ 23.343174 2:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 25.347705 3:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 29.424254 0:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 31.436691 1:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 35.440252 2:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 37.450072 3:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 68.864931 2:75 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 70.514254 1:77 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[ 73.486151 1:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 75.487588 2:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 80.321445 3:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 82.330254 1:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 86.338543 2:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 88.347459 2:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[119.829386 1:82 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[121.395732 0:84 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[124.317610 0:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[126.320238 1:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[130.455656 2:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[132.459204 3:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[136.470869 0:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[138.479107 1:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+1 x File Read 256 bufsize 500 maxblocks [37m[170.001490 1:89 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[171.586187 0:91 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[174.542807 0:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[176.550250 1:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[180.613792 2:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[182.618084 0:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[215.124886 0:96 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[216.808026 3:98 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[219.749603 3:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[221.757592 0:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[226.244003 1:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[228.247480 2:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[260.640276 2:103 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[262.225837 1:105 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[265.219858 1:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[267.228394 2:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[271.747974 3:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[273.757465 0:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+1 x File Write 256 bufsize 500 maxblocks [37m[306.300421 3:110 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[307.856166 2:112 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[310.885133 2:115 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[312.887565 3:115 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[345.431515 3:117 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[346.997930 2:119 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[350.073721 2:122 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[352.080307 3:122 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[384.815141 3:124 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[386.418505 2:126 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[389.427041 2:129 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[391.440411 3:129 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+4 x File Copy 256 bufsize 500 maxblocks [37m[424.083293 2:131 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[425.687713 1:133 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[428.736797 1:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[428.961690 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[429.011772 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[429.070018 3:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[430.747504 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[430.967553 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[431.017447 2:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[431.077460 3:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[436.286724 2:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[436.348975 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[437.193066 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[437.583836 0:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[438.299200 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[438.358089 2:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[439.198479 3:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[439.588489 0:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[442.360999 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[442.368560 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[443.208400 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[443.608658 1:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[444.368132 2:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[444.380111 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[445.210203 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[445.617380 0:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[477.183529 1:144 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[478.695052 0:146 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[481.816735 3:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[482.027132 0:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[482.033760 1:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[482.133469 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[483.827552 1:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[484.037522 2:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[484.038944 3:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[484.137498 0:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[491.853900 0:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[491.942760 3:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.250880 1:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.398696 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.860133 2:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.947430 3:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[495.257451 0:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[495.407459 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[497.918076 2:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[497.961710 0:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.261506 1:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.468496 2:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.927459 3:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.968502 0:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[501.267341 0:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[501.487504 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[532.996188 2:157 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[534.597150 1:159 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[537.757159 0:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[537.982435 2:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[538.069790 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[538.082589 2:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[539.758597 3:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[539.987556 0:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[540.077623 1:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[540.087558 2:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[544.623468 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[545.176103 1:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[546.614039 3:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[546.627456 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[546.899986 3:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[547.177387 0:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[548.618595 1:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[548.908097 0:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[550.631261 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[551.189512 1:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[552.637372 3:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[552.678043 2:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[552.928680 2:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[553.197453 1:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[554.698155 2:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[554.937397 3:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+4 x File Read 256 bufsize 500 maxblocks [37m[586.535888 0:170 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[588.180083 3:172 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[591.416136 2:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[591.514459 0:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[591.611544 3:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[591.639187 0:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.429335 0:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.518595 1:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.617542 2:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.640269 3:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[601.498541 1:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[601.665374 3:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[603.590121 0:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[603.668428 1:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[604.227624 0:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[604.474933 0:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[606.231099 3:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[606.500194 0:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[639.148285 1:183 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[640.688670 0:185 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[643.850898 0:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[644.023160 0:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[644.047809 2:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[644.149093 2:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[645.859299 3:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[646.028602 0:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[646.057498 1:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[646.157568 2:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[651.004977 2:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[651.484660 1:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.007493 1:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.487373 2:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.648142 3:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.662188 3:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[655.649151 0:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[655.707333 1:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[688.238694 2:196 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[689.766600 1:198 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[692.858611 1:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[693.032227 2:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[693.058314 3:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[693.253414 3:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[694.867581 0:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[695.038213 1:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[695.069213 2:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[695.257517 3:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[700.239035 2:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[700.284205 3:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[701.164622 0:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[701.622663 0:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[702.249227 3:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[702.290169 0:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[703.168498 1:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[703.628463 2:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+4 x File Write 256 bufsize 500 maxblocks [37m[736.160343 2:209 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[737.797366 1:211 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[740.996579 0:216 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[741.097184 2:214 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[741.181514 0:220 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[741.206564 2:218 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.010405 1:216 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.099359 2:214 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.190357 3:220 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.222162 0:218 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[776.226195 0:222 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[777.822526 3:224 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[781.076164 2:229 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[781.245587 3:233 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[781.303798 0:227 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[781.350026 0:231 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.079313 0:229 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.247511 1:233 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.308660 2:227 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.358634 3:231 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[816.309909 3:235 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[817.935173 2:237 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[821.154618 2:240 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[821.301379 0:243 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[821.320392 3:244 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[821.454331 0:246 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.158918 1:240 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.308702 2:243 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.327521 3:244 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.458646 0:246 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:02:41 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Feb 11 2026 18:02:42 - 18:09:27
+4 CPUs in system; running 1 parallel copy of tests
+
+File Copy 256 bufsize 500 maxblocks            1361.2 KBps  (30.0 s, 2 samples)
+File Read 256 bufsize 500 maxblocks            3159.0 KBps  (30.0 s, 2 samples)
+File Write 256 bufsize 500 maxblocks           1757.9 KBps  (30.1 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 256 bufsize 500 maxblocks            1655.0       1361.2      8.2
+File Read 256 bufsize 500 maxblocks               ---       3159.0      ---
+File Write 256 bufsize 500 maxblocks              ---       1757.9      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            8.2
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Feb 11 2026 18:09:27 - 18:16:40
+4 CPUs in system; running 4 parallel copies of tests
+
+File Copy 256 bufsize 500 maxblocks            2203.0 KBps  (30.0 s, 2 samples)
+File Read 256 bufsize 500 maxblocks            6506.0 KBps  (30.0 s, 2 samples)
+File Write 256 bufsize 500 maxblocks           2833.1 KBps  (30.3 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 256 bufsize 500 maxblocks            1655.0       2203.0     13.3
+File Read 256 bufsize 500 maxblocks               ---       6506.0      ---
+File Write 256 bufsize 500 maxblocks              ---       2833.1      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           13.3
+
+[UB] Run completed successfully
+File Copy 256 bufsize 500 maxblocks 1 parallel: 8.20
+├─ File Read 256 bufsize 500 maxblocks 1 parallel: 3159.00
+├─ File Write 256 bufsize 500 maxblocks 1 parallel: 1757.90
+├─ File Copy 256 bufsize 500 maxblocks 4 parallel: 13.30
+├─ File Read 256 bufsize 500 maxblocks 4 parallel: 6506.00
+└─ File Write 256 bufsize 500 maxblocks 4 parallel: 2833.10
+[unixbench-fsbuffer-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-fsbuffer-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-aBWDJd.img
+[unixbench-fsbuffer-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-fsbuffer-test] 测试用例: fsbuffer fsbuffer-r fsbuffer-w
+[unixbench-fsbuffer-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-fsbuffer-test] 启动 X-Kernel,执行 UnixBench
+[unixbench-fsbuffer-test] Host 级别超时保护: 1500s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-02-11 18:02:24.004183056 UTC
+
+[37m[  1.232386 knet:138] [33m  No vsock device found![m
+[m[37m[  1.233507 fbdevice:26] [33m  No framebuffer device found![m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# [6n/root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: fsbuffer fsbuffer-r fsbuffer-w
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x File Copy 256 bufsize 500 maxblocks [37m[ 18.690703 3:68 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 20.255278 2:70 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[ 23.343174 2:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 25.347705 3:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 29.424254 0:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 31.436691 1:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 35.440252 2:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 37.450072 3:73 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 68.864931 2:75 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 70.514254 1:77 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[ 73.486151 1:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 75.487588 2:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 80.321445 3:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 82.330254 1:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 86.338543 2:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 88.347459 2:80 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[119.829386 1:82 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[121.395732 0:84 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[124.317610 0:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[126.320238 1:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[130.455656 2:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[132.459204 3:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[136.470869 0:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[138.479107 1:87 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+1 x File Read 256 bufsize 500 maxblocks [37m[170.001490 1:89 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[171.586187 0:91 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[174.542807 0:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[176.550250 1:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[180.613792 2:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[182.618084 0:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[215.124886 0:96 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[216.808026 3:98 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[219.749603 3:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[221.757592 0:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[226.244003 1:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[228.247480 2:101 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[260.640276 2:103 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[262.225837 1:105 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[265.219858 1:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[267.228394 2:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[271.747974 3:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[273.757465 0:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+1 x File Write 256 bufsize 500 maxblocks [37m[306.300421 3:110 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[307.856166 2:112 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[310.885133 2:115 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[312.887565 3:115 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[345.431515 3:117 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[346.997930 2:119 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[350.073721 2:122 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[352.080307 3:122 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[384.815141 3:124 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[386.418505 2:126 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[389.427041 2:129 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[391.440411 3:129 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+4 x File Copy 256 bufsize 500 maxblocks [37m[424.083293 2:131 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[425.687713 1:133 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[428.736797 1:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[428.961690 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[429.011772 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[429.070018 3:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[430.747504 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[430.967553 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[431.017447 2:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[431.077460 3:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[436.286724 2:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[436.348975 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[437.193066 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[437.583836 0:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[438.299200 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[438.358089 2:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[439.198479 3:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[439.588489 0:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[442.360999 1:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[442.368560 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[443.208400 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[443.608658 1:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[444.368132 2:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[444.380111 3:139 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[445.210203 0:136 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[445.617380 0:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[477.183529 1:144 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[478.695052 0:146 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[481.816735 3:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[482.027132 0:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[482.033760 1:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[482.133469 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[483.827552 1:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[484.037522 2:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[484.038944 3:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[484.137498 0:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[491.853900 0:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[491.942760 3:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.250880 1:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.398696 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.860133 2:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[493.947430 3:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[495.257451 0:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[495.407459 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[497.918076 2:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[497.961710 0:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.261506 1:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.468496 2:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.927459 3:155 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[499.968502 0:149 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[501.267341 0:151 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[501.487504 1:153 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[532.996188 2:157 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[534.597150 1:159 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[537.757159 0:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[537.982435 2:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[538.069790 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[538.082589 2:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[539.758597 3:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[539.987556 0:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[540.077623 1:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[540.087558 2:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[544.623468 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[545.176103 1:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[546.614039 3:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[546.627456 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[546.899986 3:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[547.177387 0:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[548.618595 1:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[548.908097 0:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[550.631261 2:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[551.189512 1:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[552.637372 3:168 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[552.678043 2:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[552.928680 2:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[553.197453 1:162 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[554.698155 2:164 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[554.937397 3:166 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+4 x File Read 256 bufsize 500 maxblocks [37m[586.535888 0:170 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[588.180083 3:172 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[591.416136 2:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[591.514459 0:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[591.611544 3:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[591.639187 0:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.429335 0:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.518595 1:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.617542 2:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[593.640269 3:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[601.498541 1:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[601.665374 3:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[603.590121 0:179 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[603.668428 1:175 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[604.227624 0:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[604.474933 0:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[606.231099 3:177 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[606.500194 0:181 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[639.148285 1:183 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[640.688670 0:185 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[643.850898 0:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[644.023160 0:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[644.047809 2:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[644.149093 2:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[645.859299 3:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[646.028602 0:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[646.057498 1:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[646.157568 2:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[651.004977 2:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[651.484660 1:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.007493 1:191 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.487373 2:192 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.648142 3:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[653.662188 3:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[655.649151 0:188 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[655.707333 1:194 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[688.238694 2:196 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[689.766600 1:198 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[692.858611 1:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[693.032227 2:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[693.058314 3:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[693.253414 3:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[694.867581 0:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[695.038213 1:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[695.069213 2:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[695.257517 3:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[700.239035 2:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[700.284205 3:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[701.164622 0:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[701.622663 0:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[702.249227 3:205 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[702.290169 0:204 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[703.168498 1:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[703.628463 2:207 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+4 x File Write 256 bufsize 500 maxblocks [37m[736.160343 2:209 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[737.797366 1:211 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[740.996579 0:216 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[741.097184 2:214 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[741.181514 0:220 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[741.206564 2:218 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.010405 1:216 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.099359 2:214 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.190357 3:220 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[743.222162 0:218 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[776.226195 0:222 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[777.822526 3:224 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[781.076164 2:229 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[781.245587 3:233 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[781.303798 0:227 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[781.350026 0:231 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.079313 0:229 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.247511 1:233 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.308660 2:227 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[783.358634 3:231 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[816.309909 3:235 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[817.935173 2:237 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[821.154618 2:240 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[821.301379 0:243 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[821.320392 3:244 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[821.454331 0:246 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.158918 1:240 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.308702 2:243 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.327521 3:244 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[823.458646 0:246 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   18:02:41 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Feb 11 2026 18:02:42 - 18:09:27
+4 CPUs in system; running 1 parallel copy of tests
+
+File Copy 256 bufsize 500 maxblocks            1361.2 KBps  (30.0 s, 2 samples)
+File Read 256 bufsize 500 maxblocks            3159.0 KBps  (30.0 s, 2 samples)
+File Write 256 bufsize 500 maxblocks           1757.9 KBps  (30.1 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 256 bufsize 500 maxblocks            1655.0       1361.2      8.2
+File Read 256 bufsize 500 maxblocks               ---       3159.0      ---
+File Write 256 bufsize 500 maxblocks              ---       1757.9      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            8.2
+
+------------------------------------------------------------------------
+Benchmark Run: Wed Feb 11 2026 18:09:27 - 18:16:40
+4 CPUs in system; running 4 parallel copies of tests
+
+File Copy 256 bufsize 500 maxblocks            2203.0 KBps  (30.0 s, 2 samples)
+File Read 256 bufsize 500 maxblocks            6506.0 KBps  (30.0 s, 2 samples)
+File Write 256 bufsize 500 maxblocks           2833.1 KBps  (30.3 s, 2 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+File Copy 256 bufsize 500 maxblocks            1655.0       2203.0     13.3
+File Read 256 bufsize 500 maxblocks               ---       6506.0      ---
+File Write 256 bufsize 500 maxblocks              ---       2833.1      ---
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           13.3
+
+[UB] Run completed successfully
+__EXIT:0__qemu-system-aarch64: terminating on signal 15 from pid 14840 (make)
+[unixbench-fsbuffer-test] X-Kernel 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260211-171448/artifacts/unixbench-fsbuffer-test/vm-20260211-171448.log
+[unixbench-fsbuffer-test] 解析指标：
+[unixbench-fsbuffer-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260211-171448/artifacts/unixbench-fsbuffer-test/results.json
+[unixbench-fsbuffer-test] byte-unixbench 用例完成
+[unixbench-fsbuffer-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260211-171448/artifacts/unixbench-fsbuffer-test/vm-20260211-171448.log
+[unixbench-fsbuffer-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260211-171448/artifacts/unixbench-fsbuffer-test/summary.txt
