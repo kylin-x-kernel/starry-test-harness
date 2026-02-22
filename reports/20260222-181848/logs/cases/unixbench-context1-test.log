@@ -1,0 +1,310 @@
+[case] unixbench-context1-test
+[case] command: /home/runner/work/starry-test-harness/starry-test-harness/tests/daily/cases/unixbench/run_byte_unixbench.sh context1
+[case] timeout budget: 600s
+[xkernel-ci] vsock disabled (insufficient permissions for /dev/vhost-vsock)
+[xkernel-ci] spawning make ARCH=aarch64 SMP=4 PLAT_CONFIG=/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/.platconfig.toml NET=y VSOCK=n ACCEL=n justrun QEMU_ARGS=-monitor none -serial tcp::4444,server=on at /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel'
+    [96;1mRunning[0m on qemu...
+[37mqemu-system-aarch64[0m [90m-m 1g -smp 4 -cpu cortex-a72 -machine virt -kernel /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xkernel_aarch64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=/tmp/starry-byte-unixbench-srfpwN.img -device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:5555,hostfwd=udp::5555-:5555 -nographic -device virtio-mouse-pci -device virtio-keyboard-pci -monitor none -serial tcp::4444,server=on[0m
+[xkernel-ci] shell prompt detected, executing command
+[xkernel-ci] command completed with exit code 0
+[xkernel-ci] BusyBox shell exited cleanly
+in-x:~# 
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: context1
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Pipe-based Context Switching [37m[ 17.700879 2:68 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 19.215052 1:70 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[ 32.544224 0:76 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 34.166132 3:78 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[ 47.589218 3:84 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 49.067589 2:86 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[ 62.479326 1:92 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 63.958503 0:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 4[37m[ 77.252872 0:100 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 78.832560 3:102 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 5[37m[ 92.170067 3:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 93.684393 2:110 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 6[37m[107.007338 0:116 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[108.607241 3:118 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 7[37m[121.912960 2:124 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[123.507549 1:126 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 8[37m[136.852310 2:132 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[138.486295 1:134 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 9[37m[151.711101 2:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[153.393847 1:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 10
+
+4 x Pipe-based Context Switching [37m[166.689362 2:148 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[168.284747 1:150 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[182.065154 1:165 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[183.636294 0:167 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[197.453438 0:182 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[199.054480 3:184 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[212.903351 1:199 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[214.391369 0:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 4[37m[228.158497 2:216 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[229.740582 1:218 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 5[37m[243.522704 2:233 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[244.995898 1:235 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 6[37m[258.815329 3:250 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[260.354897 2:252 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 7[37m[274.200174 1:267 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[275.663424 0:269 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 8[37m[289.506982 1:284 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[291.058241 0:286 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 9[37m[304.915655 1:301 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[306.407420 0:303 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   17:05:41 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 22 2026 17:05:42 - 17:08:11
+4 CPUs in system; running 1 parallel copy of tests
+
+Pipe-based Context Switching                   3227.5 lps   (10.2 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Pipe-based Context Switching                   4000.0       3227.5      8.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            8.1
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 22 2026 17:08:11 - 17:10:44
+4 CPUs in system; running 4 parallel copies of tests
+
+Pipe-based Context Switching                   4040.0 lps   (10.4 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Pipe-based Context Switching                   4000.0       4040.0     10.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           10.1
+
+[UB] Run completed successfully
+Pipe-based Context Switching 1 parallel: 8.10
+└─ Pipe-based Context Switching 4 parallel: 10.10
+[unixbench-context1-test] 使用预配置镜像: /home/runner/work/starry-test-harness/starry-test-harness/.cache/unixbench/disk.img
+[unixbench-context1-test] 复制预配置镜像 -> /tmp/starry-byte-unixbench-srfpwN.img
+[unixbench-context1-test] 注入 UnixBench 运行脚本到镜像
+[unixbench-context1-test] 测试用例: context1
+[unixbench-context1-test] 脚本注入完成: /root/run_unixbench.sh
+[unixbench-context1-test] 启动 X-Kernel,执行 UnixBench
+[unixbench-context1-test] Host 级别超时保护: 900s
+qemu-system-aarch64: -serial tcp::4444,server=on: info: QEMU waiting for connection on: disconnected:tcp:0.0.0.0:4444,server=on
+
+                 ++
+             *  ***
+           *******
+         *******++
+      ********+===
+    ******#*+======
+   *******#***++===
+   *********+**===
+  ##*********##==                  ====+
+%##****++==+****#                ***+=**
+#****++=====++****##            ********
+####*+=======+******===-     ***#*##****
+ #%#******+**+==++**=======+*+*#%
+ %#****+******=====+====+++==**
+  #*********##***###********##%
+   ***##%#%%%%*****#*###*****#%
+   *#%%%#%%%%%****   %%*******#%
+   #%%%%%%          %%%##***###%%
+    **#%           %%%%#% **#**##
+   ###%%         %%%%%   %%%***
+ %%%%%%        %%%%%%%  %%%%#*
+ %%%%%%                %%%%%%+=
+
+arch = aarch64
+platform = aarch64-qemu-virt
+target = aarch64-unknown-none-softfloat
+build_mode = release
+log_level = warn
+backtrace = true
+smp = 4
+
+Boot at 2026-02-22 17:05:25.004446016 UTC
+
+[37m[  1.240838 knet:138] [33m  No vsock device found![m
+[m[37m[  1.242111 fbdevice:26] [33m  No framebuffer device found![m
+[mWelcome to [96m[1mKylin X[0m!
+SHLVL=1
+HOME=/root
+PWD=/
+
+Use [1m[3mapk[0m to install packages.
+
+kylin-x:~# /root/run_unixbench.sh; echo __EXIT:$?__
+[UB] switching to UnixBench directory
+[UB] UB_BINDIR set to /root/UnixBench/pgms
+[UB] launching UnixBench run with tests: context1
+make all
+make[1]: Entering directory '/root/UnixBench'
+make distr
+make[2]: Entering directory '/root/UnixBench'
+Checking distribution of files
+./pgms  exists
+./src  exists
+./testdir  exists
+./tmp  exists
+./results  exists
+make[2]: Leaving directory '/root/UnixBench'
+make programs
+make[2]: Entering directory '/root/UnixBench'
+make[2]: Nothing to be done for 'programs'.
+make[2]: Leaving directory '/root/UnixBench'
+make[1]: Leaving directory '/root/UnixBench'
+sh: 3dinfo: not found
+
+   #    #  #    #  #  #    #          #####   ######  #    #   ####   #    #
+   #    #  ##   #  #   #  #           #    #  #       ##   #  #    #  #    #
+   #    #  # #  #  #    ##            #####   #####   # #  #  #       ######
+   #    #  #  # #  #    ##            #    #  #       #  # #  #       #    #
+   #    #  #   ##  #   #  #           #    #  #       #   ##  #    #  #    #
+    ####   #    #  #  #    #          #####   ######  #    #   ####   #    #
+
+   Version 6.0.0                      Based on the Byte Magazine Unix Benchmark
+
+   Multi-CPU version                  Version 5 revisions by Ian Smith,
+                                      Sunnyvale, CA, USA
+   May 21, 2025                       johantheghost at yahoo period com
+
+------------------------------------------------------------------------------
+   Use directories for:
+      * File I/O tests (named fs***) = /root/UnixBench/tmp
+      * Results                      = /root/UnixBench/results
+------------------------------------------------------------------------------
+
+
+1 x Pipe-based Context Switching [37m[ 17.700879 2:68 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 19.215052 1:70 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[ 32.544224 0:76 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 34.166132 3:78 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[ 47.589218 3:84 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 49.067589 2:86 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[ 62.479326 1:92 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 63.958503 0:94 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 4[37m[ 77.252872 0:100 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 78.832560 3:102 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 5[37m[ 92.170067 3:108 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[ 93.684393 2:110 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 6[37m[107.007338 0:116 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[108.607241 3:118 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 7[37m[121.912960 2:124 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[123.507549 1:126 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 8[37m[136.852310 2:132 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[138.486295 1:134 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 9[37m[151.711101 2:140 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[153.393847 1:142 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 10
+
+4 x Pipe-based Context Switching [37m[166.689362 2:148 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[168.284747 1:150 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 1[37m[182.065154 1:165 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[183.636294 0:167 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 2[37m[197.453438 0:182 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[199.054480 3:184 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 3[37m[212.903351 1:199 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[214.391369 0:201 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 4[37m[228.158497 2:216 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[229.740582 1:218 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 5[37m[243.522704 2:233 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[244.995898 1:235 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 6[37m[258.815329 3:250 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[260.354897 2:252 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 7[37m[274.200174 1:267 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[275.663424 0:269 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 8[37m[289.506982 1:284 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[291.058241 0:286 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 9[37m[304.915655 1:301 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m[37m[306.407420 0:303 kapi::syscall::fs::ctl:544] [33mdummy sys_sync[m
+[m 10
+
+========================================================================
+   BYTE UNIX Benchmarks (Version 6.0.0)
+
+   System: kylin-x: GNU/Linux
+   OS: GNU/Linux -- 10.0.0 -- 10.0.0
+   Machine: aarch64 (unknown)
+   Language: en_US.utf8 (charmap=UTF-8, collate=UTF-8)
+   CPU: no details available
+   17:05:41 up 0 min,  0 users,  load average: 0.00, 0.00, 0.00; runlevel 
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 22 2026 17:05:42 - 17:08:11
+4 CPUs in system; running 1 parallel copy of tests
+
+Pipe-based Context Switching                   3227.5 lps   (10.2 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Pipe-based Context Switching                   4000.0       3227.5      8.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                            8.1
+
+------------------------------------------------------------------------
+Benchmark Run: Sun Feb 22 2026 17:08:11 - 17:10:44
+4 CPUs in system; running 4 parallel copies of tests
+
+Pipe-based Context Switching                   4040.0 lps   (10.4 s, 7 samples)
+
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Pipe-based Context Switching                   4000.0       4040.0     10.1
+                                                                   ========
+System Benchmarks Index Score (Partial Only)                           10.1
+
+[UB] Run completed successfully
+__EXIT:0__
+qemu-system-aarch64: terminating on signal 15 from pid 11381 (make)
+[unixbench-context1-test] X-Kernel 执行完成，guest 日志位于 /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260222-164152/artifacts/unixbench-context1-test/vm-20260222-164152.log
+[unixbench-context1-test] 解析指标：
+[unixbench-context1-test] 指标详情 -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260222-164152/artifacts/unixbench-context1-test/results.json
+[unixbench-context1-test] byte-unixbench 用例完成
+[unixbench-context1-test] guest stdout -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260222-164152/artifacts/unixbench-context1-test/vm-20260222-164152.log
+[unixbench-context1-test] summary -> /home/runner/work/starry-test-harness/starry-test-harness/logs/daily/20260222-164152/artifacts/unixbench-context1-test/summary.txt
