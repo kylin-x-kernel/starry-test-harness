@@ -138,13 +138,15 @@ if [[ "${XKERNEL_CARGO_UPDATE}" == "1" ]]; then
 fi
 
 log "Building X-Kernel (ARCH=${ARCH})"
-log "Refreshing defconfig for ARCH=${ARCH}"
-make ARCH="${ARCH}" defconfig
-make ARCH="${ARCH}" ${UNITTEST:+UNITTEST=y} build
-
-if [[ -f "${XKERNEL_ROOT}/.platconfig.toml" ]]; then
-  cp -f "${XKERNEL_ROOT}/.platconfig.toml" "${XKERNEL_ROOT}/.axconfig.toml"
+PLATFORM_DEFCONFIG="platforms/${ARCH}-qemu-virt/defconfig"
+if [[ -f "${PLATFORM_DEFCONFIG}" ]]; then
+  log "Loading platform defconfig: ${PLATFORM_DEFCONFIG}"
+  cp "${PLATFORM_DEFCONFIG}" .config
+else
+  log "WARNING: ${PLATFORM_DEFCONFIG} not found, falling back to make defconfig"
+  make defconfig
 fi
+make ${UNITTEST:+UNITTEST=y} build
 popd >/dev/null
 
 log "Copying build artifacts"
