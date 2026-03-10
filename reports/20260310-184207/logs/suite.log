@@ -1,0 +1,238 @@
+[suite] daily-test (aarch64) - 长稳测试: 并发、资源抢占
+[build] executing /home/runner/work/starry-test-harness/starry-test-harness/scripts/build_xkernel.sh for Daily Test
+[build:starry] ----------------------------------------
+[build:starry] X-Kernel Source: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel
+[build:starry]   commit : 30b96f5669e853fbc1956edfc154f8d646496368
+[build:starry] ----------------------------------------
+[build:starry] X-Kernel commit: 30b96f5669e853fbc1956edfc154f8d646496368
+[build:starry] Ensuring rootfs template is available in /home/runner/work/starry-test-harness/starry-test-harness/.cache/rootfs
+[build:starry] Rootfs template ready: /home/runner/work/starry-test-harness/starry-test-harness/.cache/rootfs/rootfs-aarch64.img
+[build:starry] Patching uname for UnixBench compatibility: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/api/kapi/src/syscall/sys.rs
+[build:starry] Rust toolchain will follow /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/rust-toolchain.toml (auto-managed by rustup)
+[build:starry] Active toolchain: 1.90-x86_64-unknown-linux-gnu (overridden by environment variable RUSTUP_TOOLCHAIN)
+[build:starry] Running cargo update in /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+    Updating crates.io index
+     Locking 0 packages to latest compatible versions
+note: pass `--verbose` to see 37 unchanged dependencies behind latest
+[build:starry] Building X-Kernel (ARCH=aarch64)
+[build:starry] Loading platform defconfig: platforms/aarch64-qemu-virt/defconfig
+make[1]: Entering directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel'
+Installing xconfig...
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+  Installing xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)
+    Updating crates.io index
+     Locking 89 packages to latest compatible versions
+      Adding crossterm v0.27.0 (available: v0.29.0)
+      Adding ratatui v0.26.3 (available: v0.30.0)
+      Adding thiserror v1.0.69 (available: v2.0.18)
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling syn v2.0.117
+   Compiling strum_macros v0.26.4
+   Compiling clap_derive v4.5.55
+   Compiling stability v0.2.1
+   Compiling thiserror-impl v1.0.69
+   Compiling serde_derive v1.0.228
+   Compiling thiserror v1.0.69
+   Compiling strum v0.26.3
+   Compiling clap v4.5.60
+   Compiling ratatui v0.26.3
+   Compiling serde v1.0.228
+   Compiling xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)
+    Finished `release` profile [optimized] target(s) in 11.47s
+   Replacing /home/runner/.cargo/bin/xconf
+    Replaced package `xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)` with `xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)` (executable `xconf`)
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+CONFIG_VALUES: ARCH_AARCH64=y BUILD_TYPE_RELEASE=y PLATFORM_AARCH64_QEMU_VIRT=y LOG_LEVEL_WARN=y CPU_NUM=4 KERNEL_BASE_PADDR=0x40200000
+"ARCH from .config: aarch64"
+"PLAT from .config: aarch64-qemu-virt"
+"MODE from .config: release"
+"LOG from .config: warn"
+"SMP from .config: 4"
+"KERNEL_BASE_PADDR from .config: 0x40200000"
+Installing xconfig...
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+  Installing xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)
+    Updating crates.io index
+     Locking 89 packages to latest compatible versions
+      Adding crossterm v0.27.0 (available: v0.29.0)
+      Adding ratatui v0.26.3 (available: v0.30.0)
+      Adding thiserror v1.0.69 (available: v2.0.18)
+    Finished `release` profile [optimized] target(s) in 0.22s
+   Replacing /home/runner/.cargo/bin/xconf
+    Replaced package `xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)` with `xconfig v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig)` (executable `xconf`)
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+📝 Generating Rust const definitions from .config...
+📝 Generating Rust const definitions from .config...
+Config: .config
+Output: target/kbuild
+📝 Generated config.rs at: target/kbuild/config.rs
+✅ Generated config.rs successfully
+✅ Generated config.rs
+    [92;1mBuilding[0m App: xkernel, Arch: aarch64, Platform: aarch64-qemu-virt
+[37mcargo -C /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/entry build[0m [90m-Z unstable-options --target aarch64-unknown-none-softfloat --target-dir /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/target --release  --features "kfeat/dwarf aarch64_qemu_virt"[0m
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xtask/xconfig/Cargo.toml
+workspace: /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/Cargo.toml
+   Compiling proc-macro2 v1.0.106
+   Compiling kbuild_config v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/util/kbuild_config)
+   Compiling khal v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/arch/khal)
+   Compiling quote v1.0.45
+   Compiling syn v2.0.117
+   Compiling syn v1.0.109
+   Compiling darling_core v0.13.4
+   Compiling prettyplease v0.2.37
+   Compiling svgbobdoc v0.3.0
+   Compiling bindgen v0.72.1
+   Compiling rlsf v0.2.2
+   Compiling bindgen v0.65.1
+   Compiling darling_macro v0.13.4
+   Compiling macros v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/util/macros)
+   Compiling crate_interface v0.1.4
+   Compiling unittest v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/util/unittest)
+   Compiling strum_macros v0.27.2
+   Compiling kernel_guard v0.1.3
+   Compiling memaddr v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/mm/memaddr)
+   Compiling kspin v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/sync/kspin)
+   Compiling percpu_macros v0.2.2
+   Compiling percpu v0.2.2
+   Compiling kspin v0.1.1
+   Compiling linkme-impl v0.3.35
+   Compiling kplat-macros v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/platforms/kplat-macros)
+   Compiling strum v0.27.2
+   Compiling kerrno v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/util/kerrno)
+   Compiling kplat v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/platforms/kplat)
+   Compiling linkme v0.3.35
+   Compiling page_table v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/mm/page_table)
+   Compiling kcpu v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/arch/kcpu)
+   Compiling zerocopy-derive v0.8.42
+   Compiling alloc-engine v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/mm/alloc-engine)
+   Compiling kalloc v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/mm/kalloc)
+   Compiling zerocopy v0.8.42
+   Compiling thiserror-impl v2.0.18
+   Compiling futures-macro v0.3.32
+   Compiling enumn v0.1.14
+   Compiling kpoll v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/core/kpoll)
+   Compiling futures-util v0.3.32
+   Compiling extern-trait v0.2.0
+   Compiling thiserror v2.0.18
+   Compiling input v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/input)
+   Compiling net v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/net)
+   Compiling display v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/display)
+   Compiling block v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/block)
+   Compiling kdma v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/io/kdma)
+   Compiling lwext4_rust v0.2.0
+   Compiling darling v0.13.4
+   Compiling enum_dispatch v0.3.13
+   Compiling inherit-methods-macro v0.1.0
+   Compiling mbedtls-sys-auto-smx v2.28.18
+   Compiling ktask v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/core/ktask)
+   Compiling ksync v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/core/ksync)
+   Compiling safe-mmio v0.2.7
+   Compiling fs-ng-vfs v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/fs/fs-ng-vfs)
+   Compiling virtio-drivers v0.12.0
+   Compiling kio v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/io/kio)
+   Compiling scope-local v0.1.1
+   Compiling pci v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/pci)
+   Compiling virtio v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/virtio)
+   Compiling kdriver v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/drivers/kdriver)
+   Compiling memset v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/mm/memset)
+   Compiling async-trait v0.1.89
+   Compiling bytemuck_derive v1.10.2
+   Compiling inputdev v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/io/inputdev)
+   Compiling bytemuck v1.25.0
+   Compiling fbdevice v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/io/fbdevice)
+   Compiling klogger v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/util/klogger)
+   Compiling kinit_setup v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/util/kinit_setup)
+   Compiling extern-trait v0.3.0
+   Compiling derive_more-impl v2.1.1
+   Compiling proc-macro2-diagnostics v0.10.1
+   Compiling ouroboros_macro v0.18.5
+   Compiling osvm v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/process/osvm)
+   Compiling ouroboros v0.18.5
+   Compiling ppv-lite86 v0.2.21
+   Compiling kfs v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/fs/kfs)
+   Compiling kernel-elf-parser v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/core/kernel_elf_parser)
+   Compiling knet v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/net/knet)
+   Compiling memspace v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/mm/memspace)
+   Compiling kruntime v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/init/kruntime)
+   Compiling derive_more v2.1.1
+   Compiling ksignal v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/process/ksignal)
+   Compiling kfeat v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/api/kfeat)
+   Compiling arm-gic-driver v0.15.12
+   Compiling kprocess v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/process/kprocess)
+   Compiling num_enum_derive v0.7.5
+   Compiling serde_derive v1.0.228
+   Compiling num_enum v0.7.5
+   Compiling kcore v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/api/kcore)
+   Compiling aarch64-peripherals v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/platforms/aarch64-peripherals)
+   Compiling rand_chacha v0.3.1
+   Compiling aarch64-qemu-virt v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/platforms/aarch64-qemu-virt)
+   Compiling mbedtls-platform-support-smx v0.1.3
+   Compiling mbedtls-smx v0.13.6
+   Compiling kapi v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/api/kapi)
+   Compiling entry v0.1.0 (/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/entry)
+    Finished `release` profile [optimized] target(s) in 56.43s
+warning: the following packages contain code that will be rejected by a future version of Rust: memchr v2.8.0
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+[37m./scripts/make/dwarf.sh[0m [90m/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xkernel_aarch64-qemu-virt.elf rust-objcopy --binary-architecture=aarch64[0m
+[37mrust-objcopy --binary-architecture=aarch64[0m [90m/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xkernel_aarch64-qemu-virt.elf --strip-all -O binary /home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel/xkernel_aarch64-qemu-virt.bin[0m
+make[1]: Leaving directory '/home/runner/work/starry-test-harness/starry-test-harness/.cache/X-Kernel'
+[build:starry] Copying build artifacts
+[build:starry] X-Kernel 构建完成，产物位于 /home/runner/work/starry-test-harness/starry-test-harness/artifacts/daily
+[case] starting concurrency-load-demo -> logs/daily/20260310-170404/cases/concurrency-load-demo.log
+        Rust-based concurrency harness executed via orchestrator
+[case] concurrency-load-demo finished in 26663 ms (exit Some(0))
+[case] starting unixbench-dhry2reg-test -> logs/daily/20260310-170404/cases/unixbench-dhry2reg-test.log
+        在 X-Kernel 中运行 UnixBench dhry2reg 测试
+[case] unixbench-dhry2reg-test finished in 335821 ms (exit Some(0))
+[case] starting unixbench-whetstone-double-test -> logs/daily/20260310-170404/cases/unixbench-whetstone-double-test.log
+        在 X-Kernel 中运行 UnixBench whetstone-double 测试
+[case] unixbench-whetstone-double-test finished in 370271 ms (exit Some(0))
+[case] starting unixbench-syscall-test -> logs/daily/20260310-170404/cases/unixbench-syscall-test.log
+        在 X-Kernel 中运行 UnixBench syscall 测试
+[case] unixbench-syscall-test finished in 329135 ms (exit Some(0))
+[case] starting unixbench-pipe-test -> logs/daily/20260310-170404/cases/unixbench-pipe-test.log
+        在 X-Kernel 中运行 UnixBench pipe 测试
+[case] unixbench-pipe-test finished in 328855 ms (exit Some(0))
+[case] starting unixbench-context1-test -> logs/daily/20260310-170404/cases/unixbench-context1-test.log
+        在 X-Kernel 中运行 UnixBench context1 测试
+[case] unixbench-context1-test finished in 329953 ms (exit Some(0))
+[case] starting unixbench-spawn-test -> logs/daily/20260310-170404/cases/unixbench-spawn-test.log
+        在 X-Kernel 中运行 UnixBench spawn 测试
+[case] unixbench-spawn-test finished in 236455 ms (exit Some(0))
+[case] starting unixbench-fstime-test -> logs/daily/20260310-170404/cases/unixbench-fstime-test.log
+        在 X-Kernel 中运行 UnixBench fstime 测试
+[case] unixbench-fstime-test finished in 854953 ms (exit Some(0))
+[case] starting unixbench-fsbuffer-test -> logs/daily/20260310-170404/cases/unixbench-fsbuffer-test.log
+        在 X-Kernel 中运行 UnixBench fsbuffer 测试
+[case] unixbench-fsbuffer-test finished in 848141 ms (exit Some(0))
+[case] starting unixbench-fsdisk-test -> logs/daily/20260310-170404/cases/unixbench-fsdisk-test.log
+        在 X-Kernel 中运行 UnixBench fsdisk 测试
+[case] unixbench-fsdisk-test finished in 909743 ms (exit Some(0))
+[case] starting unixbench-execl-test -> logs/daily/20260310-170404/cases/unixbench-execl-test.log
+        在 X-Kernel 中运行 UnixBench execl 测试
+[case] unixbench-execl-test finished in 234275 ms (exit Some(0))
+[case] starting unixbench-shell1-test -> logs/daily/20260310-170404/cases/unixbench-shell1-test.log
+        在 X-Kernel 中运行 UnixBench shell1 测试
+[case] unixbench-shell1-test finished in 430927 ms (exit Some(0))
+[case] starting unixbench-shell8-test -> logs/daily/20260310-170404/cases/unixbench-shell8-test.log
+        在 X-Kernel 中运行 UnixBench shell8 测试
+[case] unixbench-shell8-test finished in 575854 ms (exit Some(0))
